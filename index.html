@@ -1,0 +1,2456 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrategias para la Resolución de Problemas y Toma de Decisiones | UAEMéx</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- html2canvas para generación de captura de pantalla -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <style>
+        :root {
+            /* Paleta Oficial UAEMéx */
+            --uaemex-green: #004b23;
+            --uaemex-green-light: #007236;
+            --uaemex-green-subtle: #e8f5e9;
+            --uaemex-gold: #c69214;
+            --uaemex-gold-light: #e5b338;
+            --uaemex-gold-subtle: #fef9e7;
+            
+            /* Colores Neutros y de Superficie */
+            --bg-body: #f4f6f8;
+            --surface: #ffffff;
+            --surface-hover: #fafafa;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            /* UI Metrics & Shadows */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-md: 0 6px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5, .brand-font {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* TopBar Institucional */
+        .topbar {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 8px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            border-bottom: 3px solid var(--uaemex-gold);
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .topbar-badge {
+            background-color: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .docente-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--uaemex-gold-light);
+            font-weight: 500;
+        }
+
+        /* Encabezado y Navegación Sticky */
+        header {
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--uaemex-green), var(--uaemex-green-light));
+            color: var(--uaemex-gold);
+            width: 52px;
+            height: 52px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            box-shadow: 0 4px 10px rgba(0,75,35,0.2);
+        }
+
+        .brand-titles h1 {
+            font-size: 1.15rem;
+            color: var(--uaemex-green);
+            line-height: 1.25;
+            font-weight: 700;
+        }
+
+        .brand-titles p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Nav Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            background-color: var(--bg-body);
+            padding: 4px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+        }
+
+        .nav-tab {
+            background: transparent;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-tab:hover {
+            color: var(--uaemex-green);
+            background-color: rgba(0, 75, 35, 0.05);
+        }
+
+        .nav-tab.active {
+            color: #ffffff;
+            background-color: var(--uaemex-green);
+            box-shadow: 0 2px 8px rgba(0, 75, 35, 0.25);
+        }
+
+        .nav-tab.active i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Contenedor Principal */
+        main {
+            max-width: 1240px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.35s ease-out forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner SVG / CSS */
+        .hero-card {
+            background: linear-gradient(135deg, var(--uaemex-green) 0%, #002b14 100%);
+            border-radius: var(--radius-lg);
+            color: #ffffff;
+            padding: 3rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2.5rem;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+            border-bottom: 5px solid var(--uaemex-gold);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(198, 146, 20, 0.2);
+            border: 1px solid var(--uaemex-gold);
+            color: var(--uaemex-gold-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero-title span {
+            color: var(--uaemex-gold-light);
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: #e2e8f0;
+            margin-bottom: 1.8rem;
+            max-width: 620px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* SVG Graphic Illustration */
+        .hero-illustration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .nodes-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            color: var(--text-primary);
+            width: 100%;
+            max-width: 340px;
+            border: 2px solid var(--uaemex-gold);
+            transform: rotate(-1deg);
+            transition: var(--transition);
+        }
+
+        .nodes-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .node-network {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .node-network::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--uaemex-green), var(--uaemex-gold));
+            z-index: 1;
+        }
+
+        .node-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--uaemex-green);
+            color: var(--uaemex-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            border: 2px solid #ffffff;
+        }
+
+        /* Widget Frase Motivacional */
+        .quote-widget {
+            background: var(--surface);
+            border-left: 5px solid var(--uaemex-gold);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .quote-body {
+            flex: 1;
+        }
+
+        .quote-text {
+            font-size: 1.05rem;
+            font-style: italic;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+            font-weight: 500;
+        }
+
+        .quote-author {
+            font-size: 0.85rem;
+            color: var(--uaemex-green);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Secciones y Títulos */
+        .section-header {
+            margin: 2.5rem 0 1.25rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-size: 1.35rem;
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .section-title i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Tarjetas Estilizadas */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0, 75, 35, 0.25);
+        }
+
+        .card-top-bar {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--uaemex-green), var(--uaemex-gold));
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Recuadro destacado: Presentación Google Slides */
+        .featured-resource {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: linear-gradient(135deg, var(--uaemex-green) 0%, var(--uaemex-green-light) 100%);
+            border: 2px solid var(--uaemex-gold);
+            border-radius: var(--radius-lg);
+            padding: 24px 28px;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 0 0 rgba(198, 146, 20, 0.5);
+            animation: pulse-gold 2.2s infinite;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .featured-resource:hover {
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .featured-resource-icon {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .featured-resource-text {
+            flex: 1;
+            color: #ffffff;
+        }
+
+        .featured-resource-text .fr-tag {
+            display: inline-block;
+            background: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 700;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-bottom: 6px;
+        }
+
+        .featured-resource-text h4 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.15rem;
+            margin-bottom: 4px;
+        }
+
+        .featured-resource-text p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .featured-resource-cta {
+            flex-shrink: 0;
+            background: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 700;
+            padding: 10px 18px;
+            border-radius: var(--radius-sm);
+            font-size: 0.85rem;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(198, 146, 20, 0.55); }
+            70% { box-shadow: 0 0 0 14px rgba(198, 146, 20, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(198, 146, 20, 0); }
+        }
+
+        @media (max-width: 640px) {
+            .featured-resource {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: var(--uaemex-green-subtle);
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--uaemex-gold);
+            letter-spacing: 0.6px;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+        }
+
+        /* ================= ESTILOS FLIPCARDS 3D INTERACTIVAS ================= */
+        .flip-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            perspective: 1000px;
+            height: 280px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: var(--radius-md);
+        }
+
+        .flip-card:hover .flip-card-inner,
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .flip-card-front {
+            background-color: var(--surface);
+            color: var(--text-primary);
+            border-top: 5px solid var(--uaemex-green);
+        }
+
+        .flip-card-front .step-num {
+            background: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .flip-card-front .icon-box {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--uaemex-green-subtle);
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            margin: 0.5rem 0;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .flip-card-front h4 {
+            color: var(--uaemex-green);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .flip-card-front .hint-text {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .flip-card-back {
+            background: linear-gradient(135deg, var(--uaemex-green) 0%, #002b14 100%);
+            color: #ffffff;
+            transform: rotateY(180deg);
+            border: 2px solid var(--uaemex-gold);
+            justify-content: center;
+            text-align: left;
+        }
+
+        .flip-card-back h5 {
+            color: var(--uaemex-gold-light);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid rgba(198, 146, 20, 0.4);
+            padding-bottom: 0.4rem;
+            width: 100%;
+        }
+
+        .flip-card-back p {
+            font-size: 0.86rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .flip-card-back .back-badge {
+            margin-top: 1rem;
+            font-size: 0.72rem;
+            background: rgba(198, 146, 20, 0.2);
+            color: var(--uaemex-gold-light);
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        /* Tracker de Ruta de Aprendizaje */
+        .progress-tracker {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .tracker-step {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.2rem;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .tracker-step.active {
+            border-color: var(--uaemex-green);
+            background-color: var(--uaemex-green-subtle);
+        }
+
+        .tracker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.6rem;
+        }
+
+        .tracker-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--uaemex-green);
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tracker-status {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .status-active {
+            background: var(--uaemex-gold);
+            color: var(--uaemex-green);
+        }
+
+        .status-pending {
+            background: #e2e8f0;
+            color: var(--text-muted);
+        }
+
+        /* Tarjetas de Evaluación */
+        .eval-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .eval-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .eval-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.9rem;
+        }
+
+        .eval-bar-bg {
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .eval-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--uaemex-green), var(--uaemex-gold));
+            border-radius: 4px;
+        }
+
+        /* Botones y Acciones */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--uaemex-green-light);
+            box-shadow: 0 4px 12px rgba(0,75,35,0.25);
+        }
+
+        .btn-gold {
+            background-color: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 700;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--uaemex-gold-light);
+            box-shadow: 0 4px 12px rgba(198,146,20,0.25);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--uaemex-green);
+            border: 1px solid var(--uaemex-green);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.85rem;
+            font-size: 0.82rem;
+        }
+
+        /* Filtro de Tipos de Problemas */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            padding: 0.45rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            border-color: var(--uaemex-green);
+        }
+
+        /* Tablas Elegantes */
+        .custom-table-container {
+            overflow-x: auto;
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .custom-table th {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 0.85rem 1rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+        }
+
+        .custom-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover {
+            background-color: var(--uaemex-green-subtle);
+        }
+
+        /* Footer Institucional */
+        footer {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 3rem 5% 1.5rem 5%;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h4 {
+            color: var(--uaemex-gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--uaemex-gold-light);
+        }
+
+        .footer-bottom {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: var(--surface);
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 480px;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border-top: 5px solid var(--uaemex-gold);
+            transform: scale(0.9);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.25rem;
+            background: transparent;
+            border: none;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            color: var(--uaemex-green);
+        }
+
+        /* Formulario de Identificación */
+        .student-id-card {
+            background: var(--surface);
+            border: 2px solid var(--uaemex-gold);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .student-form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--uaemex-green);
+        }
+
+        .form-control {
+            padding: 0.65rem 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            background-color: var(--bg-body);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--uaemex-green);
+            box-shadow: 0 0 0 3px rgba(0, 75, 35, 0.15);
+            background-color: #ffffff;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Contenedor Imprimible / Capturable */
+        .printable-sheet {
+            background: #ffffff;
+            border: 2px solid var(--uaemex-green);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--uaemex-gold);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sheet-badge {
+            background: var(--uaemex-green);
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Estilos específicos para Enfoques Teóricos del Tema 1.1 */
+        .approach-box {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .approach-box:hover {
+            border-color: var(--uaemex-green);
+            box-shadow: var(--shadow-md);
+        }
+
+        .approach-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 12px;
+            margin-bottom: 0.6rem;
+        }
+
+        .approach-useful {
+            background: var(--uaemex-gold-subtle);
+            border-left: 3px solid var(--uaemex-gold);
+            padding: 0.65rem 0.85rem;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-top: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Topbar Institucional UAEMéx -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <span class="topbar-badge">UAEMéx</span>
+            <span>Escuela Preparatoria &bull; Curriculum Bachillerato Universitario (CBU)</span>
+        </div>
+        <div class="docente-info">
+            <i class="fa-solid fa-user-tie"></i>
+            <span>Docente: Lic. Jessica Hernández Berríos</span>
+        </div>
+    </div>
+
+    <!-- Header Principal -->
+    <header>
+        <div class="header-container">
+            <div class="brand-box">
+                <div class="brand-icon">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <div class="brand-titles">
+                    <h1>Estrategias para la Resolución de Problemas y Toma de Decisiones</h1>
+                    <p>Portal Académico Propedéutico &bull; Nivel Medio Superior</p>
+                </div>
+            </div>
+
+            <!-- Navegación por Pestañas -->
+            <nav class="nav-tabs" role="tablist">
+                <button class="nav-tab active" onclick="switchTab('inicio', this)" id="tab-btn-inicio">
+                    <i class="fa-solid fa-house"></i> Inicio
+                </button>
+                <button class="nav-tab" onclick="switchTab('modulo1', this)" id="tab-btn-modulo1">
+                    <i class="fa-solid fa-book-open-reader"></i> Módulo 1
+                </button>
+                <button class="nav-tab" onclick="switchTab('sesiones', this)" id="tab-btn-sesiones">
+                    <i class="fa-solid fa-list-check"></i> Sesiones y Ejercicios
+                </button>
+                <button class="nav-tab" onclick="switchTab('biblioteca', this)" id="tab-btn-biblioteca">
+                    <i class="fa-solid fa-book-bookmark"></i> Biblioteca Académica
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- ==================== PESTAÑA 1: INICIO ==================== -->
+        <section id="inicio" class="tab-content active">
+            <!-- Hero Banner con Gráfico Interactivo -->
+            <div class="hero-card">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <i class="fa-solid fa-compass"></i> Etapa Propedéutica del Bachillerato
+                    </div>
+                    <h2 class="hero-title">Potencia tu <span>Motivación</span> y Pensamiento Crítico</h2>
+                    <p class="hero-desc">Bienvenido al espacio interactivo de la asignatura. Aquí aprenderás a estructurar problemas complejos, regular tus decisiones y fortalecer tu resiliencia ante los retos académicos y personales.</p>
+                    <div class="hero-actions">
+                        <button onclick="scrollToSection('ruta-seccion')" class="btn btn-gold">
+                            <i class="fa-solid fa-route"></i> Ver Ruta de Aprendizaje
+                        </button>
+                        <button onclick="switchTab('sesiones', document.getElementById('tab-btn-sesiones'))" class="btn btn-primary">
+                            <i class="fa-solid fa-graduation-cap"></i> Explorar Módulo 1
+                        </button>
+                    </div>
+                </div>
+
+                <div class="hero-illustration">
+                    <div class="nodes-card">
+                        <div style="color: var(--uaemex-green); font-weight: 700; font-size: 1.05rem;">
+                            <i class="fa-solid fa-diagram-project" style="color: var(--uaemex-gold);"></i> Proceso Decisional
+                        </div>
+                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 4px;">Metodología Científica y Empatía Social</p>
+                        <div class="node-network">
+                            <div class="node-item" title="Diagnóstico"><i class="fa-solid fa-magnifying-glass"></i></div>
+                            <div class="node-item" title="Análisis de Opciones"><i class="fa-solid fa-sitemap"></i></div>
+                            <div class="node-item" title="Acción Estratégica"><i class="fa-solid fa-check"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Widget Dinámico de Citas Motivacionales -->
+            <div class="quote-widget">
+                <div class="quote-body">
+                    <div class="quote-text" id="quote-text">"La motivación es la capacidad de orientar las emociones al servicio de una meta, postergando la gratificación inmediata y manteniendo el compromiso."</div>
+                    <div class="quote-author" id="quote-author">— Daniel Goleman (Inteligencia Emocional)</div>
+                </div>
+                <button class="btn btn-outline btn-sm" onclick="getNewQuote()" title="Generar otra frase">
+                    <i class="fa-solid fa-arrows-rotate"></i> Nueva Frase
+                </button>
+            </div>
+
+            <!-- Registro e Identificación del Alumno -->
+            <div class="student-id-card">
+                <div style="display: flex; align-items: center; gap: 10px; color: var(--uaemex-green);">
+                    <i class="fa-solid fa-id-card-clip" style="font-size: 1.5rem; color: var(--uaemex-gold);"></i>
+                    <h3 style="font-size: 1.2rem; font-weight: 700;">Identificación Oficial del Alumno</h3>
+                </div>
+                <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 4px;">
+                    Ingresa tus datos completos para autenticar las actividades diagnósticas y garantizar la validez en tus capturas de pantalla.
+                </p>
+                <div class="student-form-grid">
+                    <div class="form-group">
+                        <label for="student-name"><i class="fa-solid fa-user"></i> Nombre Completo del Alumno:</label>
+                        <input type="text" id="student-name" class="form-control" placeholder="Ej. Ana María López Hernández" oninput="syncStudentData()">
+                    </div>
+                    <div class="form-group">
+                        <label for="student-account"><i class="fa-solid fa-hashtag"></i> Número de Cuenta UAEMéx:</label>
+                        <input type="text" id="student-account" class="form-control" placeholder="Ej. 2125890" oninput="syncStudentData()">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Presentación de la Asignatura y Fundamentación -->
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-chalkboard-user"></i> Presentación de la Asignatura</h3>
+            </div>
+
+            <div class="grid-2">
+                <div class="card">
+                    <div class="card-top-bar"></div>
+                    <div>
+                        <div class="card-badge">Fundamentación Psicopedagógica</div>
+                        <h4 class="card-title">Enfoque Propedéutico y Desarrollo Emocional</h4>
+                        <p class="card-desc">
+                            En esta etapa final del CBU, el objetivo es mantener a flote el entusiasmo e interés del estudiantado. Se promueve el desarrollo de la <strong>Motivación</strong> (intrínseca, compromiso, iniciativa y optimismo según Goleman) y la <strong>Autorregulación Emocional</strong> (Bisquerra, Naranjo), integrando la empatía para comprender las necesidades de la comunidad y del entorno.
+                        </p>
+                    </div>
+                    <div style="font-size: 0.82rem; color: var(--uaemex-green); font-weight: 600;">
+                        <i class="fa-solid fa-heart-pulse"></i> Cuidado físico &bull; Salud mental &bull; Empatía social
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-top-bar"></div>
+                    <div>
+                        <div class="card-badge">Docente Titular</div>
+                        <h4 class="card-title">Lic. Jessica Hernández Berríos</h4>
+                        <p class="card-desc">
+                            ¡Hola! Más allá de las clases tradicionales, mi objetivo es crear un espacio seguro donde puedas reflexionar, expresar lo que piensas y aprender a tomar decisiones con seguridad. Estoy aquí para acompañarte en esta etapa de la prepa, ayudarte a analizar los problemas diarios con cabeza fría y darte herramientas reales que te sirvan tanto en la escuela como en tu vida personal.
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="openContactModal()" class="btn btn-outline btn-sm"><i class="fa-solid fa-envelope"></i> Contactar por Correo / Información</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ruta de Aprendizaje (Progress Tracker) -->
+            <div class="section-header" id="ruta-seccion">
+                <h3 class="section-title"><i class="fa-solid fa-map-location-dot"></i> Ruta de Aprendizaje Modular</h3>
+            </div>
+
+            <div class="progress-tracker">
+                <div class="tracker-step active" onclick="switchTab('modulo1', document.getElementById('tab-btn-modulo1'))" style="cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'" title="Haz clic para explorar los contenidos y materiales del Módulo 1">
+                    <div class="tracker-header">
+                        <span class="tracker-num">M1</span>
+                        <span class="tracker-status status-active"><i class="fa-solid fa-arrow-right-to-bracket"></i> En Curso (Clic aquí)</span>
+                    </div>
+                    <h5 style="font-weight:700; font-size:0.95rem; color: var(--uaemex-green);">Análisis y Estructura de los Problemas</h5>
+                    <p style="font-size:0.8rem; color: var(--text-muted); margin-top:4px;">Concepto, Anatomía (Causas, Consecuencias, Actores) y Tipología.</p>
+                    <div style="margin-top: 10px; font-size: 0.78rem; color: #ffffff; font-weight: 600; background: var(--uaemex-green); padding: 5px 10px; border-radius: var(--radius-sm); display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-folder-open" style="color: var(--uaemex-gold);"></i> Explorar Materiales y Contenido Temático
+                    </div>
+                </div>
+
+                <div class="tracker-step">
+                    <div class="tracker-header">
+                        <span class="tracker-num" style="background:#94a3b8;">M2</span>
+                        <span class="tracker-status status-pending">Próximo</span>
+                    </div>
+                    <h5 style="font-weight:700; font-size:0.95rem; color: var(--text-primary);">Estructura de la Toma de Decisiones</h5>
+                    <p style="font-size:0.8rem; color: var(--text-muted); margin-top:4px;">Identificación de alternativas, criterios de evaluación y sesgos.</p>
+                </div>
+
+                <div class="tracker-step">
+                    <div class="tracker-header">
+                        <span class="tracker-num" style="background:#94a3b8;">M3</span>
+                        <span class="tracker-status status-pending">Próximo</span>
+                    </div>
+                    <h5 style="font-weight:700; font-size:0.95rem; color: var(--text-primary);">Estrategias Fundamentales</h5>
+                    <p style="font-size:0.8rem; color: var(--text-muted); margin-top:4px;">Árboles de decisión, Matriz de Eisenhower e Ishikawa.</p>
+                </div>
+
+                <div class="tracker-step">
+                    <div class="tracker-header">
+                        <span class="tracker-num" style="background:#94a3b8;">M4</span>
+                        <span class="tracker-status status-pending">Próximo</span>
+                    </div>
+                    <h5 style="font-weight:700; font-size:0.95rem; color: var(--text-primary);">Aplicación en Casos Reales</h5>
+                    <p style="font-size:0.8rem; color: var(--text-muted); margin-top:4px;">Proyectos integradores comunitarios y resolución de dilemas.</p>
+                </div>
+            </div>
+
+            <!-- Sistema de Evaluación -->
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-chart-pie"></i> Sistema de Evaluación</h3>
+            </div>
+
+            <div class="grid-2">
+                <div class="eval-card">
+                    <div class="eval-header">
+                        <h4 style="color: var(--uaemex-green); font-weight:700;"><i class="fa-solid fa-calendar-check"></i> Primer Parcial</h4>
+                        <span class="topbar-badge">Ponderación: 100%</span>
+                    </div>
+                    <div class="eval-item">
+                        <span>Examen Parcial Escrito/Práctico</span>
+                        <strong>50%</strong>
+                    </div>
+                    <div class="eval-bar-bg"><div class="eval-bar-fill" style="width: 50%;"></div></div>
+
+                    <div class="eval-item" style="margin-top:1rem;">
+                        <span>Portafolio de Evidencias (AA)</span>
+                        <strong>40%</strong>
+                    </div>
+                    <div class="eval-bar-bg"><div class="eval-bar-fill" style="width: 40%;"></div></div>
+
+                    <div class="eval-item" style="margin-top:1rem;">
+                        <span>Proyecto Escolar Comunitario (PEC)</span>
+                        <strong>10%</strong>
+                    </div>
+                    <div class="eval-bar-bg"><div class="eval-bar-fill" style="width: 10%;"></div></div>
+                </div>
+
+                <div class="eval-card">
+                    <div class="eval-header">
+                        <h4 style="color: var(--uaemex-green); font-weight:700;"><i class="fa-solid fa-calendar-check"></i> Segundo Parcial</h4>
+                        <span class="topbar-badge">Ponderación: 100%</span>
+                    </div>
+                    <div class="eval-item">
+                        <span>Examen Parcial Escrito/Práctico</span>
+                        <strong>50%</strong>
+                    </div>
+                    <div class="eval-bar-bg"><div class="eval-bar-fill" style="width: 50%;"></div></div>
+
+                    <div class="eval-item" style="margin-top:1rem;">
+                        <span>Portafolio de Evidencias (AA)</span>
+                        <strong>40%</strong>
+                    </div>
+                    <div class="eval-bar-bg"><div class="eval-bar-fill" style="width: 40%;"></div></div>
+
+                    <div class="eval-item" style="margin-top:1rem;">
+                        <span>Proyecto Escolar Comunitario (PEC)</span>
+                        <strong>10%</strong>
+                    </div>
+                    <div class="eval-bar-bg"><div class="eval-bar-fill" style="width: 10%;"></div></div>
+                </div>
+            </div>
+
+            <!-- Materiales y Recursos de Apoyo -->
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-folder-open"></i> Materiales y Recursos de Apoyo Generales</h3>
+            </div>
+
+            <div class="grid-4">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div class="card-badge">Archivos</div>
+                    <h4 class="card-title">Programa Sintético</h4>
+                    <p class="card-desc">Guía metodológica oficial y encuadre del semestre.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Descargar PDF</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-powerpoint"></i></div>
+                    <div class="card-badge">Presentaciones</div>
+                    <h4 class="card-title">Diapositivas del Curso</h4>
+                    <p class="card-desc">Material gráfico apoyado en la teoría de problemas.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-eye"></i> Ver Presentación</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-circle-play"></i></div>
+                    <div class="card-badge">Videos</div>
+                    <h4 class="card-title">Cápsulas Explicativas</h4>
+                    <p class="card-desc">Explicación breve sobre autorregulación y lógica.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-play"></i> Ver Videos</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-link"></i></div>
+                    <div class="card-badge">Plataformas</div>
+                    <h4 class="card-title">Enlaces Útiles</h4>
+                    <p class="card-desc">Herramientas digitales colaborativas como Miro y Padlet.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-external-link"></i> Ir a Enlaces</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PESTAÑA: MÓDULO 1 ==================== -->
+        <section id="modulo1" class="tab-content">
+            <!-- Header Módulo 1 -->
+            <div style="background: linear-gradient(135deg, var(--uaemex-green) 0%, #002b14 100%); color: #ffffff; padding: 2.2rem; border-radius: var(--radius-lg); margin-bottom: 2rem; border-bottom: 5px solid var(--uaemex-gold); box-shadow: var(--shadow-md);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <span class="topbar-badge" style="background: var(--uaemex-gold); color: var(--uaemex-green); font-weight: 700;">Contenido Temático Oficial</span>
+                        <h2 style="font-size: 1.8rem; margin-top: 8px; font-weight: 800; font-family: 'Outfit', sans-serif;">Módulo 1: Análisis y Estructura de los Problemas</h2>
+                        <p style="color: #e2e8f0; font-size: 0.95rem; max-width: 750px; margin-top: 4px;">
+                            Explora los conceptos fundamentales, las perspectivas teóricas de la resolución de problemas, la anatomía sintomática y causal, así como la clasificación tipológica completa.
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="scrollToSection('m1-materiales')" class="btn btn-gold">
+                            <i class="fa-solid fa-file-arrow-down"></i> Ir a Materiales Descargables
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navegación Interna por Temas M1 -->
+            <div class="section-header" style="margin-top: 0;">
+                <h3 class="section-title"><i class="fa-solid fa-book-open"></i> Desarrollos Temáticos del Módulo 1</h3>
+            </div>
+
+            <!-- Unidades Temáticas -->
+            <div style="display: flex; flex-direction: column; gap: 2rem;">
+                
+                <!-- Tema 1.1 -->
+                <div class="card" style="border-left: 5px solid var(--uaemex-green);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <span class="card-badge"><i class="fa-solid fa-bookmark"></i> Tema 1.1</span>
+                            <h3 style="color: var(--uaemex-green); font-size: 1.35rem; font-weight: 700;">El Concepto de Problema y Enfoques Teóricos</h3>
+                        </div>
+                        <span style="background: var(--uaemex-green-subtle); color: var(--uaemex-green); padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem;">
+                            <i class="fa-solid fa-clock"></i> Sesión 1
+                        </span>
+                    </div>
+
+                    <div style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7;">
+                        <p style="margin-bottom: 1rem;">
+                            <strong>1.1.1 Percepción Individual:</strong> La experiencia subjetiva de un problema varía según el nivel de desarrollo emocional y el entorno sociocultural. Lo que para un estudiante representa un obstáculo menor, para otro puede activar una respuesta de estrés significativa.
+                        </p>
+                        <p style="margin-bottom: 1.25rem;">
+                            <strong>1.1.2 Definición Formal:</strong> Un problema se define como la <em>discrepancia o brecha cualitativa entre una situación actual no deseada y un estado meta u objetivo ideal</em>, donde las respuestas automáticas previas resultan insuficientes para alcanzar la solución.
+                        </p>
+
+                        <!-- Subsección de Enfoques Teóricos Fundamentales -->
+                        <div style="margin: 1.5rem 0 1rem 0;">
+                            <h4 style="color: var(--uaemex-green); font-size: 1.05rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-layer-group" style="color: var(--uaemex-gold);"></i> 1.1.3 Perspectivas Teóricas Fundamentales del Problema
+                            </h4>
+
+                            <div class="grid-3">
+                                <!-- 1. Enfoque cognitivo -->
+                                <div class="approach-box">
+                                    <div>
+                                        <span class="approach-tag" style="background: #e0f2fe; color: #0369a1;">
+                                            <i class="fa-solid fa-brain"></i> Cognitivo
+                                        </span>
+                                        <h5 style="color: var(--uaemex-green); font-weight: 700; font-size: 0.98rem; margin-bottom: 6px;">
+                                            Newell y Simon (1972)
+                                        </h5>
+                                        <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Un problema es la discrepancia entre un <strong>estado inicial</strong> y un <strong>estado meta</strong>, cuando el sujeto no cuenta de forma inmediata con un procedimiento o "camino" evidente para pasar de uno a otro. La resolución consiste en encontrar la secuencia de operaciones (el <em>"espacio de búsqueda"</em>) que conecta ambos estados.
+                                        </p>
+                                    </div>
+                                    <div class="approach-useful">
+                                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-link"></i> Aplicación curricular:</strong> Útil para introducir la lógica de análisis-síntesis y conectarlo con los problemas convergentes/divergentes del <strong>Tema 1.3</strong>.
+                                    </div>
+                                </div>
+
+                                <!-- 2. Enfoque psicopedagógico -->
+                                <div class="approach-box">
+                                    <div>
+                                        <span class="approach-tag" style="background: #fef3c7; color: #b45309;">
+                                            <i class="fa-solid fa-graduation-cap"></i> Psicopedagógico
+                                        </span>
+                                        <h5 style="color: var(--uaemex-green); font-weight: 700; font-size: 0.98rem; margin-bottom: 6px;">
+                                            Mayer (1986)
+                                        </h5>
+                                        <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Un problema existe cuando una persona tiene una meta pero no conoce de inmediato la manera de alcanzarla. Implica tres componentes fundamentales: los <strong>datos</strong> (información disponible), la <strong>meta</strong> (estado deseado) y los <strong>obstáculos</strong> (lo que impide llegar directamente de uno a otro).
+                                        </p>
+                                    </div>
+                                    <div class="approach-useful">
+                                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-link"></i> Aplicación curricular:</strong> Permite reforzar de manera directa la anatomía de <em>Causas, Consecuencias y Actores</em> analizada en el <strong>Tema 1.2</strong>.
+                                    </div>
+                                </div>
+
+                                <!-- 3. Enfoque organizacional / toma de decisiones -->
+                                <div class="approach-box">
+                                    <div>
+                                        <span class="approach-tag" style="background: #dcfce7; color: #15803d;">
+                                            <i class="fa-solid fa-chart-line"></i> Decisional
+                                        </span>
+                                        <h5 style="color: var(--uaemex-green); font-weight: 700; font-size: 0.98rem; margin-bottom: 6px;">
+                                            Simon (1960, Teoría Decisional)
+                                        </h5>
+                                        <p style="font-size: 0.86rem; color: var(--text-secondary); line-height: 1.5;">
+                                            Un problema es una situación en la que existe una <strong>brecha percibida</strong> entre el desempeño real y el desempeño deseado. Esto genera la necesidad imperativa de decidir entre cursos de acción alternativos bajo condiciones de información limitada (<em>racionalidad limitada</em>).
+                                        </p>
+                                    </div>
+                                    <div class="approach-useful">
+                                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-link"></i> Aplicación curricular:</strong> Constituye la base lógica para abordar el proceso decisional y la elección de alternativas en el <strong>Módulo 2</strong>.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enfoque socioemocional -->
+                        <div style="background: var(--bg-body); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); font-size: 0.9rem; margin-top: 1.25rem;">
+                            <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-brain"></i> Enfoque socioemocional (Goleman & Bisquerra):</strong>
+                            <p style="margin-top: 4px; color: var(--text-secondary);">
+                                La capacidad de abordar un problema no depende únicamente de la lógica abstracta, sino de la autorregulación emocional. La iniciativa, el optimismo y la tolerancia a la frustración son variables indispensables para evitar el bloqueo inicial ante el conflicto.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tema 1.2 ACTUALIZADO CON ACTIVIDAD INTERACTIVA FLIPCARDS -->
+                <div class="card" style="border-left: 5px solid var(--uaemex-gold);" id="tema1-2">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <span class="card-badge" style="color: var(--uaemex-gold);"><i class="fa-solid fa-sitemap"></i> Tema 1.2</span>
+                            <h3 style="color: var(--uaemex-green); font-size: 1.35rem; font-weight: 700;">Estructura y Anatomía de un Problema</h3>
+                        </div>
+                        <span style="background: var(--uaemex-gold-subtle); color: var(--uaemex-green); padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem;">
+                            <i class="fa-solid fa-clock"></i> Sesión 2
+                        </span>
+                    </div>
+
+                    <p style="font-size: 0.93rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                        Para intervenir eficazmente en cualquier situación problemática, se debe desglosar analíticamente la situación en sus <strong>4 componentes o pasos fundamentales</strong> (alineados con la metodología de análisis de sistemas). Pasa el cursor o toca cada tarjeta a continuación para revelar su explicación.
+                    </p>
+
+                    <!-- ACTIVIDAD INTERACTIVA: FLIPCARDS DE LA ANATOMÍA DEL PROBLEMA -->
+                    <div style="background: var(--uaemex-green-subtle); padding: 1.25rem; border-radius: var(--radius-md); border: 1px solid rgba(0,75,35,0.15); margin-top: 0.5rem;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem;">
+                            <h4 style="color: var(--uaemex-green); font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                                <i class="fa-solid fa-hand-pointer" style="color: var(--uaemex-gold);"></i> Actividad Interactiva: Los 4 Pasos de la Anatomía del Problema
+                            </h4>
+                            <span style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600; background: #ffffff; padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border-color);">
+                                <i class="fa-solid fa-rotate"></i> Toca o pasa el cursor para voltear
+                            </span>
+                        </div>
+
+                        <div class="flip-cards-container">
+                            <!-- Flipcard 1: El Problema Central -->
+                            <div class="flip-card" onclick="toggleFlipCard(this)">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span class="step-num">Paso 1</span>
+                                        <div class="icon-box">
+                                            <i class="fa-solid fa-crosshairs"></i>
+                                        </div>
+                                        <h4>1) El Problema Central</h4>
+                                        <div class="hint-text">
+                                            <i class="fa-solid fa-repeat"></i> Voltear tarjeta
+                                        </div>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h5><i class="fa-solid fa-crosshairs"></i> Problema Central</h5>
+                                        <p>
+                                            Es el <strong>núcleo o brecha principal</strong> de la situación no deseada. Constituye el fenómeno negativo concreto que se desea transformar y sobre el cual se deben enfocar los esfuerzos prioritarios de solución.
+                                        </p>
+                                        <span class="back-badge">
+                                            <i class="fa-solid fa-bullseye"></i> Definición y Delimitación
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Flipcard 2: Su Causa Principal -->
+                            <div class="flip-card" onclick="toggleFlipCard(this)">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span class="step-num">Paso 2</span>
+                                        <div class="icon-box">
+                                            <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                        </div>
+                                        <h4>2) Su Causa Principal</h4>
+                                        <div class="hint-text">
+                                            <i class="fa-solid fa-repeat"></i> Voltear tarjeta
+                                        </div>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h5><i class="fa-solid fa-magnifying-glass-chart"></i> Causa Principal</h5>
+                                        <p>
+                                            Corresponde al <strong>origen de raíz o factor desencadenante</strong> que genera la existencia del problema central. No debe confundirse con un síntoma superficial; resolverla evita que el problema vuelva a ocurrir.
+                                        </p>
+                                        <span class="back-badge">
+                                            <i class="fa-solid fa-seedling"></i> Factores de Origen
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Flipcard 3: Las Consecuencias -->
+                            <div class="flip-card" onclick="toggleFlipCard(this)">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span class="step-num">Paso 3</span>
+                                        <div class="icon-box">
+                                            <i class="fa-solid fa-triangle-exclamation"></i>
+                                        </div>
+                                        <h4>3) Las Consecuencias</h4>
+                                        <div class="hint-text">
+                                            <i class="fa-solid fa-repeat"></i> Voltear tarjeta
+                                        </div>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h5><i class="fa-solid fa-triangle-exclamation"></i> Las Consecuencias</h5>
+                                        <p>
+                                            Son los <strong>efectos, impactos directos o perjuicios</strong> (académicos, emocionales, sociales o económicos) provocados por la permanencia del problema central si este no es atendido oportunamente.
+                                        </p>
+                                        <span class="back-badge">
+                                            <i class="fa-solid fa-chart-line-down"></i> Impactos y Perjuicios
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Flipcard 4: Los Actores Involucrados -->
+                            <div class="flip-card" onclick="toggleFlipCard(this)">
+                                <div class="flip-card-inner">
+                                    <div class="flip-card-front">
+                                        <span class="step-num">Paso 4</span>
+                                        <div class="icon-box">
+                                            <i class="fa-solid fa-users-gear"></i>
+                                        </div>
+                                        <h4>4) Actores Involucrados</h4>
+                                        <div class="hint-text">
+                                            <i class="fa-solid fa-repeat"></i> Voltear tarjeta
+                                        </div>
+                                    </div>
+                                    <div class="flip-card-back">
+                                        <h5><i class="fa-solid fa-users-gear"></i> Actores Involucrados</h5>
+                                        <p>
+                                            Son los <strong>individuos, colectivos o instituciones</strong> afectados directamente o que poseen la responsabilidad, el poder o los recursos clave para ejecutar las acciones de solución.
+                                        </p>
+                                        <span class="back-badge">
+                                            <i class="fa-solid fa-people-group"></i> Agentes y Afectados
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resumen síntesis del tema -->
+                    <div style="margin-top: 1.25rem; font-size: 0.88rem; color: var(--text-secondary); background: var(--bg-body); padding: 1rem; border-radius: var(--radius-sm); border-left: 3px solid var(--uaemex-gold);">
+                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-lightbulb"></i> Aplicación Práctica:</strong>
+                        Al relacionar estos 4 pasos en un mapa analítico (como el Árbol de Problemas que se estudiará más adelante), logras desglosar situaciones complejas sin tomar decisiones apresuradas o superficiales.
+                    </div>
+                </div>
+
+                <!-- Tema 1.3 -->
+                <div class="card" style="border-left: 5px solid var(--uaemex-green-light);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem;">
+                        <div>
+                            <span class="card-badge"><i class="fa-solid fa-layer-group"></i> Tema 1.3</span>
+                            <h3 style="color: var(--uaemex-green); font-size: 1.35rem; font-weight: 700;">Tipología Completa de Problemas</h3>
+                        </div>
+                        <span style="background: var(--uaemex-green-subtle); color: var(--uaemex-green); padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.8rem;">
+                            <i class="fa-solid fa-clock"></i> Sesiones 3 y 4
+                        </span>
+                    </div>
+
+                    <div class="grid-2">
+                        <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md);">
+                            <h5 style="color: var(--uaemex-green); font-weight: 700; margin-bottom: 6px;">1.3.1 y 1.3.2 Convergentes vs. Divergentes</h5>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                Los <strong>convergentes</strong> poseen una respuesta única obtenida mediante procesos lógicos. Los <strong>divergentes</strong> admiten múltiples vías y requieren creatividad.
+                            </p>
+                        </div>
+
+                        <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md);">
+                            <h5 style="color: var(--uaemex-green); font-weight: 700; margin-bottom: 6px;">1.3.3 y 1.3.4 Razonamiento vs. Dificultades</h5>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                En los de <strong>razonamiento</strong> se requiere inferir deducciones formales; en los de <strong>dificultad</strong> se conoce el fin pero existen barreras físicas o materiales.
+                            </p>
+                        </div>
+
+                        <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md);">
+                            <h5 style="color: var(--uaemex-green); font-weight: 700; margin-bottom: 6px;">1.3.5 De Conflicto</h5>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                Derivados de desacuerdos entre personas, valores o metas contrapuestas. Requieren empatía y negociación.
+                            </p>
+                        </div>
+
+                        <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md);">
+                            <h5 style="color: var(--uaemex-green); font-weight: 700; margin-bottom: 6px;">1.3.6 y 1.3.7 Teóricos, Prácticos y de Investigación</h5>
+                            <p style="font-size: 0.88rem; color: var(--text-secondary);">
+                                Los <strong>teóricos y de investigación</strong> buscan ampliar el conocimiento conceptual, mientras que los <strong>prácticos</strong> resuelven urgencias cotidianas.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Materiales Descargables del Módulo 1 -->
+            <div class="section-header" id="m1-materiales" style="margin-top: 2.5rem;">
+                <h3 class="section-title"><i class="fa-solid fa-box-archive"></i> Materiales y Recursos Didácticos del Módulo 1</h3>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-pdf"></i></div>
+                    <div class="card-badge">Guía de Estudio</div>
+                    <h4 class="card-title">Antología del Módulo 1</h4>
+                    <p class="card-desc">Compendio teóricopráctico con lecturas del Módulo 1 y casos de estudio.</p>
+                    <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-download"></i> Descargar PDF (1.8 MB)</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-powerpoint"></i></div>
+                    <div class="card-badge">Presentación</div>
+                    <h4 class="card-title">Diapositivas Módulo 1</h4>
+                    <p class="card-desc">Soporte visual de clase con infografías de los 7 tipos de problemas.</p>
+                    <a href="#" class="btn btn-gold btn-sm"><i class="fa-solid fa-download"></i> Descargar PPTX (4.2 MB)</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="card-badge">Plantilla de Trabajo</div>
+                    <h4 class="card-title">Matriz de Anatomía (AA)</h4>
+                    <p class="card-desc">Formato para desglosar Causas, Consecuencias y Actores en la libreta.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-download"></i> Descargar Plantilla Word</a>
+                </div>
+            </div>
+
+            <!-- Autoevaluación Interactiva de Conceptos Clave -->
+            <div class="card" style="margin-top: 2rem; background: var(--uaemex-green-subtle); border: 2px solid var(--uaemex-green);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                        <h4 style="color: var(--uaemex-green); font-size: 1.15rem; font-weight: 700;">
+                            <i class="fa-solid fa-circle-question" style="color: var(--uaemex-gold);"></i> Repaso Rápido Módulo 1
+                        </h4>
+                        <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 2px;">
+                            Pon a prueba lo aprendido antes de responder el Cuestionario Diagnóstico (AD1).
+                        </p>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="switchTab('sesiones', document.getElementById('tab-btn-sesiones'))">
+                        <i class="fa-solid fa-pen-to-square"></i> Ir a Resolver Cuestionario AD1
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PESTAÑA 2: SESIONES Y EJERCICIOS ==================== -->
+        <section id="sesiones" class="tab-content">
+            <!-- Encabezado de Módulo 1 -->
+            <div style="background: var(--uaemex-green-subtle); border-left: 5px solid var(--uaemex-green); padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem;">
+                <span class="topbar-badge" style="background: var(--uaemex-green); color:#fff;">Despliegue Modular</span>
+                <h2 style="color: var(--uaemex-green); font-size: 1.6rem; margin-top: 4px;">Módulo 1: Fundamentos y Diagnóstico de Problemas</h2>
+                <p style="color: var(--text-secondary); font-size:0.92rem;">Secuencia cronológica de aprendizaje, actividades diagnósticas (AD) y ejercicios del alumno (AA).</p>
+            </div>
+
+            <!-- Tema 1.1 -->
+            <div class="section-header" style="margin-top: 0;">
+                <h3 class="section-title"><i class="fa-solid fa-lightbulb"></i> Tema 1.1: El Concepto de Problema (Sesión 1)</h3>
+            </div>
+
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h4 style="color: var(--uaemex-green); margin-bottom: 0.5rem;">1.1.2 Definición Formal y Enfoques Teóricos</h4>
+                <p style="font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 1rem;">
+                    Un <strong>problema</strong> es una brecha o discrepancia entre una <em>situación actual</em> (deseada o no) y una <em>situación objetivo/ideal</em>, para la cual no se dispone de una solución inmediata o automatizada.
+                </p>
+
+                <!-- Resumen de Enfoques en Pestaña Sesiones -->
+                <div style="display: flex; flex-direction: column; gap: 0.8rem; background: var(--bg-body); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); font-size: 0.88rem;">
+                    <div>
+                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-brain"></i> 1. Enfoque Cognitivo (Newell y Simon, 1972):</strong>
+                        <span style="color: var(--text-secondary);"> Discrepancia entre estado inicial y estado meta; la solución es el "espacio de búsqueda". (Conecta con Tema 1.3).</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-graduation-cap"></i> 2. Enfoque Psicopedagógico (Mayer, 1986):</strong>
+                        <span style="color: var(--text-secondary);"> Integra Datos, Meta u Objetivos y Obstáculos. (Conecta con Causas/Consecuencias/Actores del Tema 1.2).</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--uaemex-green);"><i class="fa-solid fa-chart-line"></i> 3. Enfoque Decisional/Organizacional (Simon, 1960):</strong>
+                        <span style="color: var(--text-secondary);"> Brecha percibida en el desempeño que requiere seleccionar cursos de acción bajo racionalidad limitada.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cuestionario Diagnóstico Rellenable y Capturable -->
+            <div id="diagnostic-capture-area" class="printable-sheet">
+                <div class="sheet-header">
+                    <div>
+                        <div style="color: var(--uaemex-green); font-weight: 800; font-size: 1.1rem; font-family: 'Outfit', sans-serif;">
+                            UNIVERSIDAD AUTÓNOMA DEL ESTADO DE MÉXICO
+                        </div>
+                        <div style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;">
+                            Escuela Preparatoria &bull; Actividad Diagnóstica (AD1)
+                        </div>
+                    </div>
+                    <span class="sheet-badge"><i class="fa-solid fa-file-signature"></i> Evidencia Oficial</span>
+                </div>
+
+                <!-- Banner de Alumno Vinculado -->
+                <div style="background: var(--uaemex-green-subtle); padding: 0.85rem 1.25rem; border-radius: var(--radius-sm); margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.8rem; border: 1px solid rgba(0,75,35,0.2);">
+                    <div>
+                        <strong style="color: var(--uaemex-green); font-size: 0.88rem;">Alumno:</strong>
+                        <span id="display-student-name" style="color: var(--text-primary); font-weight: 700; margin-left: 4px;">(No registrado - Favor de anotar en Inicio)</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--uaemex-green); font-size: 0.88rem;">N° de Cuenta:</strong>
+                        <span id="display-student-account" style="color: var(--text-primary); font-weight: 700; margin-left: 4px;">-</span>
+                    </div>
+                    <div>
+                        <strong style="color: var(--uaemex-green); font-size: 0.88rem;">Fecha:</strong>
+                        <span id="display-current-date" style="color: var(--text-secondary); font-weight: 600; margin-left: 4px;">--/--/----</span>
+                    </div>
+                </div>
+
+                <h4 style="font-size:1.1rem; color: var(--uaemex-green); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-pen-to-square"></i> Cuestionario de Evaluación Diagnóstica
+                </h4>
+
+                <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+                    <div class="form-group">
+                        <label for="diag-q1">1. ¿Qué significa para ti un problema?</label>
+                        <textarea id="diag-q1" class="form-control" placeholder="Escribe aquí tu respuesta sobre tu percepción individual de un problema..." oninput="updateCharCount('diag-q1', 'counter-q1', 'msg-q1')"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; margin-top: 4px;">
+                            <span id="msg-q1" style="color: var(--text-muted);"><i class="fa-solid fa-circle-info"></i> Mínimo 200 caracteres obligatorios (faltan 200)</span>
+                            <span id="counter-q1" style="font-weight: 700; color: #dc2626;">0 / 200 min.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diag-q2">2. ¿Qué pasos sigues para resolverlos?</label>
+                        <textarea id="diag-q2" class="form-control" placeholder="Describe los métodos o hábitos empíricos que aplicas habitualmente..." oninput="updateCharCount('diag-q2', 'counter-q2', 'msg-q2')"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; margin-top: 4px;">
+                            <span id="msg-q2" style="color: var(--text-muted);"><i class="fa-solid fa-circle-info"></i> Mínimo 200 caracteres obligatorios (faltan 200)</span>
+                            <span id="counter-q2" style="font-weight: 700; color: #dc2626;">0 / 200 min.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diag-q3">3. ¿Todos los problemas se resuelven igual?</label>
+                        <textarea id="diag-q3" class="form-control" placeholder="Explica tu punto de vista respecto a la variedad y métodos de solución..." oninput="updateCharCount('diag-q3', 'counter-q3', 'msg-q3')"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; margin-top: 4px;">
+                            <span id="msg-q3" style="color: var(--text-muted);"><i class="fa-solid fa-circle-info"></i> Mínimo 200 caracteres obligatorios (faltan 200)</span>
+                            <span id="counter-q3" style="font-weight: 700; color: #dc2626;">0 / 200 min.</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="diag-q4">4. ¿Los problemas de un adolescente difieren de los de otras edades?</label>
+                        <textarea id="diag-q4" class="form-control" placeholder="Argumenta la relación con el contexto de la etapa de juventud/estudiante..." oninput="updateCharCount('diag-q4', 'counter-q4', 'msg-q4')"></textarea>
+                        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.78rem; margin-top: 4px;">
+                            <span id="msg-q4" style="color: var(--text-muted);"><i class="fa-solid fa-circle-info"></i> Mínimo 200 caracteres obligatorios (faltan 200)</span>
+                            <span id="counter-q4" style="font-weight: 700; color: #dc2626;">0 / 200 min.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón para Generar Captura de Pantalla -->
+            <div style="margin-top: 1.5rem; text-align: center; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                <button class="btn btn-gold" onclick="generateScreenshot()">
+                    <i class="fa-solid fa-camera"></i> Generar Captura de Pantalla
+                </button>
+                <button class="btn btn-outline" onclick="scrollToSection('student-name'); switchTab('inicio', document.getElementById('tab-btn-inicio'))">
+                    <i class="fa-solid fa-user-pen"></i> Actualizar mis Datos
+                </button>
+            </div>
+
+            <!-- Tema 1.2 -->
+            <div class="section-header" style="margin-top: 3rem;">
+                <h3 class="section-title"><i class="fa-solid fa-sitemap"></i> Tema 1.2: Estructura de un Problema (Sesión 2)</h3>
+            </div>
+
+            <p style="margin-bottom: 1rem; color: var(--text-secondary);">Anatomía analítica para desglosar todo conflicto en sus 4 elementos interrelacionados:</p>
+
+            <div class="grid-4" style="margin-bottom: 1.5rem;">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-crosshairs"></i></div>
+                    <h4 class="card-title">1) Problema Central</h4>
+                    <p class="card-desc">Brecha o núcleo principal que se requiere intervenir para modificar la situación.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+                    <h4 class="card-title">2) Causa Principal</h4>
+                    <p class="card-desc">Origen de raíz o factores desencadenantes que dan lugar a la existencia del problema.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                    <h4 class="card-title">3) Consecuencias</h4>
+                    <p class="card-desc">Efectos, impactos o prejuicios derivados de la persistencia de la problemática.</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-users-gear"></i></div>
+                    <h4 class="card-title">4) Actores Involucrados</h4>
+                    <p class="card-desc">Personas o instituciones afectadas o con capacidad de decisión y acción.</p>
+                </div>
+            </div>
+
+            <div class="card" style="border-left: 4px solid var(--uaemex-gold); background: var(--uaemex-gold-subtle); margin-bottom: 2rem;">
+                <h4 style="color: var(--uaemex-green);"><i class="fa-solid fa-pen-clip"></i> Ruta de Trabajo Práctico (AA): Informe Anecdótico</h4>
+                <p style="font-size:0.88rem; color: var(--text-secondary); margin-top: 6px;">
+                    El alumno redactará un escrito breve (8-10 renglones) en su libreta identificando explícitamente los 4 pasos: 1) El Problema Central, 2) Su Causa Principal, 3) Las Consecuencias y 4) Los Actores Involucrados.
+                </p>
+            </div>
+
+            <!-- Tema 1.3 -->
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-layer-group"></i> Tema 1.3: Tipos de Problemas (Sesiones 3 y 4)</h3>
+            </div>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" onclick="filterProblems('all', this)">Todos los Tipos (7)</button>
+                <button class="filter-btn" onclick="filterProblems('logico', this)">Razonamiento y Lógica</button>
+                <button class="filter-btn" onclick="filterProblems('creativo', this)">Divergentes y Prácticos</button>
+                <button class="filter-btn" onclick="filterProblems('social', this)">Conflicto e Investigación</button>
+            </div>
+
+            <div class="custom-table-container" style="margin-bottom: 2rem;">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Problema</th>
+                            <th>Definición Clave</th>
+                            <th>Identificación / Método</th>
+                            <th>Ejemplo Práctico</th>
+                        </tr>
+                    </thead>
+                    <tbody id="problems-table-body">
+                        <tr data-category="logico">
+                            <td><strong>1.3.1 Convergentes</strong></td>
+                            <td>Solución única y lógica.</td>
+                            <td>Pensamiento deductivo / matemático.</td>
+                            <td>Resolver una ecuación algebraica.</td>
+                        </tr>
+                        <tr data-category="creativo">
+                            <td><strong>1.3.2 Divergentes</strong></td>
+                            <td>Múltiples soluciones válidas.</td>
+                            <td>Creatividad y lluvia de ideas.</td>
+                            <td>Diseñar una campaña publicitaria.</td>
+                        </tr>
+                        <tr data-category="logico">
+                            <td><strong>1.3.3 De Razonamiento</strong></td>
+                            <td>Uso de lógica formal.</td>
+                            <td>Depende de premisas y deducciones.</td>
+                            <td>Resolver un acertijo lógico.</td>
+                        </tr>
+                        <tr data-category="creativo">
+                            <td><strong>1.3.4 De Dificultades</strong></td>
+                            <td>Se conoce la solución pero hay barreras.</td>
+                            <td>Resistencia física, recursos o tiempo.</td>
+                            <td>Reparar un motor sin la herramienta adecuada.</td>
+                        </tr>
+                        <tr data-category="social">
+                            <td><strong>1.3.5 De Conflicto</strong></td>
+                            <td>Oposición de intereses o emociones.</td>
+                            <td>Interpersonal, intrapersonal o social.</td>
+                            <td>Un desacuerdo en un equipo de trabajo.</td>
+                        </tr>
+                        <tr data-category="creativo">
+                            <td><strong>1.3.6 Teóricos / Prácticos</strong></td>
+                            <td>Abstraídos vs. aplicación inmediata.</td>
+                            <td>Modelos conceptuales vs. ejecución real.</td>
+                            <td>Crear una hipótesis vs. reducir gastos diarios.</td>
+                        </tr>
+                        <tr data-category="social">
+                            <td><strong>1.3.7 De Investigación</strong></td>
+                            <td>Vacíos de conocimiento científico.</td>
+                            <td>Preguntas formuladas sistemáticamente.</td>
+                            <td>Medir la calidad del agua en una comunidad.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Apartado de Sesiones Grabadas y Ejercicios -->
+            <div class="grid-2" style="margin-top: 2rem;">
+                <div>
+                    <div class="section-header" style="margin-top: 0;">
+                        <h3 class="section-title"><i class="fa-solid fa-video"></i> Sesiones Grabadas</h3>
+                    </div>
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <div class="card-badge">Sesión 01</div>
+                        <h4 class="card-title">Definición de Brecha y Diagnóstico</h4>
+                        <p class="card-desc">Clase interactiva sobre cómo delimitar un problema sin confundir síntomas con causas.</p>
+                        <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-play"></i> Ver Grabación</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-badge">Sesión 02</div>
+                        <h4 class="card-title">Dramatización y Role-Playing de Tipos de Problemas</h4>
+                        <p class="card-desc">Dinámica grupal de representación de los 7 tipos de dilemas.</p>
+                        <a href="#" class="btn btn-primary btn-sm"><i class="fa-solid fa-play"></i> Ver Grabación</a>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-header" style="margin-top: 0;">
+                        <h3 class="section-title"><i class="fa-solid fa-file-arrow-down"></i> Ejercicios Descargables</h3>
+                    </div>
+                    <div class="card" style="margin-bottom: 1rem;">
+                        <div class="card-badge" style="color: var(--uaemex-green);">Ficha Imprimible (AD)</div>
+                        <h4 class="card-title">Cuestionario Diagnóstico Módulo 1</h4>
+                        <p class="card-desc">Formato listo para resolver en clase y adjuntar al Portafolio.</p>
+                        <a href="#" class="btn btn-gold btn-sm"><i class="fa-solid fa-download"></i> Descargar Ficha PDF</a>
+                    </div>
+                    <div class="card">
+                        <div class="card-badge" style="color: var(--uaemex-green);">Plantilla de Trabajo (AA)</div>
+                        <h4 class="card-title">Esquema Anatomía del Problema</h4>
+                        <p class="card-desc">Guía gráfica de los 4 pasos anatómicos.</p>
+                        <a href="#" class="btn btn-gold btn-sm"><i class="fa-solid fa-download"></i> Descargar Plantilla</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== PESTAÑA 3: BIBLIOTECA ACADÉMICA ==================== -->
+        <section id="biblioteca" class="tab-content">
+            <a href="https://docs.google.com/presentation/d/1eH6vwwsqsua0WxMRzKkNHhiaNMDP63Fn/edit?usp=drive_link&ouid=110976243905909400377&rtpof=true&sd=true"
+               target="_blank" rel="noopener noreferrer" class="featured-resource" style="margin-top: 0;">
+                <div class="featured-resource-icon"><i class="fa-solid fa-display"></i></div>
+                <div class="featured-resource-text">
+                    <span class="fr-tag">Nuevo Recurso</span>
+                    <h4>Presentación: La Estructura de un Problema</h4>
+                    <p>Consulta la presentación en Google Slides sobre el problema central, sus causas, consecuencias y actores involucrados.</p>
+                </div>
+                <div class="featured-resource-cta"><i class="fa-solid fa-arrow-up-right-from-square"></i> Abrir Presentación</div>
+            </a>
+
+            <div class="section-header" style="margin-top: 0;">
+                <h3 class="section-title"><i class="fa-solid fa-bullhorn"></i> Noticias y Anuncios Escolares</h3>
+            </div>
+
+            <div class="grid-2" style="margin-bottom: 2rem;">
+                <div class="card">
+                    <div class="card-badge">Aviso de Examen</div>
+                    <h4 class="card-title">Fecha del Primer Examen Parcial</h4>
+                    <p class="card-desc">Recuerda revisar el portafolio de evidencias antes de la fecha límite fijada en la plataforma institucional.</p>
+                </div>
+                <div class="card">
+                    <div class="card-badge">Convocatoria</div>
+                    <h4 class="card-title">Foro Estudiantil de Proyectos Comunitarios (PEC)</h4>
+                    <p class="card-desc">Espacio de presentación para los proyectos de solución a problemáticas locales del entorno escolar.</p>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-book-open"></i> Lecturas y Artículos Científicos</h3>
+            </div>
+
+            <div class="grid-3" style="margin-bottom: 2rem;">
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="card-badge">Artículo Arbitrado</div>
+                    <h4 class="card-title">Inteligencia Emocional y Motivación</h4>
+                    <p class="card-desc">Análisis de la teoría de Daniel Goleman aplicada al rendimiento y autorregulación en jóvenes.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-external-link"></i> Leer Lectura</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="card-badge">Investigación</div>
+                    <h4 class="card-title">Sesgos Cognitivos en la Adolescencia</h4>
+                    <p class="card-desc">Estudio sobre la influencia del entorno social en la toma de decisiones impulsivas vs. meditadas.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-external-link"></i> Leer Lectura</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-icon"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="card-badge">Manual Bisquerra</div>
+                    <h4 class="card-title">Competencias Socioemocionales</h4>
+                    <p class="card-desc">Lectura extractada sobre cómo autogenerar estados emocionales positivos para el estudio.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-external-link"></i> Leer Lectura</a>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h3 class="section-title"><i class="fa-solid fa-images"></i> Galería de Evidencias y Productos Esperados</h3>
+            </div>
+
+            <div class="grid-3">
+                <div class="card">
+                    <div class="card-badge">Ejemplo Sobresaliente</div>
+                    <h4 class="card-title">Mapa Conceptual: Tipos de Problemas</h4>
+                    <p class="card-desc">Muestra visual de la síntesis realizada por alumnos del semestre anterior.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-image"></i> Ver Muestra Visual</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-badge">Ejemplo Sobresaliente</div>
+                    <h4 class="card-title">Informe Anecdótico Estructurado</h4>
+                    <p class="card-desc">Ejemplo de redacción con delimitación clara de Causas y Consecuencias.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-file-invoice"></i> Ver Muestra Texto</a>
+                </div>
+
+                <div class="card">
+                    <div class="card-badge">Ejemplo Sobresaliente</div>
+                    <h4 class="card-title">Matriz de Priorización PEC</h4>
+                    <p class="card-desc">Muestra de propuesta comunitaria aprobada para el proyecto integrador.</p>
+                    <a href="#" class="btn btn-outline btn-sm"><i class="fa-solid fa-table"></i> Ver Muestra Matriz</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Institucional -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>UAEMéx - Escuela Preparatoria</h4>
+                <p>Asignatura: Estrategias para la Resolución de Problemas y Toma de Decisiones.</p>
+                <p>Docente: Lic. Jessica Hernández Berríos</p>
+            </div>
+
+            <div class="footer-col">
+                <h4>Navegación Rápida</h4>
+                <ul>
+                    <li><a href="#" onclick="switchTab('inicio', document.getElementById('tab-btn-inicio'))">Inicio y Presentación</a></li>
+                    <li><a href="#" onclick="switchTab('sesiones', document.getElementById('tab-btn-sesiones'))">Módulo 1: Fundamentos</a></li>
+                    <li><a href="#" onclick="switchTab('biblioteca', document.getElementById('tab-btn-biblioteca'))">Biblioteca y Recursos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Contacto Institucional</h4>
+                <p><i class="fa-solid fa-building-columns"></i> Universidad Autónoma del Estado de México</p>
+                <p><i class="fa-solid fa-envelope"></i> jhernandezb@uaemex.mx</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 Universidad Autónoma del Estado de México (UAEMéx). Portal Académico diseñado para la enseñanza en Nivel Medio Superior.</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Contacto Docente -->
+    <div id="contact-modal" class="modal-overlay" onclick="closeContactModalOutside(event)">
+        <div class="modal-card">
+            <button class="modal-close" onclick="closeContactModal()" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 1.2rem;">
+                <div style="background: var(--uaemex-green-subtle); color: var(--uaemex-green); width: 48px; height: 48px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; font-size: 1.4rem;">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+                <div>
+                    <h3 style="color: var(--uaemex-green); font-size: 1.2rem; font-weight: 700;">Datos de Contacto Docente</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); font-weight: 500;">Lic. Jessica Hernández Berríos</p>
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+                <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--uaemex-gold); text-transform: uppercase; margin-bottom: 4px;">
+                        <i class="fa-solid fa-envelope"></i> Correo Electrónico Institucional
+                    </div>
+                    <a href="mailto:jhernandezb@uaemex.mx" style="color: var(--uaemex-green); font-weight: 700; text-decoration: none; word-break: break-all; font-size: 0.95rem;">
+                        jhernandezb@uaemex.mx
+                    </a>
+                </div>
+
+                <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--uaemex-gold); text-transform: uppercase; margin-bottom: 4px;">
+                        <i class="fa-solid fa-clock"></i> Horario de Atención en Oficina
+                    </div>
+                    <div style="color: var(--text-primary); font-weight: 600; font-size: 0.92rem;">
+                        10:00 a 18:00 hrs
+                    </div>
+                </div>
+
+                <div style="background: var(--bg-body); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="font-size: 0.75rem; font-weight: 700; color: var(--uaemex-gold); text-transform: uppercase; margin-bottom: 4px;">
+                        <i class="fa-solid fa-location-dot"></i> Atención Presencial
+                    </div>
+                    <div style="color: var(--text-secondary); font-size: 0.88rem; line-height: 1.4;">
+                        Pueden buscarme directamente en las instalaciones del plantel durante el horario especificado.
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: flex-end;">
+                <a href="mailto:jhernandezb@uaemex.mx" class="btn btn-primary btn-sm">
+                    <i class="fa-solid fa-paper-plane"></i> Redactar Correo
+                </a>
+                <button onclick="closeContactModal()" class="btn btn-outline btn-sm">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Interactivos -->
+    <script>
+        // Función para alternar el giro de las flipcards al hacer clic (compatibilidad táctil/móvil)
+        function toggleFlipCard(cardEl) {
+            cardEl.classList.toggle('flipped');
+        }
+
+        // Conteo dinámico de caracteres e indicador visual
+        function updateCharCount(inputId, counterId, msgId) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(counterId);
+            const msg = document.getElementById(msgId);
+            if (!input || !counter) return;
+
+            const count = input.value.trim().length;
+            counter.textContent = `${count} / 200 min.`;
+
+            if (count >= 200) {
+                counter.style.color = '#16a34a';
+                if (msg) {
+                    msg.style.color = '#16a34a';
+                    msg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Extensión adecuada';
+                }
+                input.style.borderColor = 'var(--uaemex-green)';
+            } else {
+                counter.style.color = '#dc2626';
+                if (msg) {
+                    msg.style.color = 'var(--text-muted)';
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info"></i> Mínimo 200 caracteres obligatorios (faltan ${200 - count})`;
+                }
+                input.style.borderColor = 'var(--border-color)';
+            }
+        }
+
+        // Sincronización de Datos del Alumno y Fecha
+        function syncStudentData() {
+            const nameInput = document.getElementById('student-name');
+            const accountInput = document.getElementById('student-account');
+
+            const displayName = document.getElementById('display-student-name');
+            const displayAccount = document.getElementById('display-student-account');
+
+            if (displayName) {
+                displayName.textContent = nameInput && nameInput.value.trim() !== '' 
+                    ? nameInput.value.trim() 
+                    : '(No registrado - Favor de anotar en Inicio)';
+            }
+
+            if (displayAccount) {
+                displayAccount.textContent = accountInput && accountInput.value.trim() !== '' 
+                    ? accountInput.value.trim() 
+                    : '-';
+            }
+        }
+
+        // Establecer Fecha Actual en la Ficha Diagnóstica
+        function setCurrentDate() {
+            const dateEl = document.getElementById('display-current-date');
+            if (dateEl) {
+                const today = new Date();
+                const formattedDate = today.toLocaleDateString('es-MX', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric'
+                });
+                dateEl.textContent = formattedDate;
+            }
+        }
+
+        // Generador de Captura de Pantalla mediante html2canvas
+        function generateScreenshot() {
+            const nameInput = document.getElementById('student-name');
+            const accountInput = document.getElementById('student-account');
+
+            if (!nameInput || !nameInput.value.trim() || !accountInput || !accountInput.value.trim()) {
+                alert('⚠️ Por favor completa tu Nombre Completo y Número de Cuenta en el apartado de Inicio para autenticar tu captura de pantalla.');
+                switchTab('inicio', document.getElementById('tab-btn-inicio'));
+                if (nameInput && !nameInput.value.trim()) nameInput.focus();
+                else if (accountInput) accountInput.focus();
+                return;
+            }
+
+            // Validar mínimo 200 caracteres por cada pregunta
+            const questions = [
+                { id: 'diag-q1', num: 1 },
+                { id: 'diag-q2', num: 2 },
+                { id: 'diag-q3', num: 3 },
+                { id: 'diag-q4', num: 4 }
+            ];
+
+            for (const q of questions) {
+                const el = document.getElementById(q.id);
+                const len = el ? el.value.trim().length : 0;
+                if (len < 200) {
+                    alert(`⚠️ La Respuesta ${q.num} es muy corta. Se requieren al menos 200 caracteres (actualmente tiene ${len} caracteres). Por favor profundiza más en tu respuesta.`);
+                    if (el) {
+                        el.focus();
+                        el.style.borderColor = '#dc2626';
+                    }
+                    return;
+                }
+            }
+
+            const captureArea = document.getElementById('diagnostic-capture-area');
+            if (!captureArea) return;
+
+            captureArea.scrollIntoView({ behavior: 'smooth' });
+
+            html2canvas(captureArea, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                const studentNameClean = nameInput.value.trim().replace(/\s+/g, '_');
+                link.download = `Actividad_Diagnostica_${studentNameClean}_${accountInput.value.trim()}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error('Error al generar la captura:', err);
+                alert('Ocurrió un error al generar la captura. Inténtalo de nuevo.');
+            });
+        }
+
+        // Inicialización al cargar la página
+        window.addEventListener('DOMContentLoaded', () => {
+            setCurrentDate();
+            syncStudentData();
+        });
+
+        // Control del Modal de Contacto Docente
+        function openContactModal() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeContactModal() {
+            const modal = document.getElementById('contact-modal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function closeContactModalOutside(event) {
+            if (event.target.id === 'contact-modal') {
+                closeContactModal();
+            }
+        }
+
+        // Sistema de Frases Motivacionales Dinámicas
+        const quotes = [
+            {
+                text: '"La motivación es la capacidad de orientar las emociones al servicio de una meta, postergando la gratificación inmediata y manteniendo el compromiso."',
+                author: '— Daniel Goleman (Inteligencia Emocional)'
+            },
+            {
+                text: '"La autorregulación emocional implica generar estados positivos, orientar la conducta hacia metas valiosas y persistir con autonomía."',
+                author: '— Rafael Bisquerra (Educación Emocional)'
+            },
+            {
+                text: '"Un problema no es un obstáculo insuperable, sino una brecha entre tu realidad actual y la meta que puedes alcanzar analíticamente."',
+                author: '— Enfoque Institucional UAEMéx'
+            },
+            {
+                text: '"El optimismo y la iniciativa transforman las dificultades diarias en oportunidades de aprendizaje profundo y resiliencia."',
+                author: '— M. Naranjo & Bisquerra'
+            }
+        ];
+
+        let currentQuoteIndex = 0;
+
+        function getNewQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            const quoteTextEl = document.getElementById('quote-text');
+            const quoteAuthorEl = document.getElementById('quote-author');
+
+            quoteTextEl.style.opacity = '0';
+            quoteAuthorEl.style.opacity = '0';
+
+            setTimeout(() => {
+                quoteTextEl.textContent = quotes[currentQuoteIndex].text;
+                quoteAuthorEl.textContent = quotes[currentQuoteIndex].author;
+                quoteTextEl.style.opacity = '1';
+                quoteAuthorEl.style.opacity = '1';
+            }, 200);
+        }
+
+        // Navegación por Pestañas
+        function switchTab(tabId, btnElement) {
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(content => content.classList.remove('active'));
+
+            const buttons = document.querySelectorAll('.nav-tab');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            if (btnElement) {
+                btnElement.classList.add('active');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll suave dentro de la página
+        function scrollToSection(sectionId) {
+            const el = document.getElementById(sectionId);
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Filtro para la Tabla de Tipos de Problemas
+        function filterProblems(category, btnElement) {
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+
+            const rows = document.querySelectorAll('#problems-table-body tr');
+            rows.forEach(row => {
+                if (category === 'all' || row.getAttribute('data-category') === category) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
