@@ -1252,6 +1252,42 @@
             <p>&copy; 2026 Universidad Autónoma del Estado de México (UAEMéx). Portal Académico para Nivel Medio Superior.</p>
         </div>
     </footer>
-
+<!-- Botón flotante de Regreso al Inicio -->
+<a href="index.html" title="Volver a la Página Principal" 
+   style="position: fixed; 
+          right: 15px; 
+          top: 50%; 
+          transform: translateY(-50%); 
+          z-index: 9999; 
+          width: 60px; 
+          height: 60px; 
+          background: linear-gradient(135deg, #004b23, #007236); 
+          color: #ffffff; 
+          border-radius: 50%; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          font-size: 1.6rem; 
+          box-shadow: 0 8px 24px rgba(0,75,35,0.3); 
+          text-decoration: none; 
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+          border: 2px solid #ffffff;">
+    <i class="fa-solid fa-house"></i>
+</a>
+<style>
+    a[title="Volver a la Página Principal"]:hover {
+        transform: translateY(-50%) scale(1.05);
+        background: linear-gradient(135deg, #007236, #004b23);
+        box-shadow: 0 12px 32px rgba(0,75,35,0.4);
+    }
+    @media (max-width: 768px) {
+        a[title="Volver a la Página Principal"] {
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            right: 10px;
+        }
+    }
+</style>
 </body>
 </html>
