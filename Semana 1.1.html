@@ -1,14 +1,15 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>¡Hackea tu Mente! - Gimnasio Mental</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.1.2 Concepto de problema · La Ecuación del Éxito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
     <style>
-        /* RESET Y ESTILOS GENERALES */
+        /* ==================== RESET Y ESTILOS BASE ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -17,22 +18,24 @@
 
         body {
             font-family: 'Poppins', 'Comic Sans MS', sans-serif;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem 1rem;
+            background: #f0f0f0;
+        }
+
+        /* ==================== FONDO Y CONTENEDOR PRINCIPAL ==================== */
+        .page-content {
             background: repeating-conic-gradient(#ffc0cb 0% 25%, #ffb347 0% 50%) 0 0 / 40px 40px;
-            /* Simulación de puntos Ben-Day sobre degradado */
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.3) 3px, transparent 3px),
-                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.25) 4px, transparent 4px),
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
                 linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fdf6b2 100%);
             background-blend-mode: overlay, normal, normal;
             background-size: 60px 60px, 80px 80px, cover;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
         }
 
-        /* CONTENEDOR PRINCIPAL (TARJETA CÓMIC) */
         .comic-container {
             max-width: 1200px;
             width: 100%;
@@ -45,7 +48,25 @@
             transition: all 0.1s ease;
         }
 
-        /* ========== HEADER ========== */
+        /* ===== TÍTULO DE SECCIÓN ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3.2rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        /* ===== HEADER (bocadillo + subtítulo) ===== */
         .header {
             display: flex;
             flex-wrap: wrap;
@@ -57,6 +78,11 @@
 
         .header-left {
             flex: 1 1 60%;
+        }
+
+        .speech-bubble-wrapper {
+            position: relative;
+            display: inline-block;
         }
 
         .speech-bubble {
@@ -75,7 +101,6 @@
             line-height: 1.2;
             margin-bottom: 0.3rem;
         }
-        /* pseudo para la "cola" del bocadillo */
         .speech-bubble::after {
             content: '';
             position: absolute;
@@ -88,10 +113,6 @@
             border-bottom: 0;
             border-left: 0;
             filter: drop-shadow(4px 4px 0 #000);
-        }
-        .speech-bubble-wrapper {
-            position: relative;
-            display: inline-block;
         }
 
         .header-right {
@@ -117,7 +138,7 @@
             display: inline-block;
         }
 
-        /* ========== BIENVENIDA ========== */
+        /* ===== BIENVENIDA ===== */
         .welcome {
             background: #ff4d4d;
             border: 5px solid #000;
@@ -138,7 +159,7 @@
             font-weight: 700;
         }
 
-        /* ========== GRID PRINCIPAL ========== */
+        /* ===== GRID PRINCIPAL ===== */
         .main-grid {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -146,19 +167,36 @@
             margin-bottom: 2.2rem;
         }
 
-        /* Columna izquierda (ancha) */
         .col-left {
             display: flex;
             flex-direction: column;
             gap: 1.8rem;
         }
 
-        .col-left .block {
+        .col-left .block,
+        .col-right .block {
             background: #fff;
             border: 5px solid #000;
             border-radius: 25px;
             padding: 1.5rem 1.8rem;
             box-shadow: 7px 7px 0 #000;
+        }
+
+        .block-image {
+            padding: 0.8rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+        }
+
+        .block-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: block;
         }
 
         .block-title {
@@ -184,6 +222,7 @@
             margin-bottom: 0.8rem;
         }
 
+        /* Estilo para listas con viñetas de cómic */
         .bullet-list {
             list-style: none;
             padding: 0;
@@ -212,75 +251,36 @@
             line-height: 2rem;
             box-shadow: 3px 3px 0 #000;
         }
-        .bullet-list li:nth-child(2)::before {
-            content: "⚡";
-        }
-        .bullet-list li:nth-child(3)::before {
-            content: "🔥";
-        }
+        /* Variantes para diferentes viñetas */
+        .bullet-list.star li::before { content: "⭐"; }
+        .bullet-list.gear li::before { content: "⚙️"; }
+        .bullet-list.shield li::before { content: "🛡️"; }
+        .bullet-list.brain li::before { content: "🧠"; }
 
-        /* Columna derecha (estrecha) */
         .col-right {
             display: flex;
             flex-direction: column;
             gap: 1.8rem;
         }
 
-        .col-right .block {
-            background: #fff;
-            border: 5px solid #000;
-            border-radius: 25px;
-            padding: 1.5rem 1.5rem;
-            box-shadow: 7px 7px 0 #000;
-        }
-
-        .quote-box {
-            background: #ffe600;
-            border: 5px solid #000;
-            border-radius: 30px 30px 30px 5px;
-            padding: 1rem 1.5rem;
-            margin: 1rem 0 0.5rem 0;
-            box-shadow: 6px 6px 0 #000;
-            font-style: italic;
-            font-weight: 600;
-            font-size: 1.05rem;
-            color: #000;
-            transform: rotate(1deg);
-            position: relative;
-        }
-        .quote-box::before {
-            content: "“";
-            font-size: 3rem;
-            line-height: 0.8;
-            color: #000;
-            margin-right: 0.2rem;
-        }
-        .quote-box::after {
-            content: "”";
-            font-size: 3rem;
-            line-height: 0.8;
-            color: #000;
-            margin-left: 0.2rem;
-        }
-
-        /* ========== FOOTER (CTA) ========== */
-        .footer-cta {
+        /* ===== FOOTER ===== */
+        .footer-pregunta {
             background: #000;
             border: 6px solid #000;
             border-radius: 40px;
             padding: 1.8rem 2rem;
             box-shadow: 8px 8px 0 #ff4d4d;
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-top: 0.5rem;
         }
-        .footer-cta p {
+        .footer-pregunta p {
             color: #fff;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 600;
             line-height: 1.5;
-            margin-bottom: 0.5rem;
+            margin: 0;
         }
-        .footer-cta p strong {
+        .footer-pregunta p strong {
             background: #ffe600;
             color: #000;
             padding: 0.1rem 0.8rem;
@@ -288,43 +288,49 @@
             font-weight: 700;
         }
 
-        .btn-comic {
-            display: inline-block;
-            background: #ffdd57;
-            border: 5px solid #000;
+        /* ==================== BOTÓN FLOTANTE ==================== */
+        .btn-flotante {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #ffe600;
+            border: 4px solid #000;
             border-radius: 60px;
-            padding: 0.8rem 2.2rem;
+            padding: 0.8rem 1.8rem;
             font-family: 'Bangers', cursive;
-            font-size: 1.4rem;
-            letter-spacing: 1px;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
             color: #000;
-            text-decoration: none;
+            text-transform: uppercase;
             box-shadow: 6px 6px 0 #000;
-            transition: all 0.1s ease;
-            margin-top: 0.5rem;
-            cursor: default;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            z-index: 999;
+            text-decoration: none;
+            display: inline-block;
+            transform: rotate(1deg);
         }
-        .btn-comic:hover {
-            transform: translate(3px, 3px);
-            box-shadow: 3px 3px 0 #000;
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0 #000;
         }
-
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 900px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-                gap: 1.8rem;
-            }
-            .col-right {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 1.8rem;
-            }
-        }
-
         @media (max-width: 600px) {
+            .btn-flotante {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.6rem 1.2rem;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 700px) {
             .comic-container {
                 padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.4rem;
+                padding: 0.2rem 1.2rem;
             }
             .header {
                 flex-direction: column;
@@ -349,125 +355,130 @@
             .block-title {
                 font-size: 1.4rem;
             }
-            .footer-cta p {
-                font-size: 1rem;
-            }
-            .btn-comic {
+            .footer-pregunta p {
                 font-size: 1.1rem;
-                padding: 0.6rem 1.2rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .col-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="comic-container">
 
-        <!-- HEADER -->
-        <header class="header">
-            <div class="header-left">
-                <div class="speech-bubble-wrapper">
-                    <div class="speech-bubble">¡Hackea tu Mente!</div>
-                </div>
-            </div>
-            <div class="header-right">
-                <span>Por Qué</span> los Problemas son <br> tu <strong style="color:#ffe600;">Mejor Gimnasio Mental</strong>
-            </div>
-        </header>
+    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+    <div class="page-content">
+        <div class="comic-container">
 
-        <!-- SECCIÓN BIENVENIDA -->
-        <section class="welcome">
-            <p>
-                ¿Alguna vez te has sentido contra la pared por un proyecto que falla a última hora o por no saber organizar tu tiempo? 
-                Es normal sentir incomodidad, molestia o conflicto en tu vida diaria ante estas situaciones. 
-                Sin embargo, casi todas nuestras decisiones complejas nacen exactamente del mismo lugar de origen: un problema. 
-                Y aunque socialmente esta palabra tiene una terrible fama, en realidad no es tu enemiga. 
-                Al contrario: un problema es el único <strong>“gimnasio mental”</strong> donde entrenas tu pensamiento crítico y tu autonomía.
-            </p>
-        </section>
+            <!-- TÍTULO DE SECCIÓN -->
+            <h1 class="titulo-seccion">1.1.2 Concepto de problema</h1>
 
-        <!-- GRID PRINCIPAL -->
-        <div class="main-grid">
-
-            <!-- COLUMNA IZQUIERDA (ancha) -->
-            <div class="col-left">
-
-                <!-- Bloque 1: ¿Qué es realmente un "problema"? -->
-                <div class="block">
-                    <h2 class="block-title">¿Qué es realmente un "problema"?</h2>
-                    <p class="block-text">
-                        La psicología cognitiva define un problema como una situación donde tienes un objetivo claro, pero desconoces el camino para lograrlo. 
-                        Básicamente, es una <strong>brecha</strong> u obstáculo entre tu estado actual y la meta a la que quieres llegar.
-                    </p>
-                    <p class="block-text">
-                        Imagina que estás en clase y te piden decidir qué carrera estudiar después de terminar la prepa. 
-                        Algo que parecía simple se vuelve un torbellino de dudas y descubres que tienes un problema frente a ti. 
-                        En esta situación hay una pieza del rompecabezas que falta: la <strong>incógnita</strong>. 
-                        Resolver este desafío no consiste en seguir un tutorial en piloto automático, sino en activar tu mente en un nivel superior.
-                    </p>
-                </div>
-
-                <!-- Bloque 2: El peligro de tu "Piloto Automático" -->
-                <div class="block">
-                    <h2 class="block-title">El peligro de tu "Piloto Automático"</h2>
-                    <p class="block-text">
-                        Cuando te enfrentas a un reto, la reacción más común es entrar en pánico o actuar desde la impulsividad. 
-                        Si dejas que tus impulsos dominen, te conviertes en un espectador pasivo de tu propia vida.
-                    </p>
-                    <p class="block-text">
-                        Aprender a identificar que estás ante un problema real te ayuda a desactivar ese piloto automático y te da grandes ventajas:
-                    </p>
-                    <ul class="bullet-list">
-                        <li><strong>Frenar el impulso:</strong> Te detienes a pensar antes de actuar de manera precipitada.</li>
-                        <li><strong>Separar la emoción del problema:</strong> Evitas confundir una tormenta emocional pasajera (como enojo, tristeza o frustración) con el obstáculo real que debes desarmar.</li>
-                        <li><strong>Reducir la frustración:</strong> Te permite ver con claridad la realidad y abordar la situación de manera ordenada.</li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- COLUMNA DERECHA (estrecha) -->
-            <div class="col-right">
-
-                <!-- Bloque superior: Metapensamiento -->
-                <div class="block">
-                    <h2 class="block-title">Tu arma secreta: <br>El Metapensamiento</h2>
-                    <p class="block-text">
-                        Para desarmar lo desconocido y tomar el control, necesitas activar tu <strong>metapensamiento</strong>. 
-                        Suena complejo, pero significa tener la audacia de pausar tu mente y reflexionar conscientemente sobre lo que pasa. 
-                        Consiste en analizar tus propios pensamientos, evaluar la situación y anticipar las consecuencias de tus actos antes de actuar.
-                    </p>
-                    <div class="quote-box">
-                        "Un problema bien planteado tiene un 99% resuelto"
-                        <div style="font-style: normal; font-weight: 700; margin-top: 0.2rem; text-align: right; font-size: 0.9rem;">— Albert Einstein</div>
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="speech-bubble-wrapper">
+                        <div class="speech-bubble">La Ecuación del Éxito</div>
                     </div>
-                    <p class="block-text" style="margin-top: 0.8rem;">
-                        Al aplicar el metapensamiento, dejas de esperar pasivamente a que te resuelvan la vida y activas tu <strong>aprendizaje autónomo</strong>.
-                    </p>
+                </div>
+                <div class="header-right">
+                    <span>Datos Conocidos</span> vs. <br /> <strong style="color:#ffe600;">La Incógnita</strong>
+                </div>
+            </header>
+
+            <!-- BIENVENIDA -->
+            <section class="welcome">
+                <p>
+                    En la entrega anterior descubrimos que las dificultades cotidianas son oportunidades disfrazadas. Pero, ¿cómo se define científicamente un problema para poder desarmarlo de manera inteligente? La psicología cognitiva nos da la respuesta exacta para estructurar tu mente frente a cualquier desafío.
+                </p>
+            </section>
+
+            <!-- GRID PRINCIPAL -->
+            <div class="main-grid">
+
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="col-left">
+
+                    <!-- 1. El Diagnóstico de la Psicología Cognitiva -->
+                    <div class="block">
+                        <h2 class="block-title">El Diagnóstico de la Psicología Cognitiva</h2>
+                        <p class="block-text">
+                            De acuerdo con el investigador Montealegre (2011), estás ante un problema real cuando tienes muy claro a dónde quieres llegar (tu objetivo), pero el mapa para alcanzarlo está en blanco. Al desconocer el curso de acción inmediato, tu cerebro se ve obligado a buscar activamente un medio adecuado para cruzar esa brecha. Identificar técnicamente este escenario es la base para dejar de "sobrevivir" a tus días y empezar a decidir con fundamentos.
+                        </p>
+                    </div>
+
+                    <!-- IMAGEN 1 -->
+                    <div class="block block-image">
+                        <img src="Tema1_1.png" alt="Imagen 1 - Diagnóstico" />
+                    </div>
+
+                    <!-- 2. Tus Dos Herramientas Científicas -->
+                    <div class="block">
+                        <h2 class="block-title">Tus Dos Herramientas Científicas</h2>
+                        <p class="block-text">
+                            Para resolver cualquier misterio escolar o personal, la clave está en dividir la situación en dos cajones lógicos:
+                        </p>
+                        <ul class="bullet-list star">
+                            <li><strong>Datos Conocidos:</strong> Son los recursos, apuntes, reglas y pistas que sí tienes a la mano. Por ejemplo, saber que tienes tu matrícula escolar, buena conexión a internet y que la mitad de tu proyecto funciona correctamente.</li>
+                            <li><strong>La Incógnita:</strong> Es esa pieza de información o factor oculto que necesitas descubrir utilizando tus datos previos. No es que "todo esté mal", sino encontrar el punto preciso que está bloqueando tu meta.</li>
+                        </ul>
+                        <p class="block-text" style="margin-top: 0.8rem;">
+                            Por ejemplo, si programas un simulador escolar y arroja un error crítico, tu impulso es borrar todo el código por desesperación. En cambio, el enfoque cognitivo te invita a pausar y analizar qué cambió en este paso respecto a los que sí funcionaron.
+                        </p>
+                    </div>
+
+                    <!-- IMAGEN 2 -->
+                    <div class="block block-image">
+                        <img src="Tema1_2.png" alt="Imagen 2 - Herramientas" />
+                    </div>
+
                 </div>
 
-                <!-- Bloque inferior: Escribe tu propia historia -->
-                <div class="block">
-                    <h2 class="block-title">Escribe tu propia historia</h2>
-                    <p class="block-text">
-                        No todos los retos son iguales, pero todos te invitan a madurar. 
-                        Al enfrentar tus dificultades académicas, personales o sociales con estrategia, dejas de simplemente sobrevivir. 
-                        Cada obstáculo es tu oportunidad de oro para conocerte mejor y escribir tu historia de forma más consciente. 
-                        ¡Toma las riendas de tus decisiones y conviértete en un pensador crítico!
-                    </p>
+                <!-- COLUMNA DERECHA -->
+                <div class="col-right">
+
+                    <!-- Bloque: El Escudo Contra el Autoboicot -->
+                    <div class="block">
+                        <h2 class="block-title">El Escudo Contra el Autoboicot</h2>
+                        <p class="block-text">
+                            Saber definir el concepto de un problema te da cinco ventajas psicológicas inmediatas en tu vida diaria:
+                        </p>
+                        <ul class="bullet-list shield">
+                            <li><strong>Cero drama emocional:</strong> Te impide confundir un sentimiento pasajero (como enojo o frustración) con el obstáculo real.</li>
+                            <li><strong>Adiós al pánico:</strong> Al estructurar la situación, reduces notablemente el estrés y la frustración.</li>
+                            <li><strong>Foco estratégico:</strong> Te ayuda a concentrarte en hechos observables y no en suposiciones.</li>
+                            <li><strong>Autonomía total:</strong> Dejas de ser un espectador pasivo que espera que otros le resuelvan la vida.</li>
+                            <li><strong>Control del impulso:</strong> Te obliga a pausar el piloto automático antes de tomar decisiones precipitadas.</li>
+                        </ul>
+                        <p class="block-text" style="margin-top: 0.8rem;">
+                            Al separar los hechos de las emociones, transformas la incomodidad en un proceso de crecimiento personal. Identificar tu incógnita te permite tomar las riendas de tus decisiones y madurar.
+                        </p>
+                    </div>
+
+                    <!-- (Opcional) Podríamos poner un segundo bloque en la columna derecha, pero lo dejamos así para no saturar -->
                 </div>
             </div>
+
+            <!-- FOOTER PREGUNTA -->
+            <footer class="footer-pregunta">
+                <p>
+                    <strong>Cuando te enfrentes a un reto escolar o personal esta semana, ¿cuáles serán tus "datos conocidos" y cuál tu verdadera "incógnita"?</strong>
+                </p>
+            </footer>
+
         </div>
-
-        <!-- FOOTER / CTA -->
-        <footer class="footer-cta">
-            <p>
-                <strong>Y tú, ¿qué decisión difícil vas a tomar hoy</strong> usando tu metapensamiento en lugar de reaccionar por impulso?
-            </p>
-            <div class="btn-comic">
-                🎨 ¿Te gustaría que utilicemos la información de este artículo para diseñar una infografía visualmente atractiva que puedas usar para estudiar o exponer este tema en clase?
-            </div>
-        </footer>
-
     </div>
-    <!-- fin .comic-container -->
+
+    <!-- ==================== BOTÓN FLOTANTE ==================== -->
+    <a href="#" class="btn-flotante">Continuar</a>
+
 </body>
 </html>
