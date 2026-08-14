@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.1.2 Concepto de problema · La Ecuación del Éxito</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+        }
+
+        /* ==================== FONDO Y CONTENEDOR PRINCIPAL ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#ffc0cb 0% 25%, #ffb347 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fdf6b2 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .comic-container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            transition: all 0.1s ease;
+        }
+
+        /* ===== TÍTULO DE SECCIÓN ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3.2rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        /* ===== HEADER (bocadillo + subtítulo) ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            flex: 1 1 60%;
+        }
+
+        .speech-bubble-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .speech-bubble {
+            background: #ffdd57;
+            border: 5px solid #000;
+            border-radius: 60px 60px 60px 10px;
+            padding: 0.8rem 2rem 0.8rem 2rem;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 6px 6px 0 #000;
+            font-family: 'Bangers', cursive;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 2px 2px 0 rgba(255, 0, 0, 0.3);
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border: 12px solid transparent;
+            border-top-color: #ffdd57;
+            border-bottom: 0;
+            border-left: 0;
+            filter: drop-shadow(4px 4px 0 #000);
+        }
+
+        .header-right {
+            flex: 0 1 auto;
+            background: #000;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0 #ff4d4d;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .header-right span {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ===== BIENVENIDA ===== */
+        .welcome {
+            background: #ff4d4d;
+            border: 5px solid #000;
+            border-radius: 30px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 7px 7px 0 #000;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .welcome strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .col-left .block,
+        .col-right .block {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        .block-image {
+            padding: 0.8rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+        }
+
+        .block-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: block;
+        }
+
+        .block-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 1rem;
+            transform: rotate(-1deg);
+        }
+
+        .block-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Estilo para listas con viñetas de cómic */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .bullet-list li::before {
+            content: "💥";
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            display: inline-block;
+            background: #ffdd57;
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 2.2rem;
+            height: 2.2rem;
+            text-align: center;
+            line-height: 2rem;
+            box-shadow: 3px 3px 0 #000;
+        }
+        /* Variantes para diferentes viñetas */
+        .bullet-list.star li::before { content: "⭐"; }
+        .bullet-list.gear li::before { content: "⚙️"; }
+        .bullet-list.shield li::before { content: "🛡️"; }
+        .bullet-list.brain li::before { content: "🧠"; }
+
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-pregunta {
+            background: #000;
+            border: 6px solid #000;
+            border-radius: 40px;
+            padding: 1.8rem 2rem;
+            box-shadow: 8px 8px 0 #ff4d4d;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .footer-pregunta p {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer-pregunta p strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ==================== BOTÓN FLOTANTE ==================== */
+        .btn-flotante {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.8rem 1.8rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 6px 6px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            z-index: 999;
+            text-decoration: none;
+            display: inline-block;
+            transform: rotate(1deg);
+        }
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 2px 2px 0 #000;
+        }
+        @media (max-width: 600px) {
+            .btn-flotante {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.6rem 1.2rem;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 700px) {
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.4rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-right {
+                text-align: center;
+                font-size: 0.8rem;
+            }
+            .speech-bubble {
+                font-size: 2.2rem;
+                padding: 0.6rem 1.2rem;
+                border-radius: 40px 40px 40px 10px;
+            }
+            .col-right {
+                grid-template-columns: 1fr;
+            }
+            .welcome {
+                font-size: 1rem;
+                padding: 1rem 1.2rem;
+            }
+            .block-title {
+                font-size: 1.4rem;
+            }
+            .footer-pregunta p {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .col-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+    <div class="page-content">
+        <div class="comic-container">
+
+            <!-- TÍTULO DE SECCIÓN -->
+            <h1 class="titulo-seccion">1.1.2 Concepto de problema</h1>
+
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="speech-bubble-wrapper">
+                        <div class="speech-bubble">La Ecuación del Éxito</div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span>Datos Conocidos</span> vs. <br /> <strong style="color:#ffe600;">La Incógnita</strong>
+                </div>
+            </header>
+
+            <!-- BIENVENIDA -->
+            <section class="welcome">
+                <p>
+                    En la entrega anterior descubrimos que las dificultades cotidianas son oportunidades disfrazadas. Pero, ¿cómo se define científicamente un problema para poder desarmarlo de manera inteligente? La psicología cognitiva nos da la respuesta exacta para estructurar tu mente frente a cualquier desafío.
+                </p>
+            </section>
+
+            <!-- GRID PRINCIPAL -->
+            <div class="main-grid">
+
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="col-left">
+
+                    <!-- 1. El Diagnóstico de la Psicología Cognitiva -->
+                    <div class="block">
+                        <h2 class="block-title">El Diagnóstico de la Psicología Cognitiva</h2>
+                        <p class="block-text">
+                            De acuerdo con el investigador Montealegre (2011), estás ante un problema real cuando tienes muy claro a dónde quieres llegar (tu objetivo), pero el mapa para alcanzarlo está en blanco. Al desconocer el curso de acción inmediato, tu cerebro se ve obligado a buscar activamente un medio adecuado para cruzar esa brecha. Identificar técnicamente este escenario es la base para dejar de "sobrevivir" a tus días y empezar a decidir con fundamentos.
+                        </p>
+                    </div>
+
+                    <!-- IMAGEN 1 (Tema112) -->
+                    <div class="block block-image">
+                        <img src="Tema112.png" alt="Imagen 1 - Diagnóstico" />
+                    </div>
+
+                    <!-- 2. Tus Dos Herramientas Científicas -->
+                    <div class="block">
+                        <h2 class="block-title">Tus Dos Herramientas Científicas</h2>
+                        <p class="block-text">
+                            Para resolver cualquier misterio escolar o personal, la clave está en dividir la situación en dos cajones lógicos:
+                        </p>
+                        <ul class="bullet-list star">
+                            <li><strong>Datos Conocidos:</strong> Son los recursos, apuntes, reglas y pistas que sí tienes a la mano. Por ejemplo, saber que tienes tu matrícula escolar, buena conexión a internet y que la mitad de tu proyecto funciona correctamente.</li>
+                            <li><strong>La Incógnita:</strong> Es esa pieza de información o factor oculto que necesitas descubrir utilizando tus datos previos. No es que "todo esté mal", sino encontrar el punto preciso que está bloqueando tu meta.</li>
+                        </ul>
+                        <p class="block-text" style="margin-top: 0.8rem;">
+                            Por ejemplo, si programas un simulador escolar y arroja un error crítico, tu impulso es borrar todo el código por desesperación. En cambio, el enfoque cognitivo te invita a pausar y analizar qué cambió en este paso respecto a los que sí funcionaron.
+                        </p>
+                    </div>
+
+                    <!-- IMAGEN 2 (Tema113) -->
+                    <div class="block block-image">
+                        <img src="Tema113.png" alt="Imagen 2 - Herramientas" />
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA -->
+                <div class="col-right">
+
+                    <!-- Bloque: El Escudo Contra el Autoboicot -->
+                    <div class="block">
+                        <h2 class="block-title">El Escudo Contra el Autoboicot</h2>
+                        <p class="block-text">
+                            Saber definir el concepto de un problema te da cinco ventajas psicológicas inmediatas en tu vida diaria:
+                        </p>
+                        <ul class="bullet-list shield">
+                            <li><strong>Cero drama emocional:</strong> Te impide confundir un sentimiento pasajero (como enojo o frustración) con el obstáculo real.</li>
+                            <li><strong>Adiós al pánico:</strong> Al estructurar la situación, reduces notablemente el estrés y la frustración.</li>
+                            <li><strong>Foco estratégico:</strong> Te ayuda a concentrarte en hechos observables y no en suposiciones.</li>
+                            <li><strong>Autonomía total:</strong> Dejas de ser un espectador pasivo que espera que otros le resuelvan la vida.</li>
+                            <li><strong>Control del impulso:</strong> Te obliga a pausar el piloto automático antes de tomar decisiones precipitadas.</li>
+                        </ul>
+                        <p class="block-text" style="margin-top: 0.8rem;">
+                            Al separar los hechos de las emociones, transformas la incomodidad en un proceso de crecimiento personal. Identificar tu incógnita te permite tomar las riendas de tus decisiones y madurar.
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FOOTER PREGUNTA -->
+            <footer class="footer-pregunta">
+                <p>
+                    <strong>Cuando te enfrentes a un reto escolar o personal esta semana, ¿cuáles serán tus "datos conocidos" y cuál tu verdadera "incógnita"?</strong>
+                </p>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- ==================== BOTÓN FLOTANTE "Volver a casa" ==================== -->
+    <a href="#" class="btn-flotante">Volver a casa</a>
+
+</body>
+</html>
