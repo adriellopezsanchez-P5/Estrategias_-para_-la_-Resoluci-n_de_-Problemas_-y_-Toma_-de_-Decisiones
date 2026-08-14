@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1.3 El Multiverso de los Problemas · Parte 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* ==================== FONDO VERDE CLARO CON PUNTOS ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#b3e6b3 0% 25%, #66cc66 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #b3e6b3 0%, #80d480 50%, #66cc66 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .comic-container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            transition: all 0.1s ease;
+            margin-top: 1rem;
+        }
+
+        /* ===== TÍTULO ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .subtitulo {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #fff;
+            background: #4CAF50;
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 2rem;
+            transform: rotate(0.5deg);
+        }
+
+        /* ===== HEADER (bocadillo) ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            flex: 1 1 60%;
+        }
+
+        .speech-bubble-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .speech-bubble {
+            background: #ffdd57;
+            border: 5px solid #000;
+            border-radius: 60px 60px 60px 10px;
+            padding: 0.8rem 2rem 0.8rem 2rem;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 6px 6px 0 #000;
+            font-family: 'Bangers', cursive;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 2px 2px 0 rgba(255, 0, 0, 0.3);
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border: 12px solid transparent;
+            border-top-color: #ffdd57;
+            border-bottom: 0;
+            border-left: 0;
+            filter: drop-shadow(4px 4px 0 #000);
+        }
+
+        .header-right {
+            flex: 0 1 auto;
+            background: #000;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0 #66cc66;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .header-right span {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ===== BIENVENIDA ===== */
+        .welcome {
+            background: #4CAF50;
+            border: 5px solid #000;
+            border-radius: 30px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 7px 7px 0 #000;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .welcome strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .col-left .block,
+        .col-right .block {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        .block-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 1rem;
+            transform: rotate(-1deg);
+        }
+
+        .block-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Estilo para listas con viñetas de cómic */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .bullet-list li::before {
+            content: "💥";
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            display: inline-block;
+            background: #ffdd57;
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 2.2rem;
+            height: 2.2rem;
+            text-align: center;
+            line-height: 2rem;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-pregunta {
+            background: #000;
+            border: 6px solid #000;
+            border-radius: 40px;
+            padding: 1.8rem 2rem;
+            box-shadow: 8px 8px 0 #66cc66;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .footer-pregunta p {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer-pregunta p strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ==================== BOTONES FLOTANTES ==================== */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 999;
+        }
+
+        .btn-flotante {
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-flotante.continuar {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .btn-flotante.regresar {
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .btn-flotante.casa {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-flotante:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        @media (max-width: 600px) {
+            .botones-flotantes {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.5rem;
+            }
+            .btn-flotante {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .col-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.8rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.2rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .subtitulo {
+                font-size: 1.2rem;
+                padding: 0.2rem 1rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-right {
+                text-align: center;
+                font-size: 0.8rem;
+            }
+            .speech-bubble {
+                font-size: 2.2rem;
+                padding: 0.6rem 1.2rem;
+                border-radius: 40px 40px 40px 10px;
+            }
+            .col-right {
+                grid-template-columns: 1fr;
+            }
+            .welcome {
+                font-size: 1rem;
+                padding: 1rem 1.2rem;
+            }
+            .block-title {
+                font-size: 1.4rem;
+            }
+            .footer-pregunta p {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+    <div class="page-content">
+        <div class="comic-container">
+
+            <!-- TÍTULO -->
+            <h1 class="titulo-seccion">1.3 El Multiverso de los Problemas</h1>
+            <div class="subtitulo">🌿 ¿A qué "Bestia" te Enfrentas Hoy? · Parte 2</div>
+
+            <!-- HEADER -->
+            <header class="header">
+                <div class="header-left">
+                    <div class="speech-bubble-wrapper">
+                        <div class="speech-bubble">La Tormenta y la Ciencia</div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span>Conflicto · Teoría · Práctica</span> <br /> <strong style="color:#66cc66;">Investigación</strong>
+                </div>
+            </header>
+
+            <!-- BIENVENIDA -->
+            <section class="welcome">
+                <p>
+                    <strong>¡Equipa tu Radar Mental!</strong> Como ves, no puedes usar un martillo para curar un corazón roto, ni la pura intuición para resolver tu examen de física. Clasificar tus problemas cotidianos te ayuda a saber exactamente qué "botón" de tu metapensamiento debes presionar para dejar de ser una víctima del caos y convertirte en el estratega de tu propia vida.
+                </p>
+            </section>
+
+            <!-- GRID PRINCIPAL -->
+            <div class="main-grid">
+
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="col-left">
+
+                    <!-- 1. De Conflicto -->
+                    <div class="block">
+                        <h2 class="block-title">1.3.5 De Conflicto</h2>
+                        <p class="block-text">
+                            En esta categoría, el <strong>componente emocional</strong> domina por completo, impactando directamente en tu comportamiento y en cómo te llevas con los demás. Se dividen en tres niveles de tensión:
+                        </p>
+                        <ul class="bullet-list">
+                            <li><strong>Intrapersonal:</strong> Tu batalla interna (ej. el dilema de elegir si te quedas a estudiar para un examen decisivo o sales con tus amigos de último minuto).</li>
+                            <li><strong>Interpersonal:</strong> Choques y desacuerdos directos entre dos o más personas donde las emociones pesan mucho más que la fría lógica.</li>
+                            <li><strong>Social o Grupal:</strong> Diferencias de ideologías, pensamientos, normas o valores en el interior de un grupo o entre diferentes colectivos.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. Teóricos vs Prácticos -->
+                    <div class="block">
+                        <h2 class="block-title">1.3.6 Teóricos vs. Prácticos</h2>
+                        <p class="block-text">
+                            La finalidad de tu esfuerzo determina cómo debes abordar la situación para no perder tiempo:
+                        </p>
+                        <ul class="bullet-list">
+                            <li><strong>Teóricos:</strong> Buscan comprender, interpretar o explicar el "porqué" de las cosas, conceptos o fenómenos. Su meta principal es generar ciencia y nuevos conocimientos.</li>
+                            <li><strong>Prácticos:</strong> Nacen de la urgencia de modificar tu realidad inmediata. Su objetivo es diseñar planes de acción o programas de intervención para solucionar una situación concreta y urgente.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. De Investigación -->
+                    <div class="block">
+                        <h2 class="block-title">1.3.7 De Investigación</h2>
+                        <p class="block-text">
+                            <strong>Problemas de Investigación:</strong> Ocurren cuando detectas una brecha o vacío en el conocimiento que necesita una solución respaldada por evidencia científica. Para que sea válido, debe cumplir con ser:
+                        </p>
+                        <ul class="bullet-list">
+                            <li><strong>Claro:</strong> Bien definido y sin ambigüedades.</li>
+                            <li><strong>Delimitado:</strong> Con alcance y límites precisos.</li>
+                            <li><strong>Factible:</strong> Posible de realizar con los recursos disponibles.</li>
+                            <li><strong>Relevante:</strong> Que aporte valor al conocimiento existente.</li>
+                            <li><strong>Recolectable:</strong> Que permita la recolección de datos reales.</li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <!-- COLUMNA DERECHA -->
+                <div class="col-right">
+
+                    <!-- Bloque: Los 3 Niveles de Conflicto -->
+                    <div class="block">
+                        <h2 class="block-title">⚡ Los 3 Niveles</h2>
+                        <div style="background: #ff6b6b; padding: 0.8rem; border-radius: 15px; border: 4px solid #000; box-shadow: 4px 4px 0 #000; margin-bottom: 0.8rem; color: #fff;">
+                            <p style="font-weight: 700; font-size: 1rem;">🔴 Intrapersonal</p>
+                            <p style="font-size: 0.9rem;">Tu batalla interna</p>
+                        </div>
+                        <div style="background: #ffa94d; padding: 0.8rem; border-radius: 15px; border: 4px solid #000; box-shadow: 4px 4px 0 #000; margin-bottom: 0.8rem; color: #000;">
+                            <p style="font-weight: 700; font-size: 1rem;">🟠 Interpersonal</p>
+                            <p style="font-size: 0.9rem;">Choques con otras personas</p>
+                        </div>
+                        <div style="background: #4dabf7; padding: 0.8rem; border-radius: 15px; border: 4px solid #000; box-shadow: 4px 4px 0 #000; color: #fff;">
+                            <p style="font-weight: 700; font-size: 1rem;">🔵 Social o Grupal</p>
+                            <p style="font-size: 0.9rem;">Diferencias en grupos o colectivos</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloque: Teórico vs Práctico -->
+                    <div class="block">
+                        <h2 class="block-title">🎯 Teórico vs Práctico</h2>
+                        <div style="background: #ffe600; padding: 0.8rem; border-radius: 15px; border: 4px solid #000; box-shadow: 4px 4px 0 #000; margin-bottom: 0.8rem;">
+                            <p style="font-weight: 700; font-size: 1rem; text-align: center;">📚 Teórico</p>
+                            <p style="font-size: 0.9rem; text-align: center;">Comprender el "porqué"</p>
+                        </div>
+                        <div style="background: #66cc66; padding: 0.8rem; border-radius: 15px; border: 4px solid #000; box-shadow: 4px 4px 0 #000; color: #000;">
+                            <p style="font-weight: 700; font-size: 1rem; text-align: center;">🔧 Práctico</p>
+                            <p style="font-size: 0.9rem; text-align: center;">Modificar la realidad inmediata</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloque: Características de Investigación -->
+                    <div class="block">
+                        <h2 class="block-title">🔬 Investigación</h2>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; background: #f0f0f0; padding: 0.3rem 0.8rem; border-radius: 10px; border: 2px solid #000;">
+                                <span style="font-size: 1.5rem;">✅</span> Claro
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; background: #f0f0f0; padding: 0.3rem 0.8rem; border-radius: 10px; border: 2px solid #000;">
+                                <span style="font-size: 1.5rem;">✅</span> Delimitado
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; background: #f0f0f0; padding: 0.3rem 0.8rem; border-radius: 10px; border: 2px solid #000;">
+                                <span style="font-size: 1.5rem;">✅</span> Factible
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.9rem; background: #f0f0f0; padding: 0.3rem 0.8rem; border-radius: 10px; border: 2px solid #000;">
+                                <span style="font-size: 1.5rem;">✅</span> Relevante
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; background: #f0f0f0; padding: 0.3rem 0.8rem; border-radius: 10px; border: 2px solid #000;">
+                                <span style="font-size: 1.5rem;">✅</span> Recolectable
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- FOOTER PREGUNTA -->
+            <footer class="footer-pregunta">
+                <p>
+                    <strong>Y tú, frente al siguiente reto que se te presente hoy en la prepa, ¿con qué estrategia de este multiverso lo vas a desarmar?</strong>
+                </p>
+            </footer>
+
+            <!-- INDICADOR DE PÁGINA -->
+            <div style="text-align: center; margin-top: 1.5rem; font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 1px; color: #000; background: #ffe600; display: inline-block; padding: 0.2rem 1.5rem; border-radius: 40px; border: 4px solid #000; box-shadow: 4px 4px 0 #000; width: auto; margin-left: auto; margin-right: auto;">
+                📖 Página 2 de 2
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== BOTONES FLOTANTES ==================== -->
+    <div class="botones-flotantes">
+        <a href="#" class="btn-flotante continuar">➡ Continuar</a>
+        <a href="#" class="btn-flotante regresar">⬅ Regresar</a>
+        <a href="#" class="btn-flotante casa">🏠 Volver a casa</a>
+    </div>
+
+</body>
+</html>
