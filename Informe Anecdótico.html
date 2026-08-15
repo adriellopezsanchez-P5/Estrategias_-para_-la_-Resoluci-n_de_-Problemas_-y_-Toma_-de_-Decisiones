@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧪 Laboratorio · Informe Anecdótico PAEC</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <!-- html2canvas y jsPDF para PDF de calidad -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* ==================== FONDO NARANJA CLARO CON PUNTOS ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#ffd9b3 0% 25%, #ffa64d 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #ffd9b3 0%, #ffb380 50%, #ffa64d 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .comic-container {
+            max-width: 1100px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2.5rem 3rem;
+            position: relative;
+            transition: all 0.1s ease;
+            margin-top: 1rem;
+        }
+
+        /* ===== BANNER SUPERIOR ===== */
+        .banner-lab {
+            background: #000;
+            border: 5px solid #000;
+            border-radius: 30px;
+            padding: 1.2rem 2rem;
+            box-shadow: 7px 7px 0 #ffa64d;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .banner-lab .izquierda {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .banner-lab .icono-lab {
+            font-size: 3rem;
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 50%;
+            width: 65px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 4px 4px 0 #000;
+            transform: rotate(-5deg);
+        }
+
+        .banner-lab .titulo-banner {
+            font-family: 'Bangers', cursive;
+            font-size: 2.2rem;
+            color: #ffe600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.5);
+        }
+
+        .banner-lab .badge {
+            font-family: 'Bangers', cursive;
+            font-size: 1rem;
+            color: #000;
+            background: #ffe600;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            border: 3px solid #000;
+            box-shadow: 3px 3px 0 #000;
+            transform: rotate(-2deg);
+        }
+
+        .banner-lab .valor {
+            font-family: 'Bangers', cursive;
+            font-size: 1.1rem;
+            color: #fff;
+            background: #ff6b6b;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            transform: rotate(2deg);
+        }
+
+        /* ===== TEMPORIZADOR ===== */
+        .timer-container {
+            background: #000;
+            border: 4px solid #000;
+            border-radius: 20px;
+            padding: 0.5rem 1.5rem;
+            box-shadow: 5px 5px 0 #ffa64d;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .timer-container .timer-label {
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            color: #ffe600;
+            letter-spacing: 1px;
+        }
+
+        .timer-container .timer-display {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            color: #fff;
+            background: #1a1a1a;
+            padding: 0.1rem 1.2rem;
+            border-radius: 15px;
+            border: 3px solid #ffe600;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .timer-container .timer-status {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #fff;
+            padding: 0.2rem 1rem;
+            border-radius: 20px;
+            background: #66cc66;
+            border: 2px solid #000;
+        }
+
+        .timer-container .timer-status.stopped {
+            background: #ff6b6b;
+        }
+
+        /* ===== TÍTULO ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 2rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .subtitulo {
+            font-family: 'Bangers', cursive;
+            font-size: 1.4rem;
+            color: #fff;
+            background: #ffa64d;
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 2rem;
+            transform: rotate(0.5deg);
+        }
+
+        /* ===== INSTRUCCIONES ===== */
+        .instrucciones {
+            background: #f8f8f8;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 2rem;
+            box-shadow: 7px 7px 0 #000;
+            margin-bottom: 2rem;
+        }
+
+        .instrucciones h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .instrucciones ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instrucciones ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .instrucciones ul li::before {
+            content: "🧪";
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .instrucciones ul li:nth-child(2)::before { content: "📋"; }
+        .instrucciones ul li:nth-child(3)::before { content: "👥"; }
+        .instrucciones ul li:nth-child(4)::before { content: "♻️"; }
+
+        /* ===== FORMULARIO ===== */
+        .formulario {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .campo-group {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 5px 5px 0 #000;
+        }
+
+        .campo-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .campo-group label {
+            font-family: 'Bangers', cursive;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            color: #000;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+
+        .campo-group .icono-label {
+            font-size: 1.5rem;
+            margin-right: 0.3rem;
+        }
+
+        .campo-group .descripcion-campo {
+            font-size: 0.8rem;
+            color: #555;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .campo-group .extensión {
+            font-size: 0.75rem;
+            color: #666;
+            background: #f0f0f0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            border: 2px solid #000;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+        }
+
+        .campo-group .contador {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-align: right;
+            margin-top: 0.3rem;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            background: #f0f0f0;
+            border: 2px solid #000;
+            display: inline-block;
+            float: right;
+        }
+
+        .campo-group .contador.exacto {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .campo-group .contador.cerca {
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .campo-group .contador.lejos {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .campo-group input,
+        .campo-group textarea,
+        .campo-group select {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            border: 4px solid #000;
+            border-radius: 15px;
+            box-shadow: 4px 4px 0 #000;
+            transition: all 0.1s ease;
+            background: #fafafa;
+            resize: vertical;
+        }
+
+        .campo-group input:focus,
+        .campo-group textarea:focus,
+        .campo-group select:focus {
+            outline: none;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+        }
+
+        .campo-group textarea {
+            min-height: 60px;
+        }
+
+        .campo-group textarea#informeCompleto {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* ===== BOTONES DE ACCIÓN ===== */
+        .acciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .btn-comic {
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 2rem;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-comic:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-comic:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        .btn-comic.verde {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .btn-comic.rojo {
+            background: #ff6b6b;
+            color: #fff;
+        }
+
+        .btn-comic.azul {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-comic.naranja {
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .btn-comic.morado {
+            background: #a66cff;
+            color: #fff;
+        }
+
+        /* ===== RESULTADO EVALUACIÓN ===== */
+        .resultado-evaluacion {
+            background: #f8f8f8;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 2rem;
+            box-shadow: 7px 7px 0 #000;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .resultado-evaluacion.visible {
+            display: block;
+        }
+
+        .resultado-evaluacion .calificacion {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 20px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0 #000;
+            margin-bottom: 1rem;
+        }
+
+        .resultado-evaluacion .calificacion .numero {
+            font-size: 4rem;
+        }
+
+        .resultado-evaluacion .equipo-info {
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 0.8rem 1.2rem;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .resultado-evaluacion .equipo-info strong {
+            background: #ffe600;
+            padding: 0.1rem 0.4rem;
+            border-radius: 5px;
+        }
+
+        .resultado-evaluacion .retroalimentacion {
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 1.2rem 1.5rem;
+            box-shadow: 4px 4px 0 #000;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .resultado-evaluacion .retroalimentacion strong {
+            background: #ffe600;
+            padding: 0.1rem 0.4rem;
+            border-radius: 5px;
+        }
+
+        .resultado-evaluacion .detalles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem;
+            margin: 1rem 0;
+        }
+
+        .resultado-evaluacion .detalle-item {
+            background: #fff;
+            border: 3px solid #000;
+            border-radius: 12px;
+            padding: 0.5rem 0.8rem;
+            font-size: 0.85rem;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .resultado-evaluacion .detalle-item .label {
+            font-weight: 600;
+            display: block;
+        }
+
+        .resultado-evaluacion .detalle-item .valor {
+            font-size: 0.9rem;
+        }
+
+        .resultado-evaluacion .informe-final {
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            box-shadow: 4px 4px 0 #000;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .resultado-evaluacion .informe-final p {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+
+        /* ==================== BOTONES FLOTANTES ==================== */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 999;
+        }
+
+        .btn-flotante {
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-flotante.casa {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-flotante.guardar {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .btn-flotante:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        @media (max-width: 600px) {
+            .botones-flotantes {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.5rem;
+            }
+            .btn-flotante {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 900px) {
+            .formulario {
+                grid-template-columns: 1fr;
+            }
+            .campo-group.full {
+                grid-column: 1;
+            }
+            .resultado-evaluacion .detalles {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .subtitulo {
+                font-size: 1.1rem;
+                padding: 0.2rem 1rem;
+            }
+            .banner-lab {
+                flex-direction: column;
+                text-align: center;
+                padding: 1rem;
+            }
+            .banner-lab .icono-lab {
+                width: 50px;
+                height: 50px;
+                font-size: 2.2rem;
+            }
+            .banner-lab .titulo-banner {
+                font-size: 1.6rem;
+            }
+            .campo-group label {
+                font-size: 1.1rem;
+            }
+            .acciones {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-comic {
+                width: 100%;
+                max-width: 300px;
+                font-size: 1rem;
+                padding: 0.5rem 1.5rem;
+            }
+            .resultado-evaluacion .calificacion {
+                font-size: 2.5rem;
+            }
+            .resultado-evaluacion .calificacion .numero {
+                font-size: 3rem;
+            }
+            .timer-container .timer-display {
+                font-size: 1.5rem;
+                min-width: 70px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .titulo-seccion {
+                font-size: 1.6rem;
+            }
+            .banner-lab .titulo-banner {
+                font-size: 1.3rem;
+            }
+            .instrucciones h3 {
+                font-size: 1.3rem;
+            }
+            .instrucciones ul li {
+                font-size: 0.85rem;
+            }
+            .campo-group .contador {
+                float: none;
+                display: block;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+    <div class="page-content">
+        <div class="comic-container" id="contenidoParaPDF">
+
+            <!-- ===== BANNER LABORATORIO ===== -->
+            <div class="banner-lab">
+                <div class="izquierda">
+                    <div class="icono-lab">🧪</div>
+                    <div>
+                        <div class="titulo-banner">Laboratorio PAEC</div>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.2rem;">
+                            <span class="badge">📝 Informe Anecdótico</span>
+                            <span class="valor">💎 10% Portafolio</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 0.5rem; align-items: center;">
+                    <span style="font-size: 2rem;">♻️</span>
+                    <span style="font-family: 'Bangers', cursive; color: #fff; font-size: 1rem; letter-spacing: 1px;">Residuos Sólidos</span>
+                </div>
+            </div>
+
+            <!-- ===== TEMPORIZADOR ===== -->
+            <div class="timer-container">
+                <span class="timer-label">⏱️ Tiempo de trabajo:</span>
+                <span class="timer-display" id="timerDisplay">00:00</span>
+                <span class="timer-status" id="timerStatus">⏳ En curso...</span>
+            </div>
+
+            <!-- ===== TÍTULO ===== -->
+            <h1 class="titulo-seccion">🧪 Informe Anecdótico</h1>
+            <div class="subtitulo">🌿 Módulo I · Estructura de un problema</div>
+
+            <!-- ===== INSTRUCCIONES ===== -->
+            <div class="instrucciones">
+                <h3>📋 Instrucciones para el Equipo</h3>
+                <ul>
+                    <li><strong>Investiguen</strong> un problema real de manejo de residuos sólidos en su plantel.</li>
+                    <li><strong>Redacten</strong> cada recuadro con la extensión exacta indicada (usa el contador de palabras).</li>
+                    <li><strong>Identifiquen</strong> el problema central, causa principal, consecuencias y actores involucrados.</li>
+                    <li><strong>Colaboren</strong> en equipo para completar el informe y generar soluciones.</li>
+                </ul>
+            </div>
+
+            <!-- ===== FORMULARIO ===== -->
+            <form id="informeForm" class="formulario">
+
+                <!-- Datos del equipo -->
+                <div class="campo-group full">
+                    <label><span class="icono-label">👥</span> Datos del Equipo</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                        <input type="text" id="numeroEquipo" placeholder="Número de equipo (ej. Equipo 3)" />
+                        <input type="text" id="integrantes" placeholder="Integrantes (separados por coma)" />
+                    </div>
+                </div>
+
+                <!-- 1. Problema central -->
+                <div class="campo-group full">
+                    <label><span class="icono-label">🎯</span> 1. Problema central</label>
+                    <div class="descripcion-campo">Enunciar claramente la situación observada en el plantel</div>
+                    <span class="extensión">📏 Extensión: 25-30 palabras</span>
+                    <textarea id="problemaCentral" rows="2" placeholder="Ejemplo: La acumulación diaria de residuos orgánicos e inorgánicos en los pasillos y áreas comunes del plantel genera..."></textarea>
+                    <span class="contador" id="contadorProblema">0 palabras</span>
+                </div>
+
+                <!-- 2. Causa principal -->
+                <div class="campo-group full">
+                    <label><span class="icono-label">🔍</span> 2. Causa principal</label>
+                    <div class="descripcion-campo">Explicar el origen o la falta de infraestructura/cultura que detona el problema</div>
+                    <span class="extensión">📏 Extensión: 40-45 palabras</span>
+                    <textarea id="causaPrincipal" rows="2" placeholder="Ejemplo: La falta de contenedores de basura suficientes y la ausencia de campañas de concientización sobre reciclaje..."></textarea>
+                    <span class="contador" id="contadorCausa">0 palabras</span>
+                </div>
+
+                <!-- 3. Consecuencias -->
+                <div class="campo-group full">
+                    <label><span class="icono-label">⚡</span> 3. Consecuencias</label>
+                    <div class="descripcion-campo">Detallar los impactos ambientales, sanitarios o de convivencia en la escuela</div>
+                    <span class="extensión">📏 Extensión: 40-45 palabras</span>
+                    <textarea id="consecuencias" rows="2" placeholder="Ejemplo: Los malos olores, la presencia de plagas y la contaminación visual afectan la convivencia escolar..."></textarea>
+                    <span class="contador" id="contadorConsecuencias">0 palabras</span>
+                </div>
+
+                <!-- 4. Actores involucrados -->
+                <div class="campo-group full">
+                    <label><span class="icono-label">👤</span> 4. Actores involucrados</label>
+                    <div class="descripcion-campo">Mencionar quiénes participan tanto en el problema como en la futura solución</div>
+                    <span class="extensión">📏 Extensión: 25-30 palabras</span>
+                    <textarea id="actores" rows="2" placeholder="Ejemplo: Alumnos, personal de limpieza, dirección escolar, padres de familia y autoridades municipales..."></textarea>
+                    <span class="contador" id="contadorActores">0 palabras</span>
+                </div>
+
+                <!-- 5. Informe completo -->
+                <div class="campo-group full">
+                    <label><span class="icono-label">📝</span> 5. Informe completo (8-10 renglones)</label>
+                    <div class="descripcion-campo">Síntesis de los 4 recuadros anteriores en un texto continuo de 150 palabras</div>
+                    <span class="extensión">📏 Extensión: ~150 palabras</span>
+                    <textarea id="informeCompleto" rows="6" placeholder="El informe completo se generará automáticamente al llenar los recuadros anteriores..."></textarea>
+                    <span class="contador" id="contadorInforme">0 palabras</span>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="campo-group full" style="border: none; box-shadow: none; padding: 0;">
+                    <div class="acciones">
+                        <button type="button" class="btn-comic azul" id="btnGuardar">💾 Guardar Borrador</button>
+                        <button type="reset" class="btn-comic naranja">🔄 Limpiar</button>
+                        <button type="button" class="btn-comic morado" id="btnEvaluar">⭐ Evaluar</button>
+                    </div>
+                </div>
+
+            </form>
+
+            <!-- ===== RESULTADO EVALUACIÓN ===== -->
+            <div class="resultado-evaluacion" id="resultadoEvaluacion">
+                <div class="calificacion" id="calificacionDisplay">
+                    <span class="numero" id="calificacionNumero">-</span>
+                    <span id="calificacionTexto">-</span>
+                </div>
+
+                <div class="equipo-info" id="equipoInfo">
+                    <strong>🏷️ Equipo:</strong> <span id="infoEquipo">-</span> &nbsp;|&nbsp; <strong>👥 Integrantes:</strong> <span id="infoIntegrantes">-</span>
+                </div>
+
+                <div class="detalles" id="detallesEvaluacion">
+                    <div class="detalle-item">
+                        <span class="label">📏 Problema central</span>
+                        <span class="valor" id="detalleProblema">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="label">📏 Causa principal</span>
+                        <span class="valor" id="detalleCausa">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="label">📏 Consecuencias</span>
+                        <span class="valor" id="detalleConsecuencias">-</span>
+                    </div>
+                    <div class="detalle-item">
+                        <span class="label">📏 Actores involucrados</span>
+                        <span class="valor" id="detalleActores">-</span>
+                    </div>
+                    <div class="detalle-item" style="grid-column: 1 / -1;">
+                        <span class="label">⏱️ Tiempo empleado</span>
+                        <span class="valor" id="detalleTiempo">-</span>
+                    </div>
+                </div>
+
+                <div class="retroalimentacion" id="retroalimentacionDisplay">
+                    <strong>📝 Retroalimentación del Docente:</strong>
+                    <p id="retroalimentacionTexto">-</p>
+                </div>
+
+                <div class="informe-final" id="informeFinal">
+                    <strong>📄 Informe completo del equipo:</strong>
+                    <p id="informeFinalTexto">-</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.8rem; justify-content: center;">
+                    <button type="button" class="btn-comic rojo" id="btnCerrarResultado">✖️ Cerrar</button>
+                    <button type="button" class="btn-comic verde" id="btnGuardarPDF">📄 Guardar como PDF</button>
+                    <button type="button" class="btn-comic azul" id="btnCaptura">📸 Captura de pantalla</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==================== BOTONES FLOTANTES ==================== -->
+    <div class="botones-flotantes">
+        <button class="btn-flotante guardar" id="btnGuardarPDFFlotante">📄 Guardar PDF</button>
+        <a href="#" class="btn-flotante casa">🏠 Volver a casa</a>
+    </div>
+
+    <script>
+        // ==================== TEMPORIZADOR ====================
+        let timerInterval = null;
+        let seconds = 0;
+        let timerStarted = false;
+
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerStatus = document.getElementById('timerStatus');
+
+        function formatTime(sec) {
+            const mins = Math.floor(sec / 60);
+            const secs = sec % 60;
+            return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (timerStarted) return;
+            timerStarted = true;
+            timerStatus.textContent = '⏳ En curso...';
+            timerStatus.className = 'timer-status';
+            timerInterval = setInterval(() => {
+                seconds++;
+                timerDisplay.textContent = formatTime(seconds);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            timerStatus.textContent = '⏹️ Detenido';
+            timerStatus.className = 'timer-status stopped';
+        }
+
+        function resetTimer() {
+            stopTimer();
+            seconds = 0;
+            timerStarted = false;
+            timerDisplay.textContent = '00:00';
+            timerStatus.textContent = '⏳ En curso...';
+            timerStatus.className = 'timer-status';
+        }
+
+        // Iniciar temporizador cuando el usuario escribe en "Problema central"
+        document.getElementById('problemaCentral').addEventListener('input', function() {
+            if (this.value.trim().length > 0 && !timerStarted) {
+                startTimer();
+            }
+        });
+
+        // ==================== CONTADOR DE PALABRAS ====================
+        function contarPalabras(texto) {
+            const palabras = texto.trim().split(/\s+/);
+            return texto.trim() === '' ? 0 : palabras.length;
+        }
+
+        function actualizarContador(textarea, contadorElement, min, max) {
+            const palabras = contarPalabras(textarea.value);
+            contadorElement.textContent = `${palabras} palabras`;
+            contadorElement.className = 'contador';
+            if (palabras >= min && palabras <= max) {
+                contadorElement.classList.add('exacto');
+            } else if (palabras >= min - 5 && palabras <= max + 5) {
+                contadorElement.classList.add('cerca');
+            } else {
+                contadorElement.classList.add('lejos');
+            }
+            return palabras;
+        }
+
+        // Elementos
+        const problemaCentral = document.getElementById('problemaCentral');
+        const causaPrincipal = document.getElementById('causaPrincipal');
+        const consecuencias = document.getElementById('consecuencias');
+        const actores = document.getElementById('actores');
+        const informeCompleto = document.getElementById('informeCompleto');
+
+        const contadorProblema = document.getElementById('contadorProblema');
+        const contadorCausa = document.getElementById('contadorCausa');
+        const contadorConsecuencias = document.getElementById('contadorConsecuencias');
+        const contadorActores = document.getElementById('contadorActores');
+        const contadorInforme = document.getElementById('contadorInforme');
+
+        // Actualizar contadores
+        problemaCentral.addEventListener('input', function() {
+            actualizarContador(this, contadorProblema, 25, 30);
+            actualizarInformeCompleto();
+        });
+        causaPrincipal.addEventListener('input', function() {
+            actualizarContador(this, contadorCausa, 40, 45);
+            actualizarInformeCompleto();
+        });
+        consecuencias.addEventListener('input', function() {
+            actualizarContador(this, contadorConsecuencias, 40, 45);
+            actualizarInformeCompleto();
+        });
+        actores.addEventListener('input', function() {
+            actualizarContador(this, contadorActores, 25, 30);
+            actualizarInformeCompleto();
+        });
+        informeCompleto.addEventListener('input', function() {
+            actualizarContador(this, contadorInforme, 140, 160);
+        });
+
+        // ===== GENERAR INFORME COMPLETO =====
+        function actualizarInformeCompleto() {
+            const p = problemaCentral.value.trim();
+            const c = causaPrincipal.value.trim();
+            const cons = consecuencias.value.trim();
+            const a = actores.value.trim();
+
+            if (p && c && cons && a) {
+                const informe = `${p} La causa principal de esta problemática es ${c}. Como consecuencia, se observa ${cons}. En este contexto, los actores involucrados son ${a}. Es fundamental que toda la comunidad escolar asuma su responsabilidad para implementar soluciones efectivas y sostenibles.`;
+                informeCompleto.value = informe;
+                actualizarContador(informeCompleto, contadorInforme, 140, 160);
+            }
+        }
+
+        // ===== EVALUACIÓN =====
+        const retroalimentaciones = {
+            5: {
+                texto: "El informe presenta los elementos básicos de la problemática de residuos, pero se percibe una redacción apresurada que limitó la profundidad del ejercicio. Al integrar el problema central con sus causas, el texto pierde la continuidad necesaria, dejando ideas inconclusas que debilitan el argumento técnico. Un diagnóstico para el PAEC requiere una pausa reflexiva más pausada entre los integrantes para cuestionar el origen del conflicto escolar. Les invito a fortalecer el trabajo colaborativo en las siguientes etapas, dedicando el espacio necesario para debatir las ideas a fondo y lograr una narrativa continua de mayor impacto.",
+                emoji: "🔴",
+                titulo: "Ritmo sumamente acelerado"
+            },
+            6: {
+                texto: "El equipo logró identificar de forma clara la situación de los residuos en el plantel; sin embargo, el texto transita de manera muy directa hacia las consecuencias sin profundizar lo suficiente en la causa raíz que detona el problema. La estructura técnica se cumple de forma muy justa, denotando un ritmo de trabajo donde faltó unificar las opiniones de todos los actores involucrados en un solo párrafo fluido. El informe es funcional para el arranque del módulo, pero tiene un amplio margen de mejora en el análisis crítico. Para futuros ejercicios, tómense el tiempo de contrastar sus observaciones antes de consolidar la redacción final.",
+                emoji: "🟡",
+                titulo: "Dinámica fluida pero veloz"
+            },
+            7: {
+                texto: "Se observa una estructura bien organizada donde el problema central y las consecuencias ambientales o sanitarias en el plantel guardan una relación lógica y coherente. El equipo demuestra un esfuerzo genuino por conectar los cuatro indicadores solicitados dentro del límite de espacio establecido. Para elevar la calidad académica del documento, sugiero pulir la transición entre la causa principal y el papel que juegan los actores involucrados, de modo que el texto no se perciba fragmentado. Es un buen ejercicio de análisis general que demuestra una dinámica colaborativa en marcha. ¡Sigan por ese camino!",
+                emoji: "🟢",
+                titulo: "Tiempo constructivo estándar"
+            },
+            8: {
+                texto: "Excelente ejercicio de síntesis y redacción técnica. El informe demuestra un ritmo de trabajo analítico y una maduración de ideas muy clara, logrando delimitar con precisión la problemática de los residuos sólidos sin salirse del enfoque escolar. La transición entre el origen del problema y sus impactos colaterales es fluida, lo que evidencia que existió un diálogo constructivo previo entre los integrantes del equipo. Lograron un balance muy sólido entre los componentes técnicos y la extensión solicitada. Mantengan este nivel de atención al detalle en los próximos módulos del portafolio.",
+                emoji: "🔵",
+                titulo: "Construcción pausada y madura"
+            },
+            9: {
+                texto: "¡Un informe técnico de alto nivel! Destaca la notable capacidad del equipo para interconectar los cuatro ejes del problema en una narrativa continua y cohesiva. El análisis del conflicto es profundo, pues no solo describe la acumulación de residuos, sino que desglosa de manera madura la responsabilidad compartida entre los actores y la falta de infraestructura o cultura en el plantel. Se percibe un proceso de redacción minucioso, donde cada palabra fue seleccionada con cuidado para ajustarse a las especificaciones del laboratorio. Una excelente muestra de pensamiento crítico y corresponsabilidad comunitaria. ¡Felicidades!",
+                emoji: "🏅",
+                titulo: "Proceso detallado de alta edición"
+            },
+            10: {
+                texto: "Desempeño sobresaliente. Este informe es un modelo impecable de cómo debe estructurarse un diagnóstico PAEC. El texto revela una inmersión profunda en la problemática del plantel, abordando con una madurez académica excepcional la relación causa-efecto del manejo de residuos. El hilo conductor del párrafo es perfecto: introduce al lector, diagnostica la raíz, dimensiona el impacto comunitario y sitúa a los actores con total claridad. Haber logrado este nivel de profundidad respetando con precisión absoluta la métrica de renglones y palabras demuestra un trabajo colaborativo ejemplar y un respeto absoluto por el proceso de investigación. ¡Un trabajo impecable de principio a fin!",
+                emoji: "🏆",
+                titulo: "Inmersión total, debate y precisión milimétrica"
+            }
+        };
+
+        function evaluar() {
+            const p = problemaCentral.value.trim();
+            const c = causaPrincipal.value.trim();
+            const cons = consecuencias.value.trim();
+            const a = actores.value.trim();
+            const inf = informeCompleto.value.trim();
+
+            const palabrasP = contarPalabras(p);
+            const palabrasC = contarPalabras(c);
+            const palabrasCons = contarPalabras(cons);
+            const palabrasA = contarPalabras(a);
+            const palabrasInf = contarPalabras(inf);
+
+            if (!p || !c || !cons || !a || !inf) {
+                alert('⚠️ Por favor, completa todos los recuadros antes de evaluar.');
+                return;
+            }
+
+            stopTimer();
+
+            let puntuacion = 5;
+            if (palabrasP >= 25 && palabrasP <= 30) puntuacion += 1.0;
+            else if (palabrasP >= 20 && palabrasP <= 35) puntuacion += 0.5;
+
+            if (palabrasC >= 40 && palabrasC <= 45) puntuacion += 1.0;
+            else if (palabrasC >= 35 && palabrasC <= 50) puntuacion += 0.5;
+
+            if (palabrasCons >= 40 && palabrasCons <= 45) puntuacion += 1.0;
+            else if (palabrasCons >= 35 && palabrasCons <= 50) puntuacion += 0.5;
+
+            if (palabrasA >= 25 && palabrasA <= 30) puntuacion += 1.0;
+            else if (palabrasA >= 20 && palabrasA <= 35) puntuacion += 0.5;
+
+            if (palabrasInf >= 140 && palabrasInf <= 160) puntuacion += 1.0;
+            else if (palabrasInf >= 120 && palabrasInf <= 180) puntuacion += 0.5;
+
+            const calificaciones = [5, 6, 7, 8, 9, 10];
+            let calificacion = 5;
+            for (let i = calificaciones.length - 1; i >= 0; i--) {
+                if (puntuacion >= calificaciones[i] - 0.3) {
+                    calificacion = calificaciones[i];
+                    break;
+                }
+            }
+            if (puntuacion >= 9.7) calificacion = 10;
+
+            const retro = retroalimentaciones[calificacion] || retroalimentaciones[5];
+
+            const resultado = document.getElementById('resultadoEvaluacion');
+            resultado.classList.add('visible');
+
+            document.getElementById('calificacionNumero').textContent = calificacion;
+            document.getElementById('calificacionTexto').textContent = `${retro.emoji} ${retro.titulo}`;
+            document.getElementById('calificacionDisplay').style.background = calificacion >= 9 ? '#66cc66' : calificacion >= 7 ? '#ffa94d' : '#ff6b6b';
+            document.getElementById('calificacionDisplay').style.color = calificacion >= 7 ? '#000' : '#fff';
+
+            const numeroEquipo = document.getElementById('numeroEquipo').value || 'Sin especificar';
+            const integrantes = document.getElementById('integrantes').value || 'Sin especificar';
+            document.getElementById('infoEquipo').textContent = numeroEquipo;
+            document.getElementById('infoIntegrantes').textContent = integrantes;
+
+            document.getElementById('detalleProblema').textContent = `${palabrasP} palabras ${palabrasP >= 25 && palabrasP <= 30 ? '✅' : '⚠️'}`;
+            document.getElementById('detalleCausa').textContent = `${palabrasC} palabras ${palabrasC >= 40 && palabrasC <= 45 ? '✅' : '⚠️'}`;
+            document.getElementById('detalleConsecuencias').textContent = `${palabrasCons} palabras ${palabrasCons >= 40 && palabrasCons <= 45 ? '✅' : '⚠️'}`;
+            document.getElementById('detalleActores').textContent = `${palabrasA} palabras ${palabrasA >= 25 && palabrasA <= 30 ? '✅' : '⚠️'}`;
+            document.getElementById('detalleTiempo').textContent = formatTime(seconds);
+
+            document.getElementById('retroalimentacionTexto').textContent = retro.texto;
+            document.getElementById('informeFinalTexto').textContent = inf;
+
+            resultado.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.getElementById('btnEvaluar').addEventListener('click', evaluar);
+
+        document.getElementById('btnCerrarResultado').addEventListener('click', function() {
+            document.getElementById('resultadoEvaluacion').classList.remove('visible');
+        });
+
+        // ===== GUARDAR BORRADOR =====
+        document.getElementById('btnGuardar').addEventListener('click', function() {
+            const datos = {
+                equipo: document.getElementById('numeroEquipo').value,
+                integrantes: document.getElementById('integrantes').value,
+                problema: problemaCentral.value,
+                causa: causaPrincipal.value,
+                consecuencias: consecuencias.value,
+                actores: actores.value,
+                informe: informeCompleto.value,
+                tiempo: seconds
+            };
+            localStorage.setItem('informeAnecdotico', JSON.stringify(datos));
+            this.textContent = '✅ ¡Guardado!';
+            setTimeout(() => {
+                this.textContent = '💾 Guardar Borrador';
+            }, 2000);
+        });
+
+        function cargarBorrador() {
+            const datosGuardados = localStorage.getItem('informeAnecdotico');
+            if (datosGuardados) {
+                const datos = JSON.parse(datosGuardados);
+                document.getElementById('numeroEquipo').value = datos.equipo || '';
+                document.getElementById('integrantes').value = datos.integrantes || '';
+                problemaCentral.value = datos.problema || '';
+                causaPrincipal.value = datos.causa || '';
+                consecuencias.value = datos.consecuencias || '';
+                actores.value = datos.actores || '';
+                informeCompleto.value = datos.informe || '';
+                if (datos.tiempo) {
+                    seconds = datos.tiempo;
+                    timerDisplay.textContent = formatTime(seconds);
+                    timerStarted = true;
+                    timerStatus.textContent = '⏳ En curso...';
+                    timerStatus.className = 'timer-status';
+                    timerInterval = setInterval(() => {
+                        seconds++;
+                        timerDisplay.textContent = formatTime(seconds);
+                    }, 1000);
+                }
+                actualizarContador(problemaCentral, contadorProblema, 25, 30);
+                actualizarContador(causaPrincipal, contadorCausa, 40, 45);
+                actualizarContador(consecuencias, contadorConsecuencias, 40, 45);
+                actualizarContador(actores, contadorActores, 25, 30);
+                actualizarContador(informeCompleto, contadorInforme, 140, 160);
+            }
+        }
+        cargarBorrador();
+
+        document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('¿Estás seguro de que quieres limpiar todos los campos?')) {
+                document.getElementById('informeForm').reset();
+                document.getElementById('resultadoEvaluacion').classList.remove('visible');
+                localStorage.removeItem('informeAnecdotico');
+                resetTimer();
+                document.querySelectorAll('.contador').forEach(el => {
+                    el.textContent = '0 palabras';
+                    el.className = 'contador';
+                });
+            }
+        });
+
+        // ===== GENERAR PDF MEJORADO =====
+        async function generarPDF() {
+            const elemento = document.getElementById('contenidoParaPDF');
+            const btn = document.getElementById('btnGuardarPDF') || document.getElementById('btnGuardarPDFFlotante');
+            const textoOriginal = btn.textContent;
+            btn.textContent = '⏳ Generando...';
+            btn.disabled = true;
+
+            try {
+                // Ocultar temporalmente elementos que no queremos en el PDF (botones flotantes, etc.)
+                // Pero como los botones flotantes están fuera del contenedor, no se capturarán.
+
+                // Capturar el contenedor con html2canvas
+                const canvas = await html2canvas(elemento, {
+                    scale: 2, // Mayor calidad
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    width: elemento.scrollWidth,
+                    height: elemento.scrollHeight,
+                    windowWidth: elemento.scrollWidth,
+                    windowHeight: elemento.scrollHeight
+                });
+
+                // Crear PDF en formato A4 (210x297 mm) con márgenes
+                const imgData = canvas.toDataURL('image/jpeg', 0.95);
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF({
+                    orientation: 'portrait',
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const pdfWidth = 210;
+                const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+                // Si el contenido es más alto que una página, ajustar para que quepa en una sola
+                const maxHeight = 297;
+                let finalHeight = pdfHeight;
+                if (pdfHeight > maxHeight) {
+                    finalHeight = maxHeight;
+                    // Escalar para que quepa en una página
+                    const scaleFactor = maxHeight / pdfHeight;
+                    const imgWidth = pdfWidth * scaleFactor;
+                    const imgHeight = maxHeight;
+                    pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+                } else {
+                    // Centrar verticalmente si es más pequeño
+                    const yOffset = (maxHeight - pdfHeight) / 2;
+                    pdf.addImage(imgData, 'JPEG', 0, yOffset, pdfWidth, pdfHeight);
+                }
+
+                // Guardar PDF
+                const nombreEquipo = document.getElementById('numeroEquipo').value || 'equipo';
+                pdf.save(`informe_PAEC_${nombreEquipo}.pdf`);
+
+            } catch (error) {
+                console.error('Error al generar PDF:', error);
+                alert('❌ Hubo un error al generar el PDF. Intenta nuevamente o usa la captura de pantalla.');
+            } finally {
+                btn.textContent = textoOriginal;
+                btn.disabled = false;
+            }
+        }
+
+        document.getElementById('btnGuardarPDF').addEventListener('click', generarPDF);
+        document.getElementById('btnGuardarPDFFlotante').addEventListener('click', generarPDF);
+
+        // ===== CAPTURA DE PANTALLA =====
+        document.getElementById('btnCaptura').addEventListener('click', function() {
+            alert('📸 Para tomar una captura de pantalla:\n\n' +
+                '🖥️ En Windows: Presiona "Windows + Shift + S" y selecciona el área.\n' +
+                '🍎 En Mac: Presiona "Cmd + Shift + 4" y selecciona el área.\n' +
+                '📱 En móviles: Usa el botón de captura de pantalla de tu dispositivo.\n\n' +
+                '💡 Recuerda guardar la imagen y subirla a la tarea en Teams.');
+        });
+
+        // ===== INICIALIZAR CONTADORES =====
+        actualizarContador(problemaCentral, contadorProblema, 25, 30);
+        actualizarContador(causaPrincipal, contadorCausa, 40, 45);
+        actualizarContador(consecuencias, contadorConsecuencias, 40, 45);
+        actualizarContador(actores, contadorActores, 25, 30);
+        actualizarContador(informeCompleto, contadorInforme, 140, 160);
+    </script>
+
+</body>
+</html>
