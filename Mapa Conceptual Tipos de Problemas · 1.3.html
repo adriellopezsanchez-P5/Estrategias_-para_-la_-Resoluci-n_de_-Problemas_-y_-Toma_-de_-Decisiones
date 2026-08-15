@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🧩 Mapa Conceptual · Tipos de Problemas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* ==================== FONDO NARANJA CLARO CON PUNTOS ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#ffd9b3 0% 25%, #ffa64d 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #ffd9b3 0%, #ffb380 50%, #ffa64d 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .comic-container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            transition: all 0.1s ease;
+            margin-top: 1rem;
+        }
+
+        /* ===== BANNER DATOS ===== */
+        .datos-alumno {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: #000;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1rem 2rem;
+            box-shadow: 6px 6px 0 #ffa64d;
+            margin-bottom: 2rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .datos-alumno label {
+            font-family: 'Bangers', cursive;
+            font-size: 1.1rem;
+            color: #ffe600;
+            letter-spacing: 1px;
+            margin-right: 0.3rem;
+        }
+
+        .datos-alumno input {
+            padding: 0.4rem 1rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            border: 4px solid #000;
+            border-radius: 20px;
+            box-shadow: 4px 4px 0 #000;
+            background: #fff;
+            min-width: 180px;
+            flex: 1;
+        }
+
+        .datos-alumno input:focus {
+            outline: none;
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+        }
+
+        /* ===== TÍTULO ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .subtitulo-mapa {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #fff;
+            background: #ffa64d;
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 2rem;
+            transform: rotate(0.5deg);
+        }
+
+        .instruccion {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            background: #ffe600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: inline-block;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .instruccion small {
+            display: block;
+            font-weight: 400;
+            font-size: 0.85rem;
+            color: #333;
+            margin-top: 0.2rem;
+        }
+
+        /* ===== MAPA CONCEPTUAL ===== */
+        .mapa-container {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+            padding: 1rem 0;
+        }
+
+        /* SVG de líneas conectoras */
+        .lineas-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .lineas-svg line {
+            stroke: #000;
+            stroke-width: 4px;
+            stroke-linecap: round;
+        }
+
+        /* Caja Central */
+        .caja-central {
+            background: #ffe600;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.2rem 2.5rem;
+            box-shadow: 6px 6px 0 #000;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .caja-central h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 2rem;
+            letter-spacing: 1px;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .caja-central p {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1a1a1a;
+            font-weight: 500;
+            margin-top: 0.3rem;
+        }
+
+        /* Grid de 7 cajas */
+        .grid-siete {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            width: 100%;
+            max-width: 1100px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .grid-siete .caja-nivel2:nth-child(5),
+        .grid-siete .caja-nivel2:nth-child(6),
+        .grid-siete .caja-nivel2:nth-child(7) {
+            grid-column: span 1;
+        }
+
+        .grid-siete .caja-nivel2:nth-child(5) {
+            grid-column: 2 / 3;
+        }
+        .grid-siete .caja-nivel2:nth-child(6) {
+            grid-column: 3 / 4;
+        }
+        .grid-siete .caja-nivel2:nth-child(7) {
+            grid-column: 4 / 5;
+        }
+
+        /* Cajas de nivel 2 (Drop Zones) */
+        .caja-nivel2 {
+            border: 5px solid #000;
+            border-radius: 20px;
+            padding: 1rem 1.2rem;
+            box-shadow: 5px 5px 0 #000;
+            min-height: 200px;
+            transition: all 0.2s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .caja-nivel2 h4 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+            color: #000;
+            text-transform: uppercase;
+            margin-bottom: 0.3rem;
+            text-align: center;
+        }
+
+        .caja-nivel2 .subtitulo-caja {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            border: 2px solid #000;
+            margin-bottom: 0.6rem;
+        }
+
+        .drop-zone {
+            min-height: 120px;
+            border: 3px dashed rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .drop-zone.dragover {
+            border-color: #000;
+            background: rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .drop-zone .item-colocado {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #000;
+            border-radius: 10px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #000;
+            box-shadow: 2px 2px 0 #000;
+            animation: popIn 0.3s ease;
+            margin-bottom: 0.2rem;
+            cursor: default;
+            text-align: center;
+        }
+
+        .drop-zone .item-colocado.correcto {
+            border-color: #00cc88;
+            background: #e6fff5;
+        }
+
+        .drop-zone .item-colocado.incorrecto {
+            border-color: #ff4d4d;
+            background: #ffe6e6;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Colores específicos para cada tipo */
+        .caja-convergentes { background: #ff6b6b; color: #fff; }
+        .caja-convergentes h4 { color: #fff; }
+        .caja-convergentes .subtitulo-caja { background: #fff; color: #000; }
+
+        .caja-divergentes { background: #ffa94d; color: #fff; }
+        .caja-divergentes h4 { color: #fff; }
+        .caja-divergentes .subtitulo-caja { background: #fff; color: #000; }
+
+        .caja-razonamiento { background: #4dabf7; color: #fff; }
+        .caja-razonamiento h4 { color: #fff; }
+        .caja-razonamiento .subtitulo-caja { background: #fff; color: #000; }
+
+        .caja-dificultades { background: #66cc66; color: #fff; }
+        .caja-dificultades h4 { color: #fff; }
+        .caja-dificultades .subtitulo-caja { background: #fff; color: #000; }
+
+        .caja-conflicto { background: #ffd93d; color: #000; }
+        .caja-conflicto h4 { color: #000; }
+        .caja-conflicto .subtitulo-caja { background: #000; color: #fff; }
+
+        .caja-teoricos { background: #a66cff; color: #fff; }
+        .caja-teoricos h4 { color: #fff; }
+        .caja-teoricos .subtitulo-caja { background: #fff; color: #000; }
+
+        .caja-investigacion { background: #ff6b6b; color: #fff; }
+        .caja-investigacion h4 { color: #fff; }
+        .caja-investigacion .subtitulo-caja { background: #fff; color: #000; }
+
+        /* ===== CONTENEDOR DE CONCEPTOS ===== */
+        .conceptos-container {
+            background: #000;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 2rem;
+            box-shadow: 7px 7px 0 #ffa64d;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .conceptos-container h3 {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            color: #ffe600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .conceptos-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            justify-content: center;
+        }
+
+        .concepto-item {
+            background: #fff;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 0.4rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #000;
+            box-shadow: 4px 4px 0 #000;
+            cursor: grab;
+            transition: all 0.15s ease;
+            user-select: none;
+            text-align: center;
+            max-width: 200px;
+        }
+
+        .concepto-item:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 #000;
+        }
+
+        .concepto-item:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .concepto-item.oculto {
+            display: none;
+        }
+
+        /* ===== RESULTADO EVALUACIÓN ===== */
+        .resultado-evaluacion {
+            margin-top: 1.5rem;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            border: 5px solid #000;
+            box-shadow: 5px 5px 0 #000;
+            font-weight: 700;
+            font-size: 1.2rem;
+            text-align: center;
+            display: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        .resultado-evaluacion.exito {
+            display: block;
+            background: #00cc88;
+            color: #fff;
+        }
+
+        .resultado-evaluacion.error {
+            display: block;
+            background: #ff4d4d;
+            color: #fff;
+        }
+
+        .resultado-evaluacion.parcial {
+            display: block;
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .resultado-evaluacion .nota {
+            font-size: 2rem;
+            font-family: 'Bangers', cursive;
+            letter-spacing: 2px;
+            margin-top: 0.3rem;
+        }
+
+        /* ==================== BOTONES FLOTANTES ==================== */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 999;
+        }
+
+        .btn-flotante {
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-flotante.evaluar {
+            background: #00cc88;
+            color: #fff;
+        }
+
+        .btn-flotante.casa {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-flotante:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        @media (max-width: 600px) {
+            .botones-flotantes {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.5rem;
+            }
+            .btn-flotante {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 1000px) {
+            .grid-siete {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .grid-siete .caja-nivel2:nth-child(5),
+            .grid-siete .caja-nivel2:nth-child(6),
+            .grid-siete .caja-nivel2:nth-child(7) {
+                grid-column: span 1;
+            }
+            .grid-siete .caja-nivel2:nth-child(5) {
+                grid-column: 1 / 2;
+            }
+            .grid-siete .caja-nivel2:nth-child(6) {
+                grid-column: 2 / 3;
+            }
+            .grid-siete .caja-nivel2:nth-child(7) {
+                grid-column: 3 / 4;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .grid-siete {
+                grid-template-columns: 1fr 1fr;
+            }
+            .grid-siete .caja-nivel2:nth-child(5),
+            .grid-siete .caja-nivel2:nth-child(6),
+            .grid-siete .caja-nivel2:nth-child(7) {
+                grid-column: span 1;
+            }
+            .grid-siete .caja-nivel2:nth-child(5) {
+                grid-column: 1 / 2;
+            }
+            .grid-siete .caja-nivel2:nth-child(6) {
+                grid-column: 2 / 3;
+            }
+            .grid-siete .caja-nivel2:nth-child(7) {
+                grid-column: 1 / 2;
+            }
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.2rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .subtitulo-mapa {
+                font-size: 1.2rem;
+                padding: 0.2rem 1rem;
+            }
+            .instruccion {
+                font-size: 0.95rem;
+                padding: 0.4rem 1rem;
+            }
+            .caja-central {
+                padding: 1rem 1.2rem;
+            }
+            .caja-central h3 {
+                font-size: 1.5rem;
+            }
+            .caja-nivel2 h4 {
+                font-size: 1rem;
+            }
+            .conceptos-container h3 {
+                font-size: 1.4rem;
+            }
+            .concepto-item {
+                font-size: 0.7rem;
+                padding: 0.3rem 0.8rem;
+                max-width: 150px;
+            }
+            .resultado-evaluacion {
+                font-size: 1rem;
+                padding: 0.8rem 1rem;
+            }
+            .datos-alumno {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1rem;
+            }
+            .datos-alumno label {
+                margin-bottom: 0.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-siete {
+                grid-template-columns: 1fr;
+            }
+            .grid-siete .caja-nivel2:nth-child(5),
+            .grid-siete .caja-nivel2:nth-child(6),
+            .grid-siete .caja-nivel2:nth-child(7) {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== CONTENIDO PRINCIPAL ==================== -->
+    <div class="page-content">
+        <div class="comic-container">
+
+            <!-- ===== DATOS DEL ALUMNO ===== -->
+            <div class="datos-alumno">
+                <label for="nombreAlumno">👤 Nombre completo:</label>
+                <input type="text" id="nombreAlumno" placeholder="Ej. María Pérez González" />
+                <label for="grupoAlumno">📚 Grupo:</label>
+                <input type="text" id="grupoAlumno" placeholder="Ej. 3°A" />
+            </div>
+
+            <!-- ===== TÍTULO ===== -->
+            <h1 class="titulo-seccion">🧩 Mapa Conceptual</h1>
+            <div class="subtitulo-mapa">🌿 Tipos de Problemas · 1.3</div>
+            <div class="instruccion">
+                📌 Arrastra cada concepto a la caja del tipo de problema que le corresponda.
+                <small>⚠️ Solo tienes <strong>UN INTENTO</strong> para evaluar. ¡Piensa bien antes de soltar!</small>
+            </div>
+
+            <!-- ===== MAPA CONCEPTUAL ===== -->
+            <div class="mapa-container" id="mapaContainer">
+
+                <!-- SVG para líneas conectoras -->
+                <svg class="lineas-svg" id="lineasSvg"></svg>
+
+                <!-- Caja Central -->
+                <div class="caja-central" id="cajaCentral">
+                    <h3>1.3 Tipos de Problemas</h3>
+                    <p>El multiverso de las "bestias" que enfrentas cada día</p>
+                </div>
+
+                <!-- Grid de 7 cajas -->
+                <div class="grid-siete" id="gridSiete">
+
+                    <!-- 1. Convergentes -->
+                    <div class="caja-nivel2 caja-convergentes" data-categoria="convergentes">
+                        <h4>1.3.1 Convergentes</h4>
+                        <div class="subtitulo-caja">Lógicos y cerrados</div>
+                        <div class="drop-zone" id="drop-convergentes"></div>
+                    </div>
+
+                    <!-- 2. Divergentes -->
+                    <div class="caja-nivel2 caja-divergentes" data-categoria="divergentes">
+                        <h4>1.3.2 Divergentes</h4>
+                        <div class="subtitulo-caja">Creativos y abiertos</div>
+                        <div class="drop-zone" id="drop-divergentes"></div>
+                    </div>
+
+                    <!-- 3. Razonamiento -->
+                    <div class="caja-nivel2 caja-razonamiento" data-categoria="razonamiento">
+                        <h4>1.3.3 Razonamiento</h4>
+                        <div class="subtitulo-caja">Inductivo / Deductivo</div>
+                        <div class="drop-zone" id="drop-razonamiento"></div>
+                    </div>
+
+                    <!-- 4. Dificultades -->
+                    <div class="caja-nivel2 caja-dificultades" data-categoria="dificultades">
+                        <h4>1.3.4 Dificultades</h4>
+                        <div class="subtitulo-caja">Obstáculos en el camino</div>
+                        <div class="drop-zone" id="drop-dificultades"></div>
+                    </div>
+
+                    <!-- 5. Conflicto -->
+                    <div class="caja-nivel2 caja-conflicto" data-categoria="conflicto">
+                        <h4>1.3.5 Conflicto</h4>
+                        <div class="subtitulo-caja">Emocional / Relacional</div>
+                        <div class="drop-zone" id="drop-conflicto"></div>
+                    </div>
+
+                    <!-- 6. Teóricos o Prácticos -->
+                    <div class="caja-nivel2 caja-teoricos" data-categoria="teoricos">
+                        <h4>1.3.6 Teóricos / Prácticos</h4>
+                        <div class="subtitulo-caja">Comprender o Actuar</div>
+                        <div class="drop-zone" id="drop-teoricos"></div>
+                    </div>
+
+                    <!-- 7. Investigación -->
+                    <div class="caja-nivel2 caja-investigacion" data-categoria="investigacion">
+                        <h4>1.3.7 Investigación</h4>
+                        <div class="subtitulo-caja">Método científico</div>
+                        <div class="drop-zone" id="drop-investigacion"></div>
+                    </div>
+
+                </div><!-- fin grid-siete -->
+            </div><!-- fin mapa-container -->
+
+            <!-- ===== CONTENEDOR DE CONCEPTOS ===== -->
+            <div class="conceptos-container">
+                <h3>📦 Conceptos para clasificar</h3>
+                <div class="conceptos-grid" id="conceptos-grid">
+                    <!-- Los conceptos se generarán con JavaScript -->
+                </div>
+            </div>
+
+            <!-- ===== RESULTADO EVALUACIÓN ===== -->
+            <div class="resultado-evaluacion" id="resultado"></div>
+
+        </div>
+    </div>
+
+    <!-- ==================== BOTONES FLOTANTES ==================== -->
+    <div class="botones-flotantes">
+        <button class="btn-flotante evaluar" id="btn-evaluar">✅ Evaluar</button>
+        <a href="#" class="btn-flotante casa">🏠 Volver a casa</a>
+    </div>
+
+    <script>
+        // ==================== DATOS DEL EJERCICIO ====================
+        const conceptosData = [
+            // Convergentes (2)
+            { texto: "Enfoque lógico y sistemático", categoria: "convergentes" },
+            { texto: "Resolver una ecuación matemática", categoria: "convergentes" },
+            // Divergentes (2)
+            { texto: "Enfoque creativo y abierto", categoria: "divergentes" },
+            { texto: "Entregar proyecto alternativo si falla la plataforma", categoria: "divergentes" },
+            // Razonamiento (2)
+            { texto: "Método inductivo o deductivo", categoria: "razonamiento" },
+            { texto: "Inductivo: duele cabeza si no desayuno", categoria: "razonamiento" },
+            // Dificultades (2)
+            { texto: "Obstáculos cognitivos o materiales", categoria: "dificultades" },
+            { texto: "Subir tarea a tiempo pero sin internet", categoria: "dificultades" },
+            // Conflicto (2)
+            { texto: "Componente emocional dominante", categoria: "conflicto" },
+            { texto: "Discusión fuerte en equipo por falta de participación", categoria: "conflicto" },
+            // Teóricos o Prácticos (2)
+            { texto: "Teóricos: comprender / Prácticos: actuar", categoria: "teoricos" },
+            { texto: "Investigar gravedad o curar un tobillo", categoria: "teoricos" },
+            // Investigación (2)
+            { texto: "Brecha de conocimiento con método científico", categoria: "investigacion" },
+            { texto: "Estudio sobre redes sociales y sueño en prepa", categoria: "investigacion" }
+        ];
+
+        // Mezclar conceptos aleatoriamente
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const conceptosMezclados = shuffle([...conceptosData]);
+
+        // ==================== RENDERIZAR CONCEPTOS ====================
+        const grid = document.getElementById('conceptos-grid');
+        const dropZones = {
+            convergentes: document.getElementById('drop-convergentes'),
+            divergentes: document.getElementById('drop-divergentes'),
+            razonamiento: document.getElementById('drop-razonamiento'),
+            dificultades: document.getElementById('drop-dificultades'),
+            conflicto: document.getElementById('drop-conflicto'),
+            teoricos: document.getElementById('drop-teoricos'),
+            investigacion: document.getElementById('drop-investigacion')
+        };
+
+        // Estado de los conceptos colocados
+        const colocados = [];
+
+        function renderizarConceptos() {
+            grid.innerHTML = '';
+            conceptosMezclados.forEach((concepto, index) => {
+                if (!colocados.includes(index)) {
+                    const div = document.createElement('div');
+                    div.className = 'concepto-item';
+                    div.textContent = concepto.texto;
+                    div.draggable = true;
+                    div.dataset.index = index;
+                    div.dataset.categoria = concepto.categoria;
+                    div.id = `concepto-${index}`;
+
+                    div.addEventListener('dragstart', dragStart);
+                    div.addEventListener('dragend', dragEnd);
+
+                    grid.appendChild(div);
+                }
+            });
+        }
+
+        // ==================== DRAG & DROP ====================
+        let draggedElement = null;
+
+        function dragStart(e) {
+            draggedElement = this;
+            this.style.opacity = '0.5';
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.index);
+        }
+
+        function dragEnd(e) {
+            this.style.opacity = '1';
+        }
+
+        // Configurar drop zones
+        Object.values(dropZones).forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'move';
+                zone.classList.add('dragover');
+            });
+
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('dragover');
+            });
+
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('dragover');
+
+                const index = parseInt(e.dataTransfer.getData('text/plain'));
+                const concepto = conceptosMezclados[index];
+                const categoriaCorrecta = concepto.categoria;
+
+                // Determinar qué drop zone es
+                let categoriaDrop = '';
+                for (const [key, element] of Object.entries(dropZones)) {
+                    if (element === zone) {
+                        categoriaDrop = key;
+                        break;
+                    }
+                }
+
+                const esCorrecto = categoriaDrop === categoriaCorrecta;
+
+                const item = document.createElement('div');
+                item.className = `item-colocado ${esCorrecto ? 'correcto' : 'incorrecto'}`;
+                item.textContent = concepto.texto;
+                item.dataset.categoria = categoriaCorrecta;
+                item.dataset.categoriaDrop = categoriaDrop;
+                item.dataset.correcto = esCorrecto;
+                zone.appendChild(item);
+
+                colocados.push(index);
+
+                const elemento = document.getElementById(`concepto-${index}`);
+                if (elemento) elemento.remove();
+
+                document.getElementById('resultado').style.display = 'none';
+                document.getElementById('resultado').className = 'resultado-evaluacion';
+
+                // Redibujar líneas después de cada drop
+                dibujarLineas();
+            });
+        });
+
+        // ==================== EVALUAR ====================
+        document.getElementById('btn-evaluar').addEventListener('click', evaluar);
+
+        function evaluar() {
+            const total = conceptosData.length;
+            const colocadosActual = document.querySelectorAll('.item-colocado');
+            const aciertos = document.querySelectorAll('.item-colocado.correcto').length;
+            const errores = document.querySelectorAll('.item-colocado.incorrecto').length;
+            const faltantes = total - colocadosActual.length;
+
+            const resultado = document.getElementById('resultado');
+            resultado.style.display = 'block';
+
+            // Calcular nota sobre 10
+            const nota = Math.round((aciertos / total) * 10);
+
+            let mensaje = '';
+            let clase = '';
+
+            if (faltantes > 0) {
+                mensaje = `⚠️ Te faltan ${faltantes} concepto(s) por colocar. ¡Sigue intentando!`;
+                clase = 'parcial';
+            } else if (errores === 0 && aciertos === total) {
+                mensaje = `🎉 ¡Perfecto! Has clasificado todos los conceptos correctamente (${aciertos}/${total}). ¡Excelente trabajo!`;
+                clase = 'exito';
+            } else {
+                mensaje = `📊 Tienes ${aciertos} aciertos y ${errores} errores. Revisa los conceptos marcados en rojo y corrígelos.`;
+                clase = 'error';
+            }
+
+            // Mostrar nota
+            const notaHTML = `<div class="nota">⭐ Calificación: ${nota}/10</div>`;
+
+            resultado.innerHTML = `${mensaje} ${notaHTML}`;
+            resultado.className = `resultado-evaluacion ${clase}`;
+
+            document.querySelectorAll('.item-colocado.incorrecto').forEach(item => {
+                item.style.borderColor = '#ff0000';
+                item.style.background = '#ffcccc';
+            });
+        }
+
+        // ==================== DIBUJAR LÍNEAS CONECTORAS ====================
+        function dibujarLineas() {
+            const svg = document.getElementById('lineasSvg');
+            const container = document.getElementById('mapaContainer');
+            const central = document.getElementById('cajaCentral');
+            const cajas = document.querySelectorAll('.caja-nivel2');
+
+            // Limpiar líneas anteriores
+            svg.innerHTML = '';
+
+            // Obtener coordenadas relativas al contenedor
+            const rectContainer = container.getBoundingClientRect();
+            const rectCentral = central.getBoundingClientRect();
+
+            const cx = rectCentral.left + rectCentral.width / 2 - rectContainer.left;
+            const cy = rectCentral.bottom - rectContainer.top;
+
+            cajas.forEach((caja) => {
+                const rectCaja = caja.getBoundingClientRect();
+                const x1 = cx;
+                const y1 = cy;
+                const x2 = rectCaja.left + rectCaja.width / 2 - rectContainer.left;
+                const y2 = rectCaja.top - rectContainer.top;
+
+                // Crear línea
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x1);
+                line.setAttribute('y1', y1);
+                line.setAttribute('x2', x2);
+                line.setAttribute('y2', y2);
+                svg.appendChild(line);
+            });
+
+            // Ajustar tamaño del SVG
+            const height = container.scrollHeight;
+            const width = container.scrollWidth;
+            svg.setAttribute('width', width);
+            svg.setAttribute('height', height);
+            svg.style.width = width + 'px';
+            svg.style.height = height + 'px';
+        }
+
+        // ==================== INICIALIZAR ====================
+        renderizarConceptos();
+
+        // Dibujar líneas después de renderizar y en cada redimensionamiento
+        setTimeout(dibujarLineas, 100);
+        window.addEventListener('resize', dibujarLineas);
+
+        // También redibujar cuando se complete un drag
+        document.addEventListener('drop', function() {
+            setTimeout(dibujarLineas, 50);
+        });
+    </script>
+
+</body>
+</html>
