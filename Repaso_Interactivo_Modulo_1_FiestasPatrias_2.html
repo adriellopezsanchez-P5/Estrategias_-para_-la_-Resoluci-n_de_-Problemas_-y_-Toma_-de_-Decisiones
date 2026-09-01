@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Repaso Interactivo — Módulo 1 · Edición Fiestas Patrias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#0B6E4F;
+  --verde-oscuro:#0B3D2E;
+  --rojo:#C8102E;
+  --rojo-oscuro:#7A0C1D;
+  --dorado:#D4A017;
+  --dorado-suave:#F1D488;
+  --crema:#FBF6EC;
+  --tinta:#20241F;
+  --muted:#6b7280;
+  --ok:#0B6E4F;
+  --danger:#C8102E;
+  --white:#fff;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:'Inter',Segoe UI,Arial,sans-serif;color:var(--tinta);
+  background-color:var(--crema);
+  background-image:radial-gradient(circle at 1px 1px,#00000010 1px,transparent 0);
+  background-size:20px 20px;
+}
+h1,h2,.brand,.q,.score{font-family:'Baloo 2','Inter',sans-serif}
+.app{max-width:1180px;margin:auto;padding:22px}
+
+/* ---- Guirnalda de papel picado (elemento distintivo) ---- */
+.picado{position:relative;height:44px;overflow:hidden;margin:-24px -28px 16px;display:flex;align-items:flex-start;gap:4px;padding-left:16px}
+.picado .rope{position:absolute;top:11px;left:0;right:0;height:2px;background:var(--dorado-suave);opacity:.55}
+.pennant{position:relative;flex:0 0 auto;width:24px;height:30px;margin-top:8px;clip-path:polygon(0 0,100% 0,50% 100%)}
+.pennant.pw{background:var(--crema)}
+.pennant.pr{background:var(--rojo)}
+.pennant.pg{background:var(--dorado)}
+.pennant::before,.pennant::after{content:'';position:absolute;width:4px;height:4px;border-radius:50%;top:5px;background:var(--verde-oscuro)}
+.pennant::before{left:7px}
+.pennant::after{left:13px}
+.picado.on-light .pennant::before,.picado.on-light .pennant::after{background:var(--crema)}
+.picado.on-light .pennant.pw{background:var(--verde)}
+
+/* ---- Cinta bordada (acento estructural, uso restringido) ---- */
+.bordado{height:8px;border-radius:6px;margin:16px 0;opacity:.9;
+  background:repeating-linear-gradient(135deg,var(--rojo) 0 6px,var(--dorado) 6px 12px,var(--verde) 12px 18px)}
+
+.top{position:relative;overflow:hidden;background:linear-gradient(160deg,var(--verde-oscuro),#08281d);color:#fff;border-radius:22px;padding:24px 28px;box-shadow:0 12px 35px #0b3d2e33}
+.brand{font-size:13px;letter-spacing:1.8px;text-transform:uppercase;opacity:.85;font-family:'Inter',sans-serif;font-weight:700}
+.top h1{margin:7px 0 4px;font-size:30px;font-weight:800}
+.top p{margin:0;opacity:.88}
+.progress{height:9px;background:#ffffff22;border-radius:20px;margin-top:20px;overflow:hidden}
+.bar{height:100%;background:linear-gradient(90deg,var(--dorado),var(--rojo));width:0%;transition:.35s}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:20px;margin-top:20px}
+.panel,.card{background:#fff;border-radius:20px;padding:24px;box-shadow:0 8px 30px #0b3d2e14;border:1px solid #e7e2d3}
+main.panel{border-top:5px solid var(--dorado)}
+aside.panel{border-top:5px solid var(--rojo)}
+#start.panel{border-top:5px solid var(--verde)}
+
+.question-num{color:var(--verde);font-weight:800;text-transform:uppercase;letter-spacing:1px;font-size:13px}
+.q{font-size:24px;line-height:1.35;margin:10px 0 22px;font-weight:600}
+.option{display:flex;align-items:flex-start;gap:12px;width:100%;padding:15px 16px;margin:10px 0;border:2px solid #e4dfce;border-radius:14px;background:#fff;text-align:left;cursor:pointer;font-size:16px;transition:.2s;font-family:'Inter',sans-serif}
+.option:hover{border-color:var(--verde);transform:translateY(-1px)}
+.option .letter{min-width:31px;height:31px;border-radius:50%;background:var(--crema);color:var(--verde-oscuro);display:grid;place-items:center;font-weight:800;border:2px solid #e4dfce}
+.option.selected{border-color:var(--verde);background:#f0f8f4}
+.option.selected .letter{background:var(--verde);color:#fff;border-color:var(--verde)}
+.option.locked{cursor:default}
+.actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;flex-wrap:wrap;gap:10px}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;font-size:15px}
+.primary{background:var(--verde);color:#fff}
+.primary:hover:not(:disabled){background:var(--verde-oscuro)}
+.secondary{background:var(--crema);color:var(--verde-oscuro);border:1px solid #e4dfce}
+.gold{background:var(--dorado);color:#3a2c02}
+.gold:hover{background:#c19412}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+
+.side h2{font-size:18px;margin-top:0}
+.deck{display:grid;gap:10px;max-height:610px;overflow:auto}
+.mini{border:1px solid #e4dfce;border-radius:13px;padding:12px;background:#fdfbf4;cursor:pointer;text-align:left;font-family:'Inter',sans-serif}
+.mini strong{display:block;color:var(--rojo-oscuro)}
+.mini small{color:var(--muted)}
+.modal{position:fixed;inset:0;background:#0b160fcc;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}
+.modal.show{display:flex}
+.modalbox{background:#fff;max-width:650px;width:100%;max-height:85vh;overflow:auto;border-radius:22px;padding:26px}
+.modalbox h2{color:var(--verde-oscuro)}
+.close{float:right;background:var(--crema);border:0;border-radius:50%;width:34px;height:34px;cursor:pointer;font-weight:800}
+
+.start,.result{max-width:850px;margin:50px auto}
+.start h2,.result h2{font-size:32px;color:var(--verde-oscuro);font-weight:800}
+.start ul{text-align:left;line-height:1.8}
+.field{display:grid;gap:7px;margin:15px 0;text-align:left}
+.field label{font-weight:700;font-size:14px}
+.field label .req{color:var(--rojo);font-weight:800}
+.field input{padding:13px;border:1px solid #cfc9b4;border-radius:11px;font-size:16px;font-family:'Inter',sans-serif}
+.field input:focus{outline:2px solid var(--verde);border-color:var(--verde)}
+.field input.invalid{border-color:var(--rojo)}
+.error-banner{background:#fdecea;border:1px solid var(--rojo);color:var(--rojo-oscuro);border-radius:12px;padding:12px 14px;margin:14px 0;font-weight:600;font-size:14px}
+.hint-box{background:#fdf6e3;border:1px solid var(--dorado);border-left:5px solid var(--dorado);border-radius:12px;padding:14px 16px;margin:0 0 18px;font-size:15px;color:#5a4508;display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.hint-box .hint-close{background:none;border:0;cursor:pointer;font-weight:800;color:#5a4508;font-size:16px;line-height:1}
+.score{font-size:54px;font-weight:800;margin:8px 0;
+  background:linear-gradient(90deg,var(--verde),var(--dorado) 50%,var(--rojo));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.result-item{padding:14px 16px;border-radius:12px;margin:9px 0;background:#f8f6ee}
+.good{border-left:5px solid var(--ok)}
+.bad{border-left:5px solid var(--danger)}
+.review{margin-top:24px}
+.hidden{display:none}
+.tag{display:inline-block;background:var(--dorado-suave);color:#5a4508;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:800}
+.result-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+
+@media(max-width:850px){
+  .layout{grid-template-columns:1fr}
+  .side{order:-1}
+  .deck{display:flex;overflow:auto}
+  .mini{min-width:190px}
+  .q{font-size:21px}
+  .picado{margin:-18px -18px 14px;height:38px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section id="start" class="panel start">
+    <div class="brand">🇲🇽 Estrategias para la Resolución de Problemas y Toma de Decisiones</div>
+    <h2>Repaso Interactivo · Módulo 1</h2>
+    <div class="bordado"></div>
+    <p>Tarjetas de apoyo + 15 preguntas de opción múltiple + autoevaluación. Edición especial Fiestas Patrias 🎉</p>
+    <div id="startError" class="error-banner hidden"></div>
+    <div class="field"><label>Nombre completo <span class="req">*</span></label><input id="student" placeholder="Escribe tu nombre completo"></div>
+    <div class="field"><label>Número de cuenta / matrícula <span class="req">*</span></label><input id="account" placeholder="Ej. 1234567890" inputmode="numeric"></div>
+    <div class="field"><label>Grupo (opcional)</label><input id="group" placeholder="Ej. 302"></div>
+    <ul>
+      <li>Puedes consultar las tarjetas durante todo el cuestionario.</li>
+      <li>Cada pregunta permite <b>un solo intento</b>.</li>
+      <li>Una vez seleccionada una respuesta, no podrás cambiarla.</li>
+      <li>Al finalizar se mostrará tu resultado, la revisión de respuestas y podrás descargar tu constancia en PDF.</li>
+    </ul>
+    <button class="btn primary" onclick="startQuiz()">Comenzar repaso</button>
+  </section>
+
+  <section id="quiz" class="hidden">
+    <header class="top">
+      <div class="picado" id="picadoTop"><div class="rope"></div></div>
+      <div class="brand">Módulo 1 · Repaso interactivo</div>
+      <h1 id="title">Desafío de conocimientos</h1>
+      <p id="subtitle"></p>
+      <div class="progress"><div id="bar" class="bar"></div></div>
+    </header>
+    <div class="layout">
+      <main class="panel">
+        <div class="question-num" id="qnum"></div>
+        <div class="q" id="question"></div>
+        <div id="hintBox" class="hint-box hidden">
+          <span id="hintText"></span>
+          <button class="hint-close" onclick="hideHint()" aria-label="Cerrar pista">×</button>
+        </div>
+        <div id="options"></div>
+        <div class="actions">
+          <button class="btn secondary" onclick="showHint()">💡 Ver pista</button>
+          <button id="next" class="btn primary" disabled onclick="nextQuestion()">Continuar</button>
+        </div>
+      </main>
+      <aside class="panel side">
+        <h2>🃏 Tarjetas de apoyo</h2>
+        <p style="color:#6b7280;font-size:14px">Consúltalas cuando quieras. No se penaliza abrirlas.</p>
+        <div class="deck" id="deck"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="result" class="panel result hidden">
+    <div class="picado on-light" id="picadoResult"><div class="rope"></div></div>
+    <div class="brand">Autoevaluación completada</div>
+    <h2>Resultado final</h2>
+    <div class="bordado"></div>
+    <div id="score" class="score"></div>
+    <p id="summary"></p>
+    <div class="result-actions">
+      <button class="btn gold" onclick="downloadResults()">⬇️ Descargar resultados (imagen)</button>
+      <button class="btn secondary" onclick="location.reload()">Cerrar y volver al inicio</button>
+    </div>
+    <div id="review" class="review"></div>
+  </section>
+</div>
+
+<div id="modal" class="modal" onclick="closeModal(event)">
+  <div class="modalbox">
+    <button class="close" onclick="hideModal()">×</button>
+    <span class="tag">TARJETA DE REPASO</span>
+    <h2 id="mTitle"></h2>
+    <p id="mText" style="line-height:1.7"></p>
+    <p id="mKey" style="font-weight:800;color:#7a5e0f"></p>
+  </div>
+</div>
+
+<script>
+const DATA = {"questions": [{"q": "Una estudiante enfrenta una situación poco definida, cambiante y sin un procedimiento establecido. Necesita imaginar varias alternativas antes de decidir. ¿Qué tipo de problema corresponde?", "opts": ["Convergente", "Divergente", "Práctico", "De razonamiento"], "a": 1, "hint": "Busca la combinación de incertidumbre, creatividad y múltiples alternativas.", "fb": "La situación es poco definida y requiere creatividad, imaginación y exploración de varias alternativas."}, {"q": "Un alumno debe resolver una ecuación aplicando una fórmula establecida hasta obtener la única respuesta esperada. ¿Qué tipo de problema es?", "opts": ["Divergente", "De conflicto", "Convergente", "Teórico"], "a": 2, "hint": "Piensa en una estructura lineal, reglas claras y un resultado único.", "fb": "Se trata de un problema estructurado, con reglas o procedimientos claros y un resultado esperado único."}, {"q": "Dos integrantes de un equipo se enfrentan por la organización de un proyecto. Las emociones influyen directamente en sus discusiones. ¿Qué tipo de problema se presenta?", "opts": ["De conflicto", "De investigación", "De dificultades", "Convergente"], "a": 0, "hint": "El componente emocional y el choque entre personas son elementos centrales.", "fb": "El componente emocional y el choque directo entre personas corresponden a un problema de conflicto."}, {"q": "La dirección de una preparatoria recolecta y analiza datos de calificaciones para determinar las causas del bajo rendimiento en matemáticas. ¿Qué tipo de problema está abordando?", "opts": ["Práctico", "Divergente", "De investigación", "De conflicto"], "a": 2, "hint": "Se busca generar evidencia mediante un estudio sistemático y datos observables.", "fb": "El caso plantea una brecha de conocimiento que se aborda mediante un estudio sistemático y datos observables."}, {"q": "Una persona analiza conceptualmente el metapensamiento para comprender cómo la autoevaluación y los sesgos cognitivos modifican el aprendizaje. ¿Qué tipo de problema corresponde?", "opts": ["Teórico", "Práctico", "Convergente", "De dificultades"], "a": 0, "hint": "La finalidad principal es comprender y explicar ideas abstractas, no intervenir de inmediato.", "fb": "La finalidad central es comprender y explicar un concepto o fenómeno abstracto para generar conocimiento."}, {"q": "Durante una excursión, un estudiante sufre una lesión grave y es necesario brindar primeros auxilios y organizar rápidamente su traslado. ¿Qué tipo de problema es?", "opts": ["De razonamiento", "Práctico", "Teórico", "De investigación"], "a": 1, "hint": "La situación exige actuar sobre la realidad y tomar una decisión rápida.", "fb": "El problema exige intervenir directamente en la realidad y actuar ante una situación que demanda una respuesta rápida."}, {"q": "Un estudiante conoce perfectamente cómo realizar y entregar una tarea digital, pero una tormenta provoca que no tenga conexión a internet. ¿Qué tipo de problema representa principalmente?", "opts": ["De dificultades", "Divergente", "De conflicto", "Teórico"], "a": 0, "hint": "La meta y la solución son conocidas; lo que impide alcanzarlas es una barrera.", "fb": "La meta y la solución son conocidas, pero una barrera material obstaculiza alcanzar el resultado."}, {"q": "A partir de varias observaciones particulares de errores al cargar un mismo formato de video, un alumno concluye que ese formato es incompatible con la plataforma. ¿Qué estructura de razonamiento utiliza?", "opts": ["Deductiva", "Convergente", "Inductiva", "Práctica"], "a": 2, "hint": "Observa hechos particulares y después formula una conclusión general.", "fb": "El razonamiento inductivo parte de observaciones particulares para formular una conclusión general."}, {"q": "Una plataforma rechaza un archivo de 15 MB porque solo admite archivos de máximo 10 MB. El estudiante parte de la regla general para explicar su caso particular. ¿Qué estructura de razonamiento utiliza?", "opts": ["Inductiva", "Deductiva", "Divergente", "Hermenéutica"], "a": 1, "hint": "La dirección del razonamiento va de una regla general hacia un caso concreto.", "fb": "El razonamiento deductivo parte de una regla o premisa general para explicar un caso particular."}, {"q": "En el análisis de una situación, una persona pregunta: “¿Qué razones profundas están originando lo que ocurre?”. ¿Qué elemento de la estructura del problema está identificando?", "opts": ["Las ramas", "El tablero", "La incógnita", "Las raíces"], "a": 3, "hint": "Es el elemento que representa las razones que originan la situación.", "fb": "Las raíces representan las razones que originan la situación; pueden ser directas, indirectas, inmediatas o profundas."}, {"q": "Una estudiante identifica que el bombardeo constante de contenido digital está saturando su atención y favoreciendo decisiones impulsivas. ¿Cómo puede clasificarse la infoxicación dentro del análisis del problema?", "opts": ["Como una causa raíz o detonante", "Como un actor de apoyo", "Como una consecuencia exclusivamente social", "Como una solución convergente"], "a": 0, "hint": "En el material, la infoxicación se presenta como una raíz o factor que puede detonar dificultades.", "fb": "El material identifica la infoxicación como una causa raíz o detonante que puede alimentar las dificultades cotidianas."}, {"q": "Antes de actuar, un alumno pregunta: “¿Qué pasará mañana si no entrego esto? ¿Afectará mi bienestar o mis planes a futuro?”. ¿Qué paso de resolución está aplicando?", "opts": ["Identificar los datos conocidos", "Definir la incógnita", "Anticipar consecuencias", "Ejecutar y evaluar"], "a": 2, "hint": "Está examinando el efecto dominó de una decisión antes de ejecutarla.", "fb": "Está valorando los efectos que una decisión puede producir en el futuro antes de actuar."}, {"q": "Un estudiante evita pensar “tengo mucho que hacer” y formula: “¿Cómo puedo organizar mis próximas tres horas para terminar lo necesario sin arriesgar mi calificación?”. ¿Qué está haciendo?", "opts": ["Definiendo la incógnita", "Analizando actores", "Identificando una causa física", "Evaluando una consecuencia"], "a": 0, "hint": "Está convirtiendo una situación vaga en la pieza concreta que necesita resolver.", "fb": "Está delimitando la pieza que falta resolver y transforma una formulación vaga en una incógnita concreta."}, {"q": "Una estudiante hace un inventario: “El proyecto se entrega mañana, tengo 50% avanzado y mis amigos estarán en la plaza hasta las 9 p. m.”. ¿Qué paso está realizando?", "opts": ["Pausar el piloto automático", "Identificar los datos conocidos", "Ejecutar la solución", "Anticipar consecuencias"], "a": 1, "hint": "Está reuniendo la información y los recursos que ya tiene disponibles.", "fb": "Está haciendo un inventario de la información, recursos y condiciones que ya conoce."}, {"q": "Una persona se detiene antes de responder a la presión de sus amigos, reconoce el estrés que siente y separa esa emoción del problema real para recuperar la calma. ¿Qué paso está aplicando?", "opts": ["Pausar el piloto automático", "Analizar y contrastar", "Definir la incógnita", "Ejecutar y evaluar"], "a": 0, "hint": "El objetivo es detener la reacción impulsiva para poder analizar la situación con calma.", "fb": "Está deteniendo la impulsividad y las reacciones emocionales para analizar la situación con mayor calma."}], "cards": [["Divergente", "Situaciones poco definidas, cambiantes, incompletas o contradictorias; requieren creatividad, intuición y múltiples alternativas.", "Creatividad + incertidumbre + resultados abiertos"], ["Convergente", "Problemas delimitados y lineales que utilizan métodos sistemáticos, datos claros y procedimientos probados para llegar a una solución única.", "Lógica + procedimiento + resultado único"], ["Conflicto", "Situaciones donde el componente emocional influye directamente en la conducta o en la dinámica de un grupo.", "Intrapersonal + interpersonal + social/grupal"], ["Investigación", "Brecha de conocimiento que requiere un estudio sistemático basado en evidencia científica, con variables y alcances delimitados.", "Pregunta clara + evidencia + datos"], ["Teórico", "Problema orientado a comprender, explicar, sistematizar o interpretar conceptos, fenómenos o relaciones abstractas.", "Ideas + explicación + generación de conocimiento"], ["Práctico", "Nace de la necesidad de intervenir y modificar la realidad mediante acciones, programas o estrategias.", "Acción + intervención + respuesta"], ["De dificultades", "La meta y la solución son conocidas, pero existen barreras cognitivas, materiales o personales que obstaculizan el resultado.", "Meta clara + obstáculo"], ["De razonamiento", "Exige lógica para establecer conclusiones a partir de premisas, datos o evidencias. Puede ser inductivo o deductivo.", "Premisas + lógica + conclusión"], ["Las raíces: causas", "Razones que originan la situación. Pueden ser directas, indirectas, inmediatas o de raíz; también físicas, humanas o del entorno/organización.", "¿Por qué ocurre?"], ["Las ramas: consecuencias", "Impactos o efectos dominó de acciones y decisiones. Pueden ser sociales, directos o indirectos y de corto o largo plazo.", "¿Qué puede pasar después?"], ["El tablero: actores", "Personas que influyen o son afectadas: sujeto que decide, grupos de pares y agentes de apoyo.", "¿Quién decide, influye o recibe el impacto?"], ["Datos conocidos", "Inventario de la información, recursos y condiciones que ya se tienen a la mano.", "¿Qué sé y qué tengo?"], ["La incógnita", "La pieza que falta para llegar a la meta; debe formularse con precisión en lugar de mantener el problema en términos vagos.", "¿Qué necesito resolver exactamente?"], ["Pausar el piloto automático", "Detener impulsividad y reacciones emocionales para recuperar la calma y analizar la situación.", "Primero pausa; después piensa"], ["Anticipar consecuencias", "Evaluar el efecto dominó de una posible decisión sobre el bienestar, el futuro y las responsabilidades.", "¿Qué ocurrirá después?"], ["Infoxicación", "Sobresaturación de información digital que puede alterar la percepción, dificultar decisiones y favorecer elecciones impulsivas; funciona como obstáculo para la autorregulación y el pensamiento crítico.", "Exceso de información ≠ mejor decisión"], ["Analizar y contrastar", "Comparar la situación actual con reglas previas o casos que funcionaron para identificar diferencias y posibles rutas.", "Compara antes de concluir"], ["Ejecutar y evaluar", "Aplicar la solución elegida y valorar si se alcanzó el objetivo.", "Actúa + comprueba"]]};
+let qi=0, score=0, answers=[], started=false;
+let studentInfo={name:'',account:'',group:''};
+let finishDate=null;
+let quizStartTime=null;
+let elapsedMs=0;
+
+function buildPicado(id, count){
+  const el=document.getElementById(id);
+  if(!el) return;
+  const palette=['pw','pr','pg'];
+  let html='<div class="rope"></div>';
+  for(let i=0;i<count;i++){ html+=`<span class="pennant ${palette[i%palette.length]}"></span>`; }
+  el.innerHTML=html;
+}
+buildPicado('picadoTop',60);
+buildPicado('picadoResult',60);
+
+function startQuiz(){
+  const nameEl=document.getElementById('student');
+  const accountEl=document.getElementById('account');
+  const name=nameEl.value.trim();
+  const account=accountEl.value.trim();
+  const errEl=document.getElementById('startError');
+  nameEl.classList.remove('invalid'); accountEl.classList.remove('invalid');
+  const missing=[];
+  if(!name){missing.push('tu nombre completo'); nameEl.classList.add('invalid');}
+  if(!account){missing.push('tu número de cuenta o matrícula'); accountEl.classList.add('invalid');}
+  if(missing.length){
+    errEl.textContent='Falta escribir '+missing.join(' y ')+' para comenzar.';
+    errEl.classList.remove('hidden');
+    (missing[0].includes('nombre')?nameEl:accountEl).focus();
+    return;
+  }
+  errEl.classList.add('hidden');
+  studentInfo.name=name;
+  studentInfo.account=account;
+  studentInfo.group=document.getElementById('group').value.trim();
+  started=true;
+  quizStartTime=Date.now();
+  document.getElementById('start').classList.add('hidden');
+  document.getElementById('quiz').classList.remove('hidden');
+  document.getElementById('subtitle').textContent='Estudiante: '+name+' · Cuenta: '+account+(studentInfo.group?' · Grupo '+studentInfo.group:'');
+  buildDeck(); renderQuestion();
+}
+function buildDeck(){
+  document.getElementById('deck').innerHTML=DATA.cards.map((c,i)=>`<button class="mini" onclick="showCard(${i})"><strong>${c[0]}</strong><small>${c[2]}</small></button>`).join('');
+}
+function renderQuestion(){
+  const q=DATA.questions[qi];
+  document.getElementById('qnum').textContent=`Pregunta ${qi+1} de ${DATA.questions.length}`;
+  document.getElementById('question').textContent=q.q;
+  document.getElementById('bar').style.width=((qi)/DATA.questions.length*100)+'%';
+  document.getElementById('next').disabled=true;
+  document.getElementById('hintBox').classList.add('hidden');
+  const letters=['A','B','C','D'];
+  document.getElementById('options').innerHTML=q.opts.map((o,i)=>`<button class="option" onclick="choose(${i})" id="opt${i}"><span class="letter">${letters[i]}</span><span>${o}</span></button>`).join('');
+}
+function choose(i){
+  if(answers[qi]!==undefined) return;
+  answers[qi]=i;
+  const q=DATA.questions[qi];
+  document.querySelectorAll('.option').forEach((el,idx)=>{el.classList.add('locked'); if(idx===i)el.classList.add('selected'); el.disabled=true;});
+  if(i===q.a) score++;
+  document.getElementById('next').disabled=false;
+}
+function showHint(){
+  if(answers[qi]!==undefined) return;
+  document.getElementById('hintText').textContent='Pista: '+DATA.questions[qi].hint;
+  document.getElementById('hintBox').classList.remove('hidden');
+}
+function hideHint(){
+  document.getElementById('hintBox').classList.add('hidden');
+}
+function nextQuestion(){
+  if(answers[qi]===undefined) return;
+  qi++;
+  if(qi<DATA.questions.length) renderQuestion(); else finish();
+}
+function showCard(i){
+  const c=DATA.cards[i];
+  document.getElementById('mTitle').textContent=c[0];
+  document.getElementById('mText').textContent=c[1];
+  document.getElementById('mKey').textContent='Clave: '+c[2];
+  document.getElementById('modal').classList.add('show');
+}
+function hideModal(){document.getElementById('modal').classList.remove('show')}
+function closeModal(e){if(e.target.id==='modal')hideModal()}
+
+function scoreMessage(pct){
+  return pct>=90?'Dominio excelente':pct>=80?'Buen dominio':pct>=70?'Dominio suficiente':'Se recomienda repasar las tarjetas y volver a estudiar los conceptos';
+}
+function formatDuration(ms){
+  const totalSec=Math.max(0,Math.round(ms/1000));
+  const h=Math.floor(totalSec/3600);
+  const m=Math.floor((totalSec%3600)/60);
+  const s=totalSec%60;
+  const mm=String(m).padStart(2,'0'), ss=String(s).padStart(2,'0');
+  return h>0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+function finish(){
+  finishDate=new Date();
+  elapsedMs = quizStartTime ? (Date.now()-quizStartTime) : 0;
+  document.getElementById('quiz').classList.add('hidden');
+  document.getElementById('result').classList.remove('hidden');
+  document.getElementById('bar').style.width='100%';
+  const pct=Math.round(score/DATA.questions.length*100);
+  document.getElementById('score').textContent=score+' / '+DATA.questions.length+' · '+pct+'%';
+  document.getElementById('summary').innerHTML='<b>'+scoreMessage(pct)+'</b><br>Tiempo empleado: '+formatDuration(elapsedMs)+'. Las respuestas se registraron en un único intento.';
+  const letters=['A','B','C','D'];
+  document.getElementById('review').innerHTML='<h3>Revisión</h3>'+DATA.questions.map((q,i)=>{
+    const ok=answers[i]===q.a;
+    return `<div class="result-item ${ok?'good':'bad'}"><b>${i+1}. ${ok?'Correcta':'Para repasar'}</b><br>Tu respuesta: ${letters[answers[i]]}. ${q.opts[answers[i]]}<br><span style="color:#5d6870">Respuesta correcta: ${letters[q.a]}. ${q.opts[q.a]}</span><br><small>${q.fb}</small></div>`;
+  }).join('');
+}
+
+/* ---- Generación de captura de resultados (PNG) ---- */
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+async function downloadResults(){
+  if(document.fonts && document.fonts.ready){ try{ await document.fonts.ready; }catch(e){} }
+
+  const verde='#0B6E4F', verdeOsc='#0B3D2E', rojo='#C8102E', dorado='#D4A017', crema='#FBF6EC', tinta='#20241F';
+  const pct=Math.round(score/DATA.questions.length*100);
+  const fecha=finishDate?finishDate:new Date();
+  const fechaTxt=fecha.toLocaleDateString('es-MX',{day:'numeric',month:'long',year:'numeric'});
+  const tiempoTxt=formatDuration(elapsedMs);
+
+  const W=1200,H=800;
+  const canvas=document.createElement('canvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+
+  // Fondo
+  ctx.fillStyle=crema; ctx.fillRect(0,0,W,H);
+
+  // Marco decorativo patrio (triple filete verde-dorado-rojo)
+  ctx.strokeStyle=verde; ctx.lineWidth=6; ctx.strokeRect(28,28,W-56,H-56);
+  ctx.strokeStyle=dorado; ctx.lineWidth=2.5; ctx.strokeRect(40,40,W-80,H-80);
+  ctx.strokeStyle=rojo; ctx.lineWidth=6; ctx.strokeRect(50,50,W-100,H-100);
+
+  // Banda tricolor superior
+  const bandY=50, bandH=22, bandX=50, bandW=W-100;
+  ctx.fillStyle=verde; ctx.fillRect(bandX,bandY,bandW/3,bandH);
+  ctx.fillStyle='#ffffff'; ctx.fillRect(bandX+bandW/3,bandY,bandW/3,bandH);
+  ctx.fillStyle=rojo; ctx.fillRect(bandX+2*bandW/3,bandY,bandW/3,bandH);
+
+  ctx.textAlign='center';
+  ctx.fillStyle=verdeOsc; ctx.font="700 20px 'Inter',Arial,sans-serif";
+  ctx.fillText('ESTRATEGIAS PARA LA RESOLUCIÓN DE PROBLEMAS Y TOMA DE DECISIONES', W/2, 118);
+
+  ctx.fillStyle=rojo; ctx.font="800 44px 'Baloo 2',Arial,sans-serif";
+  ctx.fillText('Constancia de Resultados', W/2, 168);
+
+  ctx.fillStyle=tinta; ctx.font="500 20px 'Inter',Arial,sans-serif";
+  ctx.fillText('Repaso Interactivo · Módulo 1 · Edición Fiestas Patrias 🇲🇽', W/2, 198);
+
+  ctx.strokeStyle=dorado; ctx.lineWidth=1.5;
+  ctx.beginPath(); ctx.moveTo(90,222); ctx.lineTo(W-90,222); ctx.stroke();
+
+  // Datos de registro
+  ctx.textAlign='left';
+  let y=270;
+  const labelX=90, valueX=340;
+  function row(label,value){
+    ctx.fillStyle=tinta; ctx.font="700 22px 'Inter',Arial,sans-serif"; ctx.fillText(label,labelX,y);
+    ctx.font="500 22px 'Inter',Arial,sans-serif"; ctx.fillText(value,valueX,y);
+    y+=42;
+  }
+  row('Nombre completo:', studentInfo.name);
+  row('Número de cuenta:', studentInfo.account);
+  if(studentInfo.group) row('Grupo:', studentInfo.group);
+  row('Fecha de realización:', fechaTxt);
+  row('Tiempo empleado:', tiempoTxt);
+
+  // Resultado destacado
+  y+=14;
+  ctx.fillStyle='#ffffff';
+  roundRect(ctx,90,y,W-180,110,14); ctx.fill();
+  ctx.strokeStyle=dorado; ctx.lineWidth=2; roundRect(ctx,90,y,W-180,110,14); ctx.stroke();
+
+  const grad=ctx.createLinearGradient(120,0,W-120,0);
+  grad.addColorStop(0,verde); grad.addColorStop(0.5,dorado); grad.addColorStop(1,rojo);
+  ctx.fillStyle=grad;
+  ctx.font="800 56px 'Baloo 2',Arial,sans-serif"; ctx.textAlign='left';
+  ctx.fillText(score+' / '+DATA.questions.length+'  ('+pct+'%)', 120, y+68);
+
+  ctx.fillStyle=rojo; ctx.font="700 22px 'Inter',Arial,sans-serif"; ctx.textAlign='right';
+  ctx.fillText(scoreMessage(pct), W-120, y+68, W-260);
+
+  ctx.textAlign='center';
+  ctx.fillStyle=tinta; ctx.font="italic 400 16px 'Inter',Arial,sans-serif";
+  ctx.fillText('Captura generada automáticamente por el sistema de repaso interactivo', W/2, H-70);
+
+  const safeName = studentInfo.name.replace(/[^a-zA-Z0-9]+/g,'_') || 'alumno';
+  canvas.toBlob(function(blob){
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url; a.download='Resultados_Modulo1_'+safeName+'.png';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  },'image/png');
+}
+</script>
+</body>
+</html>
