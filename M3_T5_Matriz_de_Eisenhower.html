@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>3.2.4 Matriz de Eisenhower</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* ==================== FONDO VERDE CLARO CON PUNTOS ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#b3e6b3 0% 25%, #66cc66 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #b3e6b3 0%, #80d480 50%, #66cc66 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .comic-container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            transition: all 0.1s ease;
+            margin-top: 1rem;
+        }
+
+        /* ===== TÍTULO ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .subtitulo {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #fff;
+            background: #4CAF50;
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 2rem;
+            transform: rotate(0.5deg);
+        }
+
+        /* ===== HEADER (bocadillo) ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            flex: 1 1 60%;
+        }
+
+        .speech-bubble-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .speech-bubble {
+            background: #ffdd57;
+            border: 5px solid #000;
+            border-radius: 60px 60px 60px 10px;
+            padding: 0.8rem 2rem 0.8rem 2rem;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 6px 6px 0 #000;
+            font-family: 'Bangers', cursive;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 2px 2px 0 rgba(255, 0, 0, 0.3);
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border: 12px solid transparent;
+            border-top-color: #ffdd57;
+            border-bottom: 0;
+            border-left: 0;
+            filter: drop-shadow(4px 4px 0 #000);
+        }
+
+        .header-right {
+            flex: 0 1 auto;
+            background: #000;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0 #66cc66;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .header-right span {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ===== BIENVENIDA ===== */
+        .welcome {
+            background: #4CAF50;
+            border: 5px solid #000;
+            border-radius: 30px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 7px 7px 0 #000;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .welcome strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .col-left .block,
+        .col-right .block {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        .block-image {
+            padding: 0.8rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+        }
+
+        .block-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: block;
+        }
+
+        .block-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 1rem;
+            transform: rotate(-1deg);
+        }
+
+        .block-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Estilo para listas con viñetas de cómic */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .bullet-list li::before {
+            content: "💥";
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            display: inline-block;
+            background: #ffdd57;
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 2.2rem;
+            height: 2.2rem;
+            text-align: center;
+            line-height: 2rem;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-pregunta {
+            background: #000;
+            border: 6px solid #000;
+            border-radius: 40px;
+            padding: 1.8rem 2rem;
+            box-shadow: 8px 8px 0 #66cc66;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .footer-pregunta p {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer-pregunta p strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ==================== BOTONES FLOTANTES ==================== */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 999;
+        }
+
+        .btn-flotante {
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-flotante.continuar {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .btn-flotante.regresar {
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .btn-flotante.casa {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-flotante:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        @media (max-width: 600px) {
+            .botones-flotantes {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.5rem;
+            }
+            .btn-flotante {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .col-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.8rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.2rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .subtitulo {
+                font-size: 1.2rem;
+                padding: 0.2rem 1rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-right {
+                text-align: center;
+                font-size: 0.8rem;
+            }
+            .speech-bubble {
+                font-size: 2.2rem;
+                padding: 0.6rem 1.2rem;
+                border-radius: 40px 40px 40px 10px;
+            }
+            .col-right {
+                grid-template-columns: 1fr;
+            }
+            .welcome {
+                font-size: 1rem;
+                padding: 1rem 1.2rem;
+            }
+            .block-title {
+                font-size: 1.4rem;
+            }
+            .footer-pregunta p {
+                font-size: 1.1rem;
+            }
+        }
+    
+/* ==================== EXTENSIÓN MÓDULOS III y IV ==================== */
+:root{--bg1:#cfe8ff;--bg2:#74c0fc;--accent:#1c7ed6;--accent-soft:#d0ebff;--ink:#000;}
+.page-content{
+  background:
+    radial-gradient(circle,rgba(255,255,255,.35) 3px,transparent 3.5px) 0 0/34px 34px,
+    linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%) !important;
+  background-blend-mode:normal !important;
+  padding-bottom:7rem;
+}
+.subtitulo,.welcome{background:var(--accent);}
+.header-right{box-shadow:5px 5px 0 var(--accent);}
+.header-right strong{color:var(--accent-soft)!important;}
+.footer-pregunta{box-shadow:8px 8px 0 var(--accent);}
+img{max-width:100%;}
+.comic-container{overflow-wrap:anywhere;}
+.block{background:#fff;border:5px solid #000;border-radius:25px;padding:1.5rem 1.8rem;box-shadow:7px 7px 0 #000;margin-bottom:1.8rem;}
+.block.soft{background:var(--accent-soft);}
+.block.yellow{background:#fff7c2;}
+.block-title.alt{background:var(--accent);color:#fff;}
+.block-text strong{background:#ffe600;padding:0 .3rem;border-radius:6px;}
+.mini-title{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;margin:.8rem 0 .4rem;color:#000;}
+.cita{font-size:.82rem;color:#555;font-style:italic;}
+.grid-2c{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.grid-3c{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.card-c{border:4px solid #000;border-radius:20px;padding:1rem 1.1rem;box-shadow:5px 5px 0 #000;background:#fff;}
+.card-c h4{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;margin-bottom:.35rem;}
+.card-c p{font-size:.93rem;line-height:1.5;}
+.card-c .emoji{font-size:2rem;line-height:1;display:block;margin-bottom:.3rem;}
+/* pasos numerados */
+.steps{list-style:none;counter-reset:st;padding:0;margin:.5rem 0;}
+.steps li{counter-increment:st;display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.75rem;font-size:.98rem;line-height:1.5;}
+.steps li::before{content:counter(st);flex-shrink:0;width:2.1rem;height:2.1rem;border:3px solid #000;border-radius:50%;background:#ffe600;font-family:'Bangers',cursive;font-size:1.25rem;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;}
+/* caso práctico */
+.caso{background:#fffbe6;border:4px dashed #000;border-radius:22px;padding:1.2rem 1.4rem;margin:1rem 0;}
+.caso .etq{display:inline-block;font-family:'Bangers',cursive;letter-spacing:1px;background:#000;color:#ffe600;padding:.1rem .9rem;border-radius:20px;margin-bottom:.5rem;font-size:1.1rem;}
+.caso p,.caso li{font-size:.97rem;line-height:1.6;}
+.caso ul{padding-left:1.2rem;}
+/* para tener presente */
+.glosa{list-style:none;padding:0;}
+.glosa li{border-left:6px solid var(--accent);background:#f8f9fa;padding:.55rem .8rem;margin-bottom:.55rem;border-radius:0 12px 12px 0;font-size:.93rem;line-height:1.5;}
+.glosa li b{display:block;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;font-weight:400;}
+/* preguntas de reflexión */
+.reflex{list-style:none;padding:0;}
+.reflex li{display:flex;gap:.7rem;margin-bottom:.7rem;font-size:.97rem;line-height:1.5;}
+.reflex li::before{content:"🤔";font-size:1.3rem;flex-shrink:0;}
+/* tabla cómic */
+.tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:4px solid #000;border-radius:16px;box-shadow:5px 5px 0 #000;margin:1rem 0;}
+.tabla-c{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;min-width:520px;}
+.tabla-c th{background:#000;color:#ffe600;font-family:'Bangers',cursive;letter-spacing:1px;font-weight:400;font-size:1.05rem;padding:.55rem .6rem;text-align:left;}
+.tabla-c td{border-top:2px solid #000;padding:.5rem .6rem;vertical-align:top;}
+.tabla-c tr:nth-child(even) td{background:#f6f6f6;}
+.tabla-c td.num,.tabla-c th.num{text-align:right;font-variant-numeric:tabular-nums;}
+/* sombreros */
+.hats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.hat{border:4px solid #000;border-radius:20px;padding:.9rem;box-shadow:5px 5px 0 #000;}
+.hat h4{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:1px;}
+.hat p{font-size:.88rem;line-height:1.45;}
+.hat .q{display:block;margin-top:.4rem;font-weight:700;font-size:.85rem;}
+.h-blanco{background:#fff}.h-rojo{background:#ff8787}.h-negro{background:#343a40;color:#fff}.h-amarillo{background:#ffe066}.h-verde{background:#8ce99a}.h-azul{background:#74c0fc}
+/* cuadrantes */
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.quad>div{border:4px solid #000;border-radius:18px;padding:.9rem;box-shadow:4px 4px 0 #000;}
+.quad h4{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;}
+.quad p{font-size:.88rem;line-height:1.45;}
+.q1{background:#ff8787}.q2{background:#8ce99a}.q3{background:#ffe066}.q4{background:#dee2e6}
+/* diagrama de flujo de etapas */
+.flow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:stretch;}
+.flow .st{flex:1 1 150px;border:4px solid #000;border-radius:18px;padding:.8rem;background:#fff;box-shadow:4px 4px 0 #000;position:relative;}
+.flow .st b{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px;display:block;}
+.flow .st span{font-size:.85rem;line-height:1.4;display:block;}
+.flow .st .n{position:absolute;top:-14px;left:-10px;background:#ffe600;border:3px solid #000;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;}
+.svg-box{background:#fff;border:4px solid #000;border-radius:18px;box-shadow:5px 5px 0 #000;padding:.6rem;margin:1rem 0;overflow-x:auto;}
+.svg-box svg{display:block;width:100%;height:auto;min-width:480px;}
+.pagina{display:inline-block;margin-top:1.6rem;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;background:#ffe600;border:4px solid #000;border-radius:30px;padding:.2rem 1rem;box-shadow:4px 4px 0 #000;}
+/* botones de navegación: fila inferior */
+.botones-flotantes{flex-direction:row;flex-wrap:wrap;justify-content:flex-end;bottom:1.2rem;right:1.2rem;left:auto;}
+.btn-flotante{min-width:0;font-size:1.05rem;padding:.5rem 1.1rem;}
+@media (max-width:900px){.grid-3c,.hats{grid-template-columns:1fr 1fr;}}
+@media (max-width:700px){
+  .grid-2c,.grid-3c,.hats,.quad{grid-template-columns:1fr;}
+  .block{padding:1.1rem 1rem;}
+  .botones-flotantes{left:.6rem;right:.6rem;bottom:.6rem;justify-content:center;gap:.4rem;}
+  .btn-flotante{font-size:.85rem;padding:.4rem .7rem;min-width:0;}
+  .comic-container{box-shadow:6px 6px 0 #000;border-width:4px;}
+}
+
+/* ==================== LABORATORIOS ==================== */
+.datos-bar{background:#000;border-radius:24px;padding:1rem 1.3rem;display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;align-items:center;margin-bottom:1.6rem;box-shadow:6px 6px 0 var(--accent);}
+.datos-bar label{color:#ffe600;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.15rem;display:flex;align-items:center;gap:.6rem;flex:1 1 260px;}
+.datos-bar label.g{flex:0 1 200px;}
+.datos-bar input{flex:1;min-width:0;border:none;border-radius:14px;padding:.55rem .8rem;font-family:'Poppins',sans-serif;font-size:.95rem;}
+.instr{background:#ffe600;border:5px solid #000;border-radius:22px;padding:1rem 1.3rem;box-shadow:6px 6px 0 #000;margin-bottom:1.8rem;font-size:.95rem;line-height:1.55;}
+.instr b.t{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;display:block;font-weight:400;}
+.instr ul{padding-left:1.2rem;margin-top:.3rem;}
+.paso{background:#fff;border:5px solid #000;border-radius:25px;padding:1.3rem 1.5rem;box-shadow:7px 7px 0 #000;margin-bottom:1.8rem;}
+.paso>h2{font-family:'Bangers',cursive;font-weight:400;font-size:1.7rem;letter-spacing:1px;display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;line-height:1.15;}
+.paso>h2 .num{background:var(--accent);color:#fff;border:3px solid #000;border-radius:50%;min-width:2.4rem;height:2.4rem;display:inline-flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;}
+.paso>p.ayuda{font-size:.92rem;color:#333;margin-bottom:.8rem;line-height:1.55;}
+.pts{display:inline-block;background:#000;color:#ffe600;border-radius:14px;font-size:.75rem;font-family:'Poppins',sans-serif;padding:.1rem .6rem;margin-left:auto;letter-spacing:0;}
+/* clasificador */
+.pool{display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem;border:4px dashed #000;border-radius:18px;background:#f8f9fa;min-height:70px;margin-bottom:1rem;}
+.pool:empty::after{content:"✔ Todas las tarjetas fueron colocadas";color:#555;font-size:.85rem;}
+.chip{background:#fff;border:3px solid #000;border-radius:14px;padding:.5rem .75rem;font-size:.88rem;font-weight:600;line-height:1.35;box-shadow:3px 3px 0 #000;cursor:pointer;user-select:none;transition:transform .08s;max-width:100%;}
+.chip:hover{transform:translate(-1px,-1px);}
+.chip.sel{background:#ffe600;outline:3px solid var(--accent);transform:scale(1.03);}
+.chip.ok{background:#b2f2bb;}
+.chip.bad{background:#ffc9c9;}
+.chip .fix{display:block;font-size:.75rem;font-weight:700;color:#c92a2a;margin-top:.2rem;}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+.bucket{border:4px solid #000;border-radius:18px;box-shadow:5px 5px 0 #000;padding:.7rem;min-height:140px;display:flex;flex-direction:column;gap:.5rem;cursor:pointer;transition:outline .1s;}
+.bucket.ready{outline:4px dashed var(--accent);outline-offset:3px;}
+.bucket.over{outline:4px solid var(--accent);}
+.bucket>.bh{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;line-height:1.1;}
+.bucket>.bd{font-size:.78rem;line-height:1.3;margin-top:-.3rem;opacity:.85;}
+.bucket .chip{font-size:.82rem;}
+.tip-tap{font-size:.82rem;background:var(--accent-soft);border:2px solid #000;border-radius:12px;padding:.4rem .7rem;margin-bottom:.8rem;}
+/* quiz */
+.qz{border:3px solid #000;border-radius:18px;padding:.9rem 1rem;margin-bottom:1rem;background:#fff;}
+.qz .qt{font-weight:700;font-size:.97rem;margin-bottom:.6rem;line-height:1.45;}
+.qz .qt .qn{display:inline-block;background:#000;color:#ffe600;border-radius:10px;padding:0 .5rem;margin-right:.4rem;font-family:'Bangers',cursive;letter-spacing:1px;}
+.opts{display:grid;gap:.45rem;}
+.opt{border:3px solid #000;border-radius:12px;padding:.5rem .75rem;cursor:pointer;font-size:.92rem;background:#fff;text-align:left;font-family:'Poppins',sans-serif;line-height:1.4;}
+.opt:hover{background:#fff9db;}
+.opt.sel{background:#ffe600;}
+.opt.ok{background:#b2f2bb;}
+.opt.bad{background:#ffc9c9;}
+.qz .exp{display:none;margin-top:.55rem;font-size:.86rem;background:#f1f3f5;border-radius:10px;padding:.5rem .7rem;line-height:1.45;}
+.qz.done .exp{display:block;}
+/* campos */
+.campo{margin-bottom:1rem;}
+.campo label{display:block;font-weight:700;font-size:.93rem;margin-bottom:.35rem;line-height:1.4;}
+.campo textarea,.campo input[type=text],.campo select,input.inp,select.inp{width:100%;border:3px solid #000;border-radius:14px;padding:.6rem .8rem;font-family:'Poppins',sans-serif;font-size:.93rem;background:#fff;}
+.campo textarea{min-height:110px;resize:vertical;line-height:1.5;}
+.contador{font-size:.75rem;color:#666;text-align:right;margin-top:.2rem;}
+.contador.ok{color:#2b8a3e;font-weight:700;}
+input.num{width:5.5rem;border:3px solid #000;border-radius:10px;padding:.35rem .4rem;font-family:'Poppins',sans-serif;font-size:.92rem;text-align:right;}
+input.num.ok{background:#b2f2bb;} input.num.bad{background:#ffc9c9;}
+/* lista ordenable */
+.orden{list-style:none;padding:0;display:grid;gap:.5rem;}
+.orden li{display:flex;align-items:center;gap:.6rem;border:3px solid #000;border-radius:14px;padding:.5rem .6rem;background:#fff;box-shadow:3px 3px 0 #000;font-size:.92rem;font-weight:600;line-height:1.35;}
+.orden li .pos{background:#000;color:#ffe600;border-radius:50%;min-width:1.8rem;height:1.8rem;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;}
+.orden li .tx{flex:1;}
+.orden li button{border:3px solid #000;background:#ffe600;border-radius:10px;width:2.3rem;height:2.1rem;font-size:1rem;cursor:pointer;font-weight:700;}
+.orden li button:disabled{opacity:.35;cursor:default;}
+.orden li.ok{background:#b2f2bb;} .orden li.bad{background:#ffc9c9;}
+/* botón evaluar */
+.btn-eval{display:block;margin:1.5rem auto 0;background:#00c853;color:#fff;border:5px solid #000;border-radius:60px;padding:.75rem 2.4rem;font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:2px;box-shadow:6px 6px 0 #000;cursor:pointer;}
+.btn-eval:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #000;}
+.btn-eval:disabled{background:#adb5bd;cursor:not-allowed;transform:none;}
+.btn-sec{display:inline-block;background:#fff;border:3px solid #000;border-radius:30px;padding:.45rem 1.1rem;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.05rem;box-shadow:4px 4px 0 #000;cursor:pointer;margin:.3rem .3rem 0 0;color:#000;text-decoration:none;}
+.btn-sec.amar{background:#ffe600;}
+/* certificado */
+.cert{display:none;margin-top:2rem;background:#fff;border:6px solid #000;border-radius:28px;box-shadow:10px 10px 0 var(--accent);padding:1.6rem 1.8rem;}
+.cert.show{display:block;}
+.cert .ch{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;align-items:center;border-bottom:4px solid #000;padding-bottom:.9rem;margin-bottom:1rem;}
+.cert .ch h2{font-family:'Bangers',cursive;font-weight:400;font-size:2rem;letter-spacing:2px;line-height:1.1;}
+.cert .nota{font-family:'Bangers',cursive;font-size:3rem;background:#ffe600;border:5px solid #000;border-radius:24px;padding:.1rem 1.2rem;box-shadow:5px 5px 0 #000;line-height:1.1;}
+.cert .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.4rem 1rem;font-size:.92rem;margin-bottom:1rem;}
+.cert .meta b{font-weight:700;}
+.cert table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1rem;}
+.cert td{border-bottom:2px solid #e9ecef;padding:.4rem .3rem;vertical-align:top;}
+.cert td:last-child{text-align:right;font-weight:700;white-space:nowrap;}
+.cert .msg{background:var(--accent-soft);border:3px solid #000;border-radius:16px;padding:.7rem .9rem;font-size:.92rem;line-height:1.5;}
+.cert .resp{margin-top:1rem;font-size:.86rem;line-height:1.5;}
+.cert .resp h4{font-family:'Bangers',cursive;font-weight:400;letter-spacing:1px;font-size:1.15rem;margin:.6rem 0 .2rem;}
+.cert .resp p{white-space:pre-wrap;background:#f8f9fa;border-radius:10px;padding:.5rem .7rem;}
+.cert-acc{margin-top:1rem;display:flex;flex-wrap:wrap;gap:.4rem;}
+.toast{position:fixed;left:50%;top:1.2rem;transform:translateX(-50%) translateY(-150%);background:#000;color:#fff;border:3px solid #ffe600;border-radius:18px;padding:.7rem 1.2rem;font-size:.92rem;z-index:2000;transition:transform .25s;max-width:92vw;text-align:center;box-shadow:5px 5px 0 #ffe600;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.bad{border-color:#ff6b6b;box-shadow:5px 5px 0 #ff6b6b;}
+.bloqueado .chip,.bloqueado .bucket,.bloqueado .opt{cursor:default;}
+@media (max-width:700px){
+  .paso{padding:1rem .9rem;}
+  .paso>h2{font-size:1.35rem;}
+  .cert{padding:1.1rem 1rem;}
+  .cert .nota{font-size:2.3rem;}
+  .btn-eval{font-size:1.35rem;padding:.6rem 1.6rem;}
+}
+@media print{.botones-flotantes,.btn-eval,.cert-acc,.datos-bar input{display:none!important}}
+@media (max-width:700px){
+  .datos-bar label{flex:1 1 100%;flex-wrap:wrap;gap:.3rem;}
+  .datos-bar input{flex:1 1 100%;width:100%;}
+}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;}
+.rol{border:4px solid #000;border-radius:18px;padding:.8rem;background:#fff;box-shadow:4px 4px 0 #000;cursor:pointer;text-align:left;font-family:'Poppins',sans-serif;font-size:.88rem;line-height:1.4;}
+.rol b{display:block;font-family:'Bangers',cursive;font-weight:400;font-size:1.2rem;letter-spacing:1px;}
+.rol.sel{background:#ffe600;outline:3px solid var(--accent);}
+.kolb{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;counter-reset:k;}
+.kolb div{border:4px solid #000;border-radius:18px;padding:.8rem;box-shadow:4px 4px 0 #000;font-size:.88rem;line-height:1.4;}
+.kolb b{font-family:'Bangers',cursive;font-weight:400;font-size:1.2rem;letter-spacing:1px;display:block;}
+.chk{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;margin-bottom:.45rem;line-height:1.4;}
+.chk input{width:1.2rem;height:1.2rem;margin-top:.15rem;flex-shrink:0;}
+/* ===== Forzar modo claro: evita texto blanco sobre blanco en celulares/apps con modo oscuro ===== */
+:root{color-scheme:light only;}
+html,body{color:#000;background-color:#fff;}
+button,input,select,textarea,option,.opt,.rol,.chip,.orden li,.bucket,.qz,.campo label,.paso,.block,.caso,.card-c,.cert{color:#000;}
+input,select,textarea{background-color:#fff;-webkit-text-fill-color:#000;}
+input::placeholder,textarea::placeholder{color:#777;-webkit-text-fill-color:#777;}
+.h-negro,.h-negro *{color:#fff;}
+.btn-eval{color:#fff;}
+.btn-flotante.casa,.btn-flotante.continuar{color:#fff;}
+
+:root{--bg1:#d0ebff;--bg2:#4dabf7;--accent:#1c7ed6;--accent-soft:#d0ebff;}
+</style>
+</head>
+<body>
+<div class="page-content"><div class="comic-container">
+<h1 class="titulo-seccion">3.2.4 Matriz de Eisenhower</h1>
+<div class="subtitulo">⏱️ Lo urgente vs. lo importante</div>
+<header class="header">
+  <div class="header-left"><div class="speech-bubble-wrapper"><div class="speech-bubble">¡Prioriza como pro!</div></div></div>
+  <div class="header-right"><span>Urgencia · Importancia</span><br /><strong>Hacer · Planificar · Delegar · Eliminar</strong></div>
+</header>
+<section class="welcome"><p><strong>Domingo, 9 p.m.:</strong> tienes un examen mañana, el grupo de WhatsApp explota con mensajes, tu proyecto final se entrega en un mes y acabas de descubrir una serie nueva. Todo grita “¡hazme caso!”. La Matriz de Eisenhower te ayuda a distinguir lo que de verdad <b>importa</b> de lo que solo <b>hace ruido</b>.</p></section>
+<section class="block "><h2 class="block-title ">¿Qué es?</h2><p class="block-text">También llamada <strong>matriz urgencia-importancia</strong>, es una herramienta de gestión del tiempo y toma de decisiones que clasifica las tareas con dos criterios: qué tan <strong>urgentes</strong> son (exigen atención inmediata) y qué tan <strong>importantes</strong> son (aportan a tus objetivos). Su meta: priorizar, optimizar recursos y reducir la sobrecarga.</p><div class="quad"><div class="q1"><h4>1 · Urgente e importante → HACER YA</h4><p>Tienen impacto directo en tus objetivos y fecha inmediata. Ej. estudiar para el examen de mañana.</p></div><div class="q2"><h4>2 · Importante, no urgente → PLANIFICAR</h4><p>Requieren dedicación estratégica. Ej. avanzar el proyecto final, hacer ejercicio, dormir bien.</p></div><div class="q3"><h4>3 · Urgente, no importante → DELEGAR</h4><p>Piden acción rápida pero no aportan valor significativo. Ej. responder mensajes masivos, mandados que alguien más puede hacer.</p></div><div class="q4"><h4>4 · Ni urgente ni importante → ELIMINAR</h4><p>Consumen tiempo sin generar beneficios. Ej. scroll infinito, maratones de series a las 3 a.m.</p></div></div><p class="cita">(Robbins y Coulter, 2018; Project Management Institute, 2025)</p></section><div class="grid-2c"><section class="block "><h2 class="block-title ">El secreto del cuadrante 2</h2><p class="block-text">Las personas más efectivas pasan más tiempo en el <strong>cuadrante 2</strong>: si planificas lo importante antes de que se vuelva urgente, tendrás menos “incendios” en el cuadrante 1. Cuando todo se te junta, casi siempre es porque algo del cuadrante 2 se quedó esperando.</p></section><section class="block "><h2 class="block-title ">Cómo aplicarla</h2><ol class="steps"><li><span>Haz una lista de todas tus tareas pendientes.</span></li><li><span>Pregunta en cada una: ¿es importante para mis metas?, ¿tiene fecha inmediata?</span></li><li><span>Colócala en su cuadrante.</span></li><li><span>Actúa: haz el 1, agenda el 2, delega el 3 y elimina el 4.</span></li></ol></section></div><section class="block yellow"><h2 class="block-title ">Autoevaluación</h2><ul class="reflex"><li><span>¿En qué cuadrante pasas más tiempo durante la semana?</span></li><li><span>¿Qué tarea del cuadrante 2 has dejado crecer hasta volverse urgente?</span></li><li><span>¿Qué actividad del cuadrante 4 podrías eliminar esta semana?</span></li></ul></section>
+<div class="footer-pregunta"><p>Esta semana, <strong>¿vas a vivir apagando incendios o vas a invertir en tu cuadrante 2?</strong></p></div>
+<div class="pagina">📖 Tema 3.2.4 · Matriz de Eisenhower</div>
+</div></div>
+<nav class="botones-flotantes"><a class="btn-flotante regresar" href="M3_T4_Arbol_de_decisiones.html">⬅ Regresar</a><a class="btn-flotante continuar" href="Modulo_3_Estrategias_Toma_de_Decisiones.html">Continuar ➡</a><a class="btn-flotante casa" href="Modulo_3_Estrategias_Toma_de_Decisiones.html">🏠 Módulo</a></nav>
+</body>
+</html>
