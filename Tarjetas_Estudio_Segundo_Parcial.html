@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>Jeopardy de repaso · Segundo parcial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* ==================== FONDO VERDE CLARO CON PUNTOS ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#b3e6b3 0% 25%, #66cc66 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #b3e6b3 0%, #80d480 50%, #66cc66 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .comic-container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            transition: all 0.1s ease;
+            margin-top: 1rem;
+        }
+
+        /* ===== TÍTULO ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .subtitulo {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #fff;
+            background: #4CAF50;
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 2rem;
+            transform: rotate(0.5deg);
+        }
+
+        /* ===== HEADER (bocadillo) ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            flex: 1 1 60%;
+        }
+
+        .speech-bubble-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .speech-bubble {
+            background: #ffdd57;
+            border: 5px solid #000;
+            border-radius: 60px 60px 60px 10px;
+            padding: 0.8rem 2rem 0.8rem 2rem;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 6px 6px 0 #000;
+            font-family: 'Bangers', cursive;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 2px 2px 0 rgba(255, 0, 0, 0.3);
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border: 12px solid transparent;
+            border-top-color: #ffdd57;
+            border-bottom: 0;
+            border-left: 0;
+            filter: drop-shadow(4px 4px 0 #000);
+        }
+
+        .header-right {
+            flex: 0 1 auto;
+            background: #000;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0 #66cc66;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .header-right span {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ===== BIENVENIDA ===== */
+        .welcome {
+            background: #4CAF50;
+            border: 5px solid #000;
+            border-radius: 30px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 7px 7px 0 #000;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .welcome strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .col-left .block,
+        .col-right .block {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        .block-image {
+            padding: 0.8rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+        }
+
+        .block-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: block;
+        }
+
+        .block-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 1rem;
+            transform: rotate(-1deg);
+        }
+
+        .block-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Estilo para listas con viñetas de cómic */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .bullet-list li::before {
+            content: "💥";
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            display: inline-block;
+            background: #ffdd57;
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 2.2rem;
+            height: 2.2rem;
+            text-align: center;
+            line-height: 2rem;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-pregunta {
+            background: #000;
+            border: 6px solid #000;
+            border-radius: 40px;
+            padding: 1.8rem 2rem;
+            box-shadow: 8px 8px 0 #66cc66;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .footer-pregunta p {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer-pregunta p strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ==================== BOTONES FLOTANTES ==================== */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 999;
+        }
+
+        .btn-flotante {
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-flotante.continuar {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .btn-flotante.regresar {
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .btn-flotante.casa {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-flotante:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        @media (max-width: 600px) {
+            .botones-flotantes {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.5rem;
+            }
+            .btn-flotante {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .col-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.8rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.2rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .subtitulo {
+                font-size: 1.2rem;
+                padding: 0.2rem 1rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-right {
+                text-align: center;
+                font-size: 0.8rem;
+            }
+            .speech-bubble {
+                font-size: 2.2rem;
+                padding: 0.6rem 1.2rem;
+                border-radius: 40px 40px 40px 10px;
+            }
+            .col-right {
+                grid-template-columns: 1fr;
+            }
+            .welcome {
+                font-size: 1rem;
+                padding: 1rem 1.2rem;
+            }
+            .block-title {
+                font-size: 1.4rem;
+            }
+            .footer-pregunta p {
+                font-size: 1.1rem;
+            }
+        }
+    
+/* ==================== EXTENSIÓN MÓDULOS III y IV ==================== */
+:root{--bg1:#cfe8ff;--bg2:#74c0fc;--accent:#1c7ed6;--accent-soft:#d0ebff;--ink:#000;}
+.page-content{
+  background:
+    radial-gradient(circle,rgba(255,255,255,.35) 3px,transparent 3.5px) 0 0/34px 34px,
+    linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%) !important;
+  background-blend-mode:normal !important;
+  padding-bottom:7rem;
+}
+.subtitulo,.welcome{background:var(--accent);}
+.header-right{box-shadow:5px 5px 0 var(--accent);}
+.header-right strong{color:var(--accent-soft)!important;}
+.footer-pregunta{box-shadow:8px 8px 0 var(--accent);}
+img{max-width:100%;}
+.comic-container{overflow-wrap:anywhere;}
+.block{background:#fff;border:5px solid #000;border-radius:25px;padding:1.5rem 1.8rem;box-shadow:7px 7px 0 #000;margin-bottom:1.8rem;}
+.block.soft{background:var(--accent-soft);}
+.block.yellow{background:#fff7c2;}
+.block-title.alt{background:var(--accent);color:#fff;}
+.block-text strong{background:#ffe600;padding:0 .3rem;border-radius:6px;}
+.mini-title{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;margin:.8rem 0 .4rem;color:#000;}
+.cita{font-size:.82rem;color:#555;font-style:italic;}
+.grid-2c{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.grid-3c{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.card-c{border:4px solid #000;border-radius:20px;padding:1rem 1.1rem;box-shadow:5px 5px 0 #000;background:#fff;}
+.card-c h4{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;margin-bottom:.35rem;}
+.card-c p{font-size:.93rem;line-height:1.5;}
+.card-c .emoji{font-size:2rem;line-height:1;display:block;margin-bottom:.3rem;}
+/* pasos numerados */
+.steps{list-style:none;counter-reset:st;padding:0;margin:.5rem 0;}
+.steps li{counter-increment:st;display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.75rem;font-size:.98rem;line-height:1.5;}
+.steps li::before{content:counter(st);flex-shrink:0;width:2.1rem;height:2.1rem;border:3px solid #000;border-radius:50%;background:#ffe600;font-family:'Bangers',cursive;font-size:1.25rem;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;}
+/* caso práctico */
+.caso{background:#fffbe6;border:4px dashed #000;border-radius:22px;padding:1.2rem 1.4rem;margin:1rem 0;}
+.caso .etq{display:inline-block;font-family:'Bangers',cursive;letter-spacing:1px;background:#000;color:#ffe600;padding:.1rem .9rem;border-radius:20px;margin-bottom:.5rem;font-size:1.1rem;}
+.caso p,.caso li{font-size:.97rem;line-height:1.6;}
+.caso ul{padding-left:1.2rem;}
+/* para tener presente */
+.glosa{list-style:none;padding:0;}
+.glosa li{border-left:6px solid var(--accent);background:#f8f9fa;padding:.55rem .8rem;margin-bottom:.55rem;border-radius:0 12px 12px 0;font-size:.93rem;line-height:1.5;}
+.glosa li b{display:block;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;font-weight:400;}
+/* preguntas de reflexión */
+.reflex{list-style:none;padding:0;}
+.reflex li{display:flex;gap:.7rem;margin-bottom:.7rem;font-size:.97rem;line-height:1.5;}
+.reflex li::before{content:"🤔";font-size:1.3rem;flex-shrink:0;}
+/* tabla cómic */
+.tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:4px solid #000;border-radius:16px;box-shadow:5px 5px 0 #000;margin:1rem 0;}
+.tabla-c{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;min-width:520px;}
+.tabla-c th{background:#000;color:#ffe600;font-family:'Bangers',cursive;letter-spacing:1px;font-weight:400;font-size:1.05rem;padding:.55rem .6rem;text-align:left;}
+.tabla-c td{border-top:2px solid #000;padding:.5rem .6rem;vertical-align:top;}
+.tabla-c tr:nth-child(even) td{background:#f6f6f6;}
+.tabla-c td.num,.tabla-c th.num{text-align:right;font-variant-numeric:tabular-nums;}
+/* sombreros */
+.hats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.hat{border:4px solid #000;border-radius:20px;padding:.9rem;box-shadow:5px 5px 0 #000;}
+.hat h4{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:1px;}
+.hat p{font-size:.88rem;line-height:1.45;}
+.hat .q{display:block;margin-top:.4rem;font-weight:700;font-size:.85rem;}
+.h-blanco{background:#fff}.h-rojo{background:#ff8787}.h-negro{background:#343a40;color:#fff}.h-amarillo{background:#ffe066}.h-verde{background:#8ce99a}.h-azul{background:#74c0fc}
+/* cuadrantes */
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.quad>div{border:4px solid #000;border-radius:18px;padding:.9rem;box-shadow:4px 4px 0 #000;}
+.quad h4{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;}
+.quad p{font-size:.88rem;line-height:1.45;}
+.q1{background:#ff8787}.q2{background:#8ce99a}.q3{background:#ffe066}.q4{background:#dee2e6}
+/* diagrama de flujo de etapas */
+.flow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:stretch;}
+.flow .st{flex:1 1 150px;border:4px solid #000;border-radius:18px;padding:.8rem;background:#fff;box-shadow:4px 4px 0 #000;position:relative;}
+.flow .st b{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px;display:block;}
+.flow .st span{font-size:.85rem;line-height:1.4;display:block;}
+.flow .st .n{position:absolute;top:-14px;left:-10px;background:#ffe600;border:3px solid #000;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;}
+.svg-box{background:#fff;border:4px solid #000;border-radius:18px;box-shadow:5px 5px 0 #000;padding:.6rem;margin:1rem 0;overflow-x:auto;}
+.svg-box svg{display:block;width:100%;height:auto;min-width:480px;}
+.pagina{display:inline-block;margin-top:1.6rem;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;background:#ffe600;border:4px solid #000;border-radius:30px;padding:.2rem 1rem;box-shadow:4px 4px 0 #000;}
+/* botones de navegación: fila inferior */
+.botones-flotantes{flex-direction:row;flex-wrap:wrap;justify-content:flex-end;bottom:1.2rem;right:1.2rem;left:auto;}
+.btn-flotante{min-width:0;font-size:1.05rem;padding:.5rem 1.1rem;}
+@media (max-width:900px){.grid-3c,.hats{grid-template-columns:1fr 1fr;}}
+@media (max-width:700px){
+  .grid-2c,.grid-3c,.hats,.quad{grid-template-columns:1fr;}
+  .block{padding:1.1rem 1rem;}
+  .botones-flotantes{left:.6rem;right:.6rem;bottom:.6rem;justify-content:center;gap:.4rem;}
+  .btn-flotante{font-size:.85rem;padding:.4rem .7rem;min-width:0;}
+  .comic-container{box-shadow:6px 6px 0 #000;border-width:4px;}
+}
+
+/* ==================== LABORATORIOS ==================== */
+.datos-bar{background:#000;border-radius:24px;padding:1rem 1.3rem;display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;align-items:center;margin-bottom:1.6rem;box-shadow:6px 6px 0 var(--accent);}
+.datos-bar label{color:#ffe600;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.15rem;display:flex;align-items:center;gap:.6rem;flex:1 1 260px;}
+.datos-bar label.g{flex:0 1 200px;}
+.datos-bar input{flex:1;min-width:0;border:none;border-radius:14px;padding:.55rem .8rem;font-family:'Poppins',sans-serif;font-size:.95rem;}
+.instr{background:#ffe600;border:5px solid #000;border-radius:22px;padding:1rem 1.3rem;box-shadow:6px 6px 0 #000;margin-bottom:1.8rem;font-size:.95rem;line-height:1.55;}
+.instr b.t{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;display:block;font-weight:400;}
+.instr ul{padding-left:1.2rem;margin-top:.3rem;}
+.paso{background:#fff;border:5px solid #000;border-radius:25px;padding:1.3rem 1.5rem;box-shadow:7px 7px 0 #000;margin-bottom:1.8rem;}
+.paso>h2{font-family:'Bangers',cursive;font-weight:400;font-size:1.7rem;letter-spacing:1px;display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;line-height:1.15;}
+.paso>h2 .num{background:var(--accent);color:#fff;border:3px solid #000;border-radius:50%;min-width:2.4rem;height:2.4rem;display:inline-flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;}
+.paso>p.ayuda{font-size:.92rem;color:#333;margin-bottom:.8rem;line-height:1.55;}
+.pts{display:inline-block;background:#000;color:#ffe600;border-radius:14px;font-size:.75rem;font-family:'Poppins',sans-serif;padding:.1rem .6rem;margin-left:auto;letter-spacing:0;}
+/* clasificador */
+.pool{display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem;border:4px dashed #000;border-radius:18px;background:#f8f9fa;min-height:70px;margin-bottom:1rem;}
+.pool:empty::after{content:"✔ Todas las tarjetas fueron colocadas";color:#555;font-size:.85rem;}
+.chip{background:#fff;border:3px solid #000;border-radius:14px;padding:.5rem .75rem;font-size:.88rem;font-weight:600;line-height:1.35;box-shadow:3px 3px 0 #000;cursor:pointer;user-select:none;transition:transform .08s;max-width:100%;}
+.chip:hover{transform:translate(-1px,-1px);}
+.chip.sel{background:#ffe600;outline:3px solid var(--accent);transform:scale(1.03);}
+.chip.ok{background:#b2f2bb;}
+.chip.bad{background:#ffc9c9;}
+.chip .fix{display:block;font-size:.75rem;font-weight:700;color:#c92a2a;margin-top:.2rem;}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+.bucket{border:4px solid #000;border-radius:18px;box-shadow:5px 5px 0 #000;padding:.7rem;min-height:140px;display:flex;flex-direction:column;gap:.5rem;cursor:pointer;transition:outline .1s;}
+.bucket.ready{outline:4px dashed var(--accent);outline-offset:3px;}
+.bucket.over{outline:4px solid var(--accent);}
+.bucket>.bh{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;line-height:1.1;}
+.bucket>.bd{font-size:.78rem;line-height:1.3;margin-top:-.3rem;opacity:.85;}
+.bucket .chip{font-size:.82rem;}
+.tip-tap{font-size:.82rem;background:var(--accent-soft);border:2px solid #000;border-radius:12px;padding:.4rem .7rem;margin-bottom:.8rem;}
+/* quiz */
+.qz{border:3px solid #000;border-radius:18px;padding:.9rem 1rem;margin-bottom:1rem;background:#fff;}
+.qz .qt{font-weight:700;font-size:.97rem;margin-bottom:.6rem;line-height:1.45;}
+.qz .qt .qn{display:inline-block;background:#000;color:#ffe600;border-radius:10px;padding:0 .5rem;margin-right:.4rem;font-family:'Bangers',cursive;letter-spacing:1px;}
+.opts{display:grid;gap:.45rem;}
+.opt{border:3px solid #000;border-radius:12px;padding:.5rem .75rem;cursor:pointer;font-size:.92rem;background:#fff;text-align:left;font-family:'Poppins',sans-serif;line-height:1.4;}
+.opt:hover{background:#fff9db;}
+.opt.sel{background:#ffe600;}
+.opt.ok{background:#b2f2bb;}
+.opt.bad{background:#ffc9c9;}
+.qz .exp{display:none;margin-top:.55rem;font-size:.86rem;background:#f1f3f5;border-radius:10px;padding:.5rem .7rem;line-height:1.45;}
+.qz.done .exp{display:block;}
+/* campos */
+.campo{margin-bottom:1rem;}
+.campo label{display:block;font-weight:700;font-size:.93rem;margin-bottom:.35rem;line-height:1.4;}
+.campo textarea,.campo input[type=text],.campo select,input.inp,select.inp{width:100%;border:3px solid #000;border-radius:14px;padding:.6rem .8rem;font-family:'Poppins',sans-serif;font-size:.93rem;background:#fff;}
+.campo textarea{min-height:110px;resize:vertical;line-height:1.5;}
+.contador{font-size:.75rem;color:#666;text-align:right;margin-top:.2rem;}
+.contador.ok{color:#2b8a3e;font-weight:700;}
+input.num{width:5.5rem;border:3px solid #000;border-radius:10px;padding:.35rem .4rem;font-family:'Poppins',sans-serif;font-size:.92rem;text-align:right;}
+input.num.ok{background:#b2f2bb;} input.num.bad{background:#ffc9c9;}
+/* lista ordenable */
+.orden{list-style:none;padding:0;display:grid;gap:.5rem;}
+.orden li{display:flex;align-items:center;gap:.6rem;border:3px solid #000;border-radius:14px;padding:.5rem .6rem;background:#fff;box-shadow:3px 3px 0 #000;font-size:.92rem;font-weight:600;line-height:1.35;}
+.orden li .pos{background:#000;color:#ffe600;border-radius:50%;min-width:1.8rem;height:1.8rem;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;}
+.orden li .tx{flex:1;}
+.orden li button{border:3px solid #000;background:#ffe600;border-radius:10px;width:2.3rem;height:2.1rem;font-size:1rem;cursor:pointer;font-weight:700;}
+.orden li button:disabled{opacity:.35;cursor:default;}
+.orden li.ok{background:#b2f2bb;} .orden li.bad{background:#ffc9c9;}
+/* botón evaluar */
+.btn-eval{display:block;margin:1.5rem auto 0;background:#00c853;color:#fff;border:5px solid #000;border-radius:60px;padding:.75rem 2.4rem;font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:2px;box-shadow:6px 6px 0 #000;cursor:pointer;}
+.btn-eval:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #000;}
+.btn-eval:disabled{background:#adb5bd;cursor:not-allowed;transform:none;}
+.btn-sec{display:inline-block;background:#fff;border:3px solid #000;border-radius:30px;padding:.45rem 1.1rem;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.05rem;box-shadow:4px 4px 0 #000;cursor:pointer;margin:.3rem .3rem 0 0;color:#000;text-decoration:none;}
+.btn-sec.amar{background:#ffe600;}
+/* certificado */
+.cert{display:none;margin-top:2rem;background:#fff;border:6px solid #000;border-radius:28px;box-shadow:10px 10px 0 var(--accent);padding:1.6rem 1.8rem;}
+.cert.show{display:block;}
+.cert .ch{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;align-items:center;border-bottom:4px solid #000;padding-bottom:.9rem;margin-bottom:1rem;}
+.cert .ch h2{font-family:'Bangers',cursive;font-weight:400;font-size:2rem;letter-spacing:2px;line-height:1.1;}
+.cert .nota{font-family:'Bangers',cursive;font-size:3rem;background:#ffe600;border:5px solid #000;border-radius:24px;padding:.1rem 1.2rem;box-shadow:5px 5px 0 #000;line-height:1.1;}
+.cert .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.4rem 1rem;font-size:.92rem;margin-bottom:1rem;}
+.cert .meta b{font-weight:700;}
+.cert table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1rem;}
+.cert td{border-bottom:2px solid #e9ecef;padding:.4rem .3rem;vertical-align:top;}
+.cert td:last-child{text-align:right;font-weight:700;white-space:nowrap;}
+.cert .msg{background:var(--accent-soft);border:3px solid #000;border-radius:16px;padding:.7rem .9rem;font-size:.92rem;line-height:1.5;}
+.cert .resp{margin-top:1rem;font-size:.86rem;line-height:1.5;}
+.cert .resp h4{font-family:'Bangers',cursive;font-weight:400;letter-spacing:1px;font-size:1.15rem;margin:.6rem 0 .2rem;}
+.cert .resp p{white-space:pre-wrap;background:#f8f9fa;border-radius:10px;padding:.5rem .7rem;}
+.cert-acc{margin-top:1rem;display:flex;flex-wrap:wrap;gap:.4rem;}
+.toast{position:fixed;left:50%;top:1.2rem;transform:translateX(-50%) translateY(-150%);background:#000;color:#fff;border:3px solid #ffe600;border-radius:18px;padding:.7rem 1.2rem;font-size:.92rem;z-index:2000;transition:transform .25s;max-width:92vw;text-align:center;box-shadow:5px 5px 0 #ffe600;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.bad{border-color:#ff6b6b;box-shadow:5px 5px 0 #ff6b6b;}
+.bloqueado .chip,.bloqueado .bucket,.bloqueado .opt{cursor:default;}
+@media (max-width:700px){
+  .paso{padding:1rem .9rem;}
+  .paso>h2{font-size:1.35rem;}
+  .cert{padding:1.1rem 1rem;}
+  .cert .nota{font-size:2.3rem;}
+  .btn-eval{font-size:1.35rem;padding:.6rem 1.6rem;}
+}
+@media print{.botones-flotantes,.btn-eval,.cert-acc,.datos-bar input{display:none!important}}
+@media (max-width:700px){
+  .datos-bar label{flex:1 1 100%;flex-wrap:wrap;gap:.3rem;}
+  .datos-bar input{flex:1 1 100%;width:100%;}
+}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;}
+.rol{border:4px solid #000;border-radius:18px;padding:.8rem;background:#fff;box-shadow:4px 4px 0 #000;cursor:pointer;text-align:left;font-family:'Poppins',sans-serif;font-size:.88rem;line-height:1.4;}
+.rol b{display:block;font-family:'Bangers',cursive;font-weight:400;font-size:1.2rem;letter-spacing:1px;}
+.rol.sel{background:#ffe600;outline:3px solid var(--accent);}
+.kolb{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;counter-reset:k;}
+.kolb div{border:4px solid #000;border-radius:18px;padding:.8rem;box-shadow:4px 4px 0 #000;font-size:.88rem;line-height:1.4;}
+.kolb b{font-family:'Bangers',cursive;font-weight:400;font-size:1.2rem;letter-spacing:1px;display:block;}
+.chk{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;margin-bottom:.45rem;line-height:1.4;}
+.chk input{width:1.2rem;height:1.2rem;margin-top:.15rem;flex-shrink:0;}
+/* ===== Forzar modo claro: evita texto blanco sobre blanco en celulares/apps con modo oscuro ===== */
+:root{color-scheme:light only;}
+html,body{color:#000;background-color:#fff;}
+button,input,select,textarea,option,.opt,.rol,.chip,.orden li,.bucket,.qz,.campo label,.paso,.block,.caso,.card-c,.cert{color:#000;}
+input,select,textarea{background-color:#fff;-webkit-text-fill-color:#000;}
+input::placeholder,textarea::placeholder{color:#777;-webkit-text-fill-color:#777;}
+.h-negro,.h-negro *{color:#fff;}
+.btn-eval{color:#fff;}
+.btn-flotante.casa,.btn-flotante.continuar{color:#fff;}
+/* ===== Evaluación en secuencia (estaciones) ===== */
+.stepper{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-bottom:1.6rem;}
+.stepper .stp{border:4px solid #000;border-radius:16px;background:#fff;padding:.5rem .4rem;text-align:center;box-shadow:4px 4px 0 #000;font-size:.78rem;font-weight:700;line-height:1.25;color:#000;}
+.stepper .stp b{display:block;font-family:'Bangers',cursive;font-weight:400;font-size:1.3rem;letter-spacing:1px;}
+.stepper .stp.act{background:#ffe600;transform:translateY(-3px);}
+.stepper .stp.ok{background:#b2f2bb;}
+.estacion{display:none;}
+.estacion.activa{display:block;}
+.saber{background:#fff;border:5px solid #000;border-radius:25px;box-shadow:7px 7px 0 var(--accent);padding:1.3rem 1.5rem;margin-bottom:1.8rem;}
+.saber>h2{font-family:'Bangers',cursive;font-weight:400;font-size:1.7rem;letter-spacing:1px;margin-bottom:.6rem;color:#000;}
+.saber p,.saber li{font-size:.95rem;line-height:1.55;color:#000;}
+.saber ul{padding-left:1.2rem;margin:.4rem 0;}
+.saber .grid-2c,.saber .grid-3c,.saber .quad{margin:.7rem 0;}
+.nav-est{display:flex;justify-content:space-between;gap:.8rem;flex-wrap:wrap;margin-top:1rem;}
+.nav-est .btn-sec{font-size:1.25rem;padding:.55rem 1.4rem;}
+.nav-est .btn-sec.sig{background:#00c853;color:#fff;margin-left:auto;}
+.deadline{background:#000;color:#ffe600;border-radius:18px;padding:.6rem 1rem;font-weight:700;text-align:center;margin-bottom:1.2rem;font-size:.95rem;}
+@media (max-width:700px){.stepper{gap:.3rem}.stepper .stp{font-size:.62rem;padding:.4rem .2rem;border-width:3px}.stepper .stp b{font-size:1.05rem}}
+
+:root{--bg1:#d3f9d8;--bg2:#40c057;--accent:#2b8a3e;--accent-soft:#d3f9d8;}
+</style>
+</head>
+<body>
+<style>
+.marcador{position:sticky;top:0;z-index:50;background:#000;color:#fff;border-radius:0 0 18px 18px;padding:.6rem 1rem;display:flex;flex-wrap:wrap;justify-content:space-around;gap:.4rem 1rem;font-weight:700;font-size:.9rem;margin:-.5rem 0 1.4rem;box-shadow:0 6px 0 var(--accent);}
+.marcador b{color:#ffe600;font-family:'Bangers',cursive;font-weight:400;font-size:1.3rem;letter-spacing:1px;}
+.cat{background:#fff;border:5px solid #000;border-radius:24px;box-shadow:6px 6px 0 #000;padding:1rem 1.1rem;margin-bottom:1.3rem;color:#000;}
+.cat h3{font-family:'Bangers',cursive;font-weight:400;font-size:1.45rem;letter-spacing:1px;margin-bottom:.7rem;display:flex;justify-content:space-between;gap:.5rem;flex-wrap:wrap;}
+.cat h3 small{font-family:'Poppins',sans-serif;font-size:.78rem;background:var(--accent-soft);border:2px solid #000;border-radius:999px;padding:.1rem .6rem;align-self:center;letter-spacing:0;}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:.55rem;}
+.tile{aspect-ratio:1;border:4px solid #000;border-radius:14px;background:#1c3faa;color:#ffe600;font-family:'Bangers',cursive;font-size:1.6rem;cursor:pointer;box-shadow:3px 3px 0 #000;display:flex;align-items:center;justify-content:center;transition:transform .08s;}
+.tile:hover{transform:translate(-2px,-2px);box-shadow:5px 5px 0 #000;}
+.tile.ok{background:#2b8a3e;color:#fff;cursor:default;}
+.tile.bad{background:#c92a2a;color:#fff;cursor:default;}
+.tile.ok:hover,.tile.bad:hover{transform:none;box-shadow:3px 3px 0 #000;}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:1000;display:none;align-items:flex-start;justify-content:center;padding:1rem .6rem;overflow-y:auto;}
+.modal.show{display:flex;}
+.tarjeta{background:#fff;border:5px solid #000;border-radius:26px;box-shadow:8px 8px 0 #ffe600;padding:1.2rem 1.3rem;color:#000;max-width:640px;width:100%;margin:auto 0;}
+.tarjeta .tag{display:inline-block;background:#000;color:#ffe600;border-radius:999px;padding:.15rem .8rem;font-size:.78rem;font-weight:700;margin-bottom:.7rem;}
+.tarjeta .ctx{background:#fffbe6;border:3px dashed #000;border-radius:16px;padding:.8rem .9rem;font-size:.88rem;line-height:1.55;margin-bottom:.9rem;}
+.tarjeta .pq{font-size:1.03rem;font-weight:700;line-height:1.45;margin-bottom:.9rem;}
+.tarjeta .opt{font-size:.92rem;}
+.fb{display:none;margin-top:1rem;border:4px solid #000;border-radius:18px;padding:.8rem 1rem;font-size:.92rem;line-height:1.5;}
+.fb.show{display:block;} .fb.bien{background:#d3f9d8;} .fb.mal{background:#ffe3e3;}
+.fb b.v{font-family:'Bangers',cursive;font-weight:400;font-size:1.35rem;letter-spacing:1px;display:block;}
+table.mini{border-collapse:collapse;margin-top:.5rem;font-size:.84rem;background:#fff;}
+table.mini th,table.mini td{border:2px solid #000;padding:.2rem .5rem;}
+table.mini td:last-child,table.mini th:last-child{text-align:right;}
+.navc{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1rem;flex-wrap:wrap;}
+.navc .btn-sec{font-size:1.1rem;}
+.meta20{background:#ffe600;border:4px solid #000;border-radius:18px;padding:.8rem 1rem;font-weight:700;text-align:center;margin-bottom:1.3rem;box-shadow:4px 4px 0 #000;color:#000;}
+</style>
+<div class="page-content"><div class="comic-container">
+<div class="datos-bar">
+  <label>👤 Nombre completo: <input id="al-nombre" type="text" placeholder="Ej. María Pérez González" autocomplete="name" /></label>
+  <label class="g">📚 Grupo: <input id="al-grupo" type="text" placeholder="Ej. 5°A" /></label>
+</div>
+<h1 class="titulo-seccion">🎯 Jeopardy de repaso · Segundo parcial</h1>
+<div class="subtitulo">70 casillas · elige 20 · 0.5 por acierto</div>
+
+<div class="instr"><b class="t">🎯 Jeopardy de repaso · ¿Cómo se juega?</b><ul>
+<li>Escribe tu <b>nombre completo y grupo</b> arriba.</li>
+<li>Elige <b>cualquier casilla</b> del tablero, del tema que quieras. Contesta y verás de inmediato si acertaste y por qué.</li>
+<li>Tus <b>primeras 20 respuestas</b> forman tu calificación: cada acierto vale <b>0.5</b> (máximo 10 puntos).</li>
+<li>Al contestar la número 20 aparecerá tu <b>evidencia</b>: descárgala o toma captura y súbela en Teams.</li>
+<li>Después puedes <b>seguir jugando</b> con las demás casillas para practicar; eso ya no cambia tu calificación.</li></ul></div>
+<div class="marcador"><span>Contestadas <b id="m-n">0</b>/20</span><span>Aciertos <b id="m-a">0</b></span><span>Puntos <b id="m-p">0</b>/10</span></div>
+<div class="meta20" id="meta20" style="display:none"></div>
+<div id="tablero"></div>
+<section id="cert" class="cert" aria-live="polite"></section>
+<div class="modal" id="modal"><div class="tarjeta" id="tarjeta"></div></div>
+
+</div></div>
+<nav class="botones-flotantes"><a class="btn-flotante casa" href="index.html">🏠 Inicio</a></nav>
+<script>/* ==================== MOTOR DE LABORATORIOS · Módulos III y IV ==================== */
+const Lab = (() => {
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const shuffle = a => { a = [...a]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const r1 = n => Math.round(n * 10) / 10;
+
+  let toastT;
+  function toast(msg, bad) {
+    let t = $('#toast');
+    if (!t) { t = document.createElement('div'); t.id = 'toast'; t.className = 'toast'; document.body.appendChild(t); }
+    t.textContent = msg; t.classList.toggle('bad', !!bad); t.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 3800);
+  }
+
+  function student(required = true) {
+    const n = ($('#al-nombre')?.value || '').trim(), g = ($('#al-grupo')?.value || '').trim();
+    if (required && (n.split(/\s+/).length < 2 || !g)) {
+      toast('✍️ Escribe tu nombre completo (nombre y apellido) y tu grupo antes de evaluar.', true);
+      $('#al-nombre')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); $('#al-nombre')?.focus();
+      return null;
+    }
+    return { n, g };
+  }
+
+  /* ---------- CLASIFICADOR (toque o arrastre) ---------- */
+  function classifier(root, { items, buckets }) {
+    root = typeof root === 'string' ? $(root) : root;
+    root.innerHTML = `<div class="tip-tap">👆 <b>Cómo jugar:</b> toca una tarjeta y después toca la caja donde va (en computadora también puedes arrastrarla). Si te equivocas antes de evaluar, toca la tarjeta colocada para regresarla.</div>
+      <div class="pool"></div><div class="buckets"></div>`;
+    const pool = $('.pool', root), bwrap = $('.buckets', root);
+    let sel = null, locked = false;
+    buckets.forEach(b => {
+      const d = document.createElement('div');
+      d.className = 'bucket'; d.dataset.k = b.k; d.style.background = b.color || '#fff';
+      d.innerHTML = `<div class="bh">${b.t}</div>${b.d ? `<div class="bd">${b.d}</div>` : ''}`;
+      d.addEventListener('click', e => { if (e.target.closest('.chip')) return; place(d); });
+      d.addEventListener('dragover', e => { e.preventDefault(); d.classList.add('over'); });
+      d.addEventListener('dragleave', () => d.classList.remove('over'));
+      d.addEventListener('drop', e => { e.preventDefault(); d.classList.remove('over'); const c = $('#' + e.dataTransfer.getData('text/plain')); if (c) { sel = c; place(d); } });
+      bwrap.appendChild(d);
+    });
+    const uid = 'c' + Math.random().toString(36).slice(2, 7);
+    shuffle(items).forEach((it, i) => {
+      const c = document.createElement('div');
+      c.className = 'chip'; c.id = uid + i; c.draggable = true; c.dataset.k = it.k; c.textContent = it.t;
+      c.addEventListener('click', () => {
+        if (locked) return;
+        if (c.parentElement !== pool) {
+          if (sel && sel !== c) { place(c.parentElement); return; }   /* tocar una caja ocupada coloca la tarjeta seleccionada */
+          pool.appendChild(c); clearSel(); return;
+        }
+        if (sel === c) { clearSel(); return; }
+        clearSel(); sel = c; c.classList.add('sel'); $$('.bucket', root).forEach(b => b.classList.add('ready'));
+      });
+      c.addEventListener('dragstart', e => { if (locked) { e.preventDefault(); return; } e.dataTransfer.setData('text/plain', c.id); });
+      pool.appendChild(c);
+    });
+    function clearSel() { if (sel) sel.classList.remove('sel'); sel = null; $$('.bucket', root).forEach(b => b.classList.remove('ready')); }
+    function place(b) { if (locked || !sel) return; b.appendChild(sel); clearSel(); }
+    return {
+      pending: () => pool.children.length,
+      evaluate() {
+        locked = true; clearSel(); root.classList.add('bloqueado');
+        let ok = 0; const total = items.length;
+        $$('.bucket .chip', root).forEach(c => {
+          const good = c.parentElement.dataset.k === c.dataset.k; c.draggable = false;
+          c.classList.add(good ? 'ok' : 'bad');
+          if (good) ok++; else { const bt = buckets.find(b => b.k === c.dataset.k); c.insertAdjacentHTML('beforeend', `<span class="fix">→ Va en: ${bt.t.replace(/<[^>]+>/g, '')}</span>`); }
+        });
+        return { ok, total };
+      }
+    };
+  }
+
+  /* ---------- CUESTIONARIO DE OPCIÓN MÚLTIPLE ---------- */
+  function quiz(root, qs, { shuffleQ = false } = {}) {
+    root = typeof root === 'string' ? $(root) : root;
+    const list = shuffleQ ? shuffle(qs) : qs;
+    root._qs = list;
+    root.innerHTML = list.map((q, i) => `<div class="qz" data-i="${i}"><div class="qt"><span class="qn">${i + 1}</span>${q.q}</div>
+      <div class="opts">${q.o.map((o, j) => `<button type="button" class="opt" data-j="${j}">${o}</button>`).join('')}</div>
+      <div class="exp">💡 ${q.e || ''}</div></div>`).join('');
+    let locked = false;
+    $$('.qz', root).forEach(box => $$('.opt', box).forEach(b => b.addEventListener('click', () => {
+      if (locked) return; $$('.opt', box).forEach(x => x.classList.remove('sel')); b.classList.add('sel');
+    })));
+    return {
+      pending: () => $$('.qz', root).filter(b => !$('.opt.sel', b)).length,
+      evaluate() {
+        locked = true; root.classList.add('bloqueado'); let ok = 0;
+        $$('.qz', root).forEach(box => {
+          const q = list[box.dataset.i], s = $('.opt.sel', box);
+          $$('.opt', box)[q.a].classList.add('ok');
+          if (s && +s.dataset.j === q.a) ok++; else if (s) s.classList.add('bad');
+          box.classList.add('done');
+        });
+        return { ok, total: list.length };
+      }
+    };
+  }
+
+  /* ---------- LISTA ORDENABLE (botones ↑ ↓) ---------- */
+  function orderer(root, correct, { scramble = true } = {}) {
+    root = typeof root === 'string' ? $(root) : root;
+    root._correct = correct;
+    let arr = scramble ? shuffle(correct) : [...correct];
+    if (scramble && arr.every((x, i) => x === correct[i]) && arr.length > 1) arr.reverse();
+    let locked = false;
+    function draw() {
+      root.innerHTML = `<ol class="orden">${arr.map((t, i) => `<li data-t="${esc(t)}"><span class="pos">${i + 1}</span><span class="tx">${t}</span>
+        <button type="button" data-d="-1" ${i === 0 || locked ? 'disabled' : ''} aria-label="Subir">▲</button>
+        <button type="button" data-d="1" ${i === arr.length - 1 || locked ? 'disabled' : ''} aria-label="Bajar">▼</button></li>`).join('')}</ol>`;
+      $$('button', root).forEach(b => b.addEventListener('click', () => {
+        const i = $$('li', root).indexOf(b.closest('li')), j = i + +b.dataset.d;
+        [arr[i], arr[j]] = [arr[j], arr[i]]; draw();
+      }));
+    }
+    draw();
+    return {
+      value: () => [...arr],
+      evaluate() {
+        locked = true; draw(); let ok = 0;
+        $$('li', root).forEach((li, i) => { const g = arr[i] === correct[i]; li.classList.add(g ? 'ok' : 'bad'); if (g) ok++; });
+        return { ok, total: correct.length };
+      }
+    };
+  }
+
+  /* ---------- TEXTO CON MÍNIMO DE CARACTERES ---------- */
+  function textarea(el, min) {
+    el = typeof el === 'string' ? $(el) : el;
+    const c = document.createElement('div'); c.className = 'contador'; el.after(c);
+    const up = () => { const n = el.value.trim().length; c.textContent = n >= min ? `✔ ${n} caracteres` : `${n} / ${min} caracteres mínimos`; c.classList.toggle('ok', n >= min); };
+    el.addEventListener('input', up); up();
+    return { ok: () => el.value.trim().length >= min, val: () => el.value.trim(), el };
+  }
+
+  function lockAll(scope = document) {
+    $$('input, textarea, select', scope).forEach(e => { if (!e.closest('.cert')) e.disabled = true; });
+    $$('.btn-eval', scope).forEach(b => { b.disabled = true; b.textContent = '✔ EVALUADO'; });
+  }
+
+  /* ---------- CERTIFICADO / EVIDENCIA ---------- */
+  function certificate({ lab, modulo, score, rows = [], msg = '', resp = [], showScore = true, max = 10 }) {
+    const s = student(false);
+    const c = $('#cert');
+    const fecha = new Date().toLocaleString('es-MX', { dateStyle: 'long', timeStyle: 'short' });
+    c.innerHTML = `<div id="cert-cap" style="background:#fff;padding:.4rem">
+      <div class="ch"><div><div style="font-size:.8rem;font-weight:700;letter-spacing:1px;text-transform:uppercase">UAEMéx · Estrategias para la Resolución de Problemas y Toma de Decisiones</div>
+      <h2>${lab}</h2><div style="font-size:.85rem">${modulo}</div></div>
+      ${showScore ? `<div class="nota">${r1(score)}/${max}</div>` : '<div class="nota" style="font-size:1.6rem">✔ COMPLETADO</div>'}</div>
+      <div class="meta"><div><b>Alumno(a):</b> ${esc(s.n)}</div><div><b>Grupo:</b> ${esc(s.g)}</div><div><b>Fecha:</b> ${fecha}</div></div>
+      ${rows.length ? `<table>${rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>` : ''}
+      ${msg ? `<div class="msg">${msg}</div>` : ''}
+      ${resp.length ? `<div class="resp">${resp.map(r => `<h4>${r[0]}</h4><p>${esc(r[1])}</p>`).join('')}</div>` : ''}
+      </div>
+      <div class="cert-acc"><button class="btn-sec amar" type="button" id="btn-png">📸 Descargar evidencia (imagen)</button>
+      <button class="btn-sec" type="button" onclick="window.print()">🖨️ Imprimir / PDF</button></div>
+      <p style="font-size:.8rem;margin-top:.6rem">Sube esta evidencia (o una captura de pantalla de esta sección) en la tarea correspondiente de Microsoft Teams.</p>`;
+    c.classList.add('show');
+    $('#btn-png').addEventListener('click', () => downloadPNG('#cert-cap', `${lab}_${s.n}`.replace(/[^\wáéíóúñÁÉÍÓÚÑ]+/g, '_')));
+    setTimeout(() => c.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+
+  function downloadPNG(sel, name) {
+    const el = $(sel);
+    if (typeof html2canvas === 'undefined') { toast('No se pudo generar la imagen. Toma una captura de pantalla de tu evidencia.', true); return; }
+    toast('⏳ Generando imagen…');
+    html2canvas(el, { scale: 2, backgroundColor: '#ffffff', useCORS: true }).then(cv => {
+      const a = document.createElement('a'); a.href = cv.toDataURL('image/png'); a.download = name + '.png'; a.click();
+      toast('✅ Imagen descargada');
+    }).catch(() => toast('No se pudo generar la imagen. Toma una captura de pantalla.', true));
+  }
+
+  function downloadCSV(rows, name) {
+    const csv = '﻿' + rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\r\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = name + '.csv'; a.click();
+  }
+
+  /* Evita perder el trabajo por accidente */
+  let dirty = false, done = false;
+  document.addEventListener('input', () => { dirty = true; });
+  window.addEventListener('beforeunload', e => { if (dirty && !done) { e.preventDefault(); e.returnValue = ''; } });
+  const finish = () => { done = true; };
+
+  return { $, $$, esc, shuffle, r1, toast, student, classifier, quiz, orderer, textarea, lockAll, certificate, downloadPNG, downloadCSV, finish };
+})();
+</script>
+<script>
+const DATA=[{"t": "proceso", "c": "Ernesto ha reprobado varios exámenes. Antes de decidir estudiar más horas, piensa que su dificultad podría venir de la desorganización, de no entender los temas, de distraerse o de usar una mala técnica de estudio.", "q": "¿Qué acción corresponde a la etapa de <b>identificación del problema</b>?", "ok": "Precisar que su dificultad principal es no comprender ciertos contenidos, y distinguirla de la falta de tiempo.", "no": ["Elegir estudiar dos horas diarias porque es lo que exige más compromiso.", "Comparar las ventajas y desventajas de estudiar en casa o en la biblioteca.", "Elegir la técnica que dé mejores resultados en menos tiempo."], "e": "Identificar el problema es precisar cuál es la dificultad central y distinguirla de otras posibles causas. Comparar opciones o elegir una corresponde a etapas posteriores."}, {"t": "proceso", "c": "Sofía debe decidir cómo prepararse para un examen: estudiar sola, formar un grupo de estudio o pedir asesoría. Analiza su tiempo, los beneficios y las dificultades de cada opción, y qué tanto la acerca cada una a su meta de mejorar.", "q": "¿Qué función cumple lo que está haciendo Sofía dentro del proceso de toma de decisiones?", "ok": "Valorar las posibilidades y sus consecuencias para ver cuál se acerca más a su objetivo.", "no": ["Definir de antemano la alternativa para que nada externo cambie su decisión.", "Sustituir la reflexión personal por la opción con menos riesgos.", "Identificar solo las consecuencias negativas para descartar opciones."], "e": "Sofía está evaluando consecuencias: compara beneficios y dificultades en función de su objetivo. No se limita a los riesgos ni decide antes de analizar."}, {"t": "proceso", "c": "Rodrigo quiere mejorar sus calificaciones. Primero descubre que su problema no es el tiempo, sino que no sabe organizar ni comprender los temas. Luego piensa en hacer resúmenes, mapas conceptuales o estudiar en equipo; compara beneficios y riesgos de cada opción y al final elige una y la pone en práctica.", "q": "¿Qué afirmación explica mejor la lógica de su proceso?", "ok": "Es un proceso ordenado: identificar el problema orienta la búsqueda de alternativas, y evaluarlas permite elegir una opción ligada al objetivo.", "no": ["Decidir es elegir primero una alternativa y justificarla después con sus consecuencias.", "Hay que generar el mayor número de alternativas, aunque no tengan relación con el problema.", "Una decisión responsable debe evitar cualquier consecuencia negativa."], "e": "Cada etapa alimenta a la siguiente: problema → alternativas → evaluación → elección. Ninguna decisión elimina todos los riesgos."}, {"t": "proceso", "c": "", "q": "¿Qué acción ayuda a <b>definir correctamente</b> un problema?", "ok": "Describir qué ocurre, a quién afecta y por qué es importante.", "no": ["Elegir la alternativa más sencilla.", "Pensar solo en las consecuencias positivas.", "Ignorar la información disponible."], "e": "Un problema bien definido responde qué pasa, a quién afecta y por qué importa. Las demás opciones saltan etapas o dejan fuera información."}, {"t": "proceso", "c": "", "q": "Una opción te da un beneficio inmediato, pero puede causar un problema serio más adelante. ¿Qué es lo adecuado?", "ok": "Valorar también la consecuencia a largo plazo.", "no": ["Ignorar el efecto futuro.", "Elegirla porque el beneficio es inmediato.", "Descartar las demás sin compararlas."], "e": "Evaluar consecuencias incluye el corto, el mediano y el largo plazo."}, {"t": "proceso", "c": "", "q": "Evaluar las consecuencias sirve principalmente para…", "ok": "Tomar decisiones más informadas y responsables.", "no": ["Decidir solo por intuición.", "Evitar cualquier riesgo posible.", "Ya no tener que elegir."], "e": "No existen decisiones sin riesgo: evaluar sirve para decidir con información y responsabilidad."}, {"t": "proceso", "c": "", "q": "Ya elegiste una alternativa. ¿Qué acción <b>fortalece</b> el proceso?", "ok": "Definir cómo llevarla a cabo y revisar sus resultados.", "no": ["Eliminar toda posibilidad de ajuste.", "Olvidarse del problema.", "No establecer acciones concretas."], "e": "Elegir no es el final: hay que planear cómo actuar y después evaluar si funcionó (tema 4.3)."}, {"t": "proceso", "c": "", "q": "Usar una estrategia para decidir <b>NO</b> significa…", "ok": "Renunciar al juicio personal y al análisis del contexto.", "no": ["Ordenar la información.", "Comparar alternativas.", "Reflexionar sobre posibles resultados."], "e": "Las estrategias apoyan tu juicio; no lo sustituyen. Ordenar, comparar y reflexionar sí son parte de usarlas."}, {"t": "proceso", "c": "", "q": "Una decisión responsable busca…", "ok": "Equilibrar objetivos, valores, recursos y consecuencias.", "no": ["Potenciar la creatividad y la innovación.", "Eliminar cualquier incertidumbre.", "Alcanzar metas complejas."], "e": "Decidir con responsabilidad es encontrar el equilibrio entre lo que quieres lograr, tus valores, lo que tienes y lo que puede pasar."}, {"t": "proceso", "c": "", "q": "¿Cuál es el <b>primer paso</b> de cualquier proceso organizado de toma de decisiones?", "ok": "Identificar con claridad el problema.", "no": ["Seleccionar la opción.", "Abrir tu perspectiva.", "Medir los riesgos."], "e": "Sin un problema bien identificado, todo lo demás se construye sobre una base equivocada."}, {"t": "proceso", "c": "", "q": "Cuando alguien distingue entre las <b>causas</b> y los <b>síntomas</b> de una situación, principalmente está…", "ok": "Identificando el problema con mayor precisión.", "no": ["Haciendo una evaluación económica.", "Eligiendo de forma impulsiva.", "Eliminando alternativas."], "e": "Separar síntomas de causas es el corazón de la identificación del problema (temas 3.1 y 4.1)."}, {"t": "proceso", "c": "", "q": "¿Qué pregunta es más útil al <b>identificar</b> un problema?", "ok": "¿Qué está sucediendo realmente?", "no": ["¿Cómo justificaré mi decisión?", "¿Cuál alternativa elegiré?", "¿Qué opción me gusta más?"], "e": "Las otras preguntas pertenecen a la elección, no a la identificación."}, {"t": "proceso", "c": "Una alumna tiene bajas calificaciones. Antes de decidir qué hacer, revisa sus hábitos de estudio, su asistencia y en qué materias tiene más dificultad.", "q": "¿Qué etapa está aplicando?", "ok": "Identificación del problema.", "no": ["Elección de una alternativa.", "Análisis costo-beneficio.", "Evaluación de consecuencias."], "e": "Está reuniendo información para entender qué pasa antes de buscar soluciones."}, {"t": "proceso", "c": "", "q": "Tienes un conflicto de horario entre estudiar y asistir a una actividad. ¿Qué ejemplo representa la <b>búsqueda de alternativas</b>?", "ok": "Pensar en reorganizar el horario, negociar tiempos o priorizar tareas.", "no": ["Elegir sin revisar opciones.", "Decidir no hacer nada.", "Culpar a otra persona."], "e": "Buscar alternativas es abrir varias posibilidades antes de elegir."}, {"t": "proceso", "c": "", "q": "Durante la búsqueda de alternativas conviene <b>evitar</b>…", "ok": "Descartar opciones antes de analizarlas.", "no": ["La creatividad.", "La búsqueda de información.", "La generación de ideas."], "e": "En esta etapa se abren opciones; descartarlas sin analizar empobrece la decisión."}, {"t": "proceso", "c": "", "q": "Un alumno compara cómo afectaría cada opción a sus estudios, a su tiempo y a sus relaciones personales. ¿Qué está haciendo?", "ok": "Evaluando consecuencias.", "no": ["Identificando el problema.", "Generando alternativas.", "Aplicando únicamente el sombrero rojo."], "e": "Anticipar los efectos de cada opción es evaluar consecuencias."}, {"t": "m3", "c": "Un equipo organiza una actividad en la escuela. Un integrante propone saltarse el reglamento y usar un salón sin permiso. El equipo quiere decidir con responsabilidad, viendo todas las opciones y sus consecuencias.", "q": "¿Qué procedimiento deben seguir?", "ok": "Elaborar un árbol de decisiones con alternativas, consecuencias y posibles resultados.", "no": ["Elegir lo más rápido y pedir autorización después.", "Aplicar la matriz de Eisenhower solo a las actividades del evento.", "Considerar solo la opinión de quien mejor conoce el reglamento."], "e": "“Visualizar opciones y sus consecuencias” es justo lo que hace el árbol de decisiones."}, {"t": "m3", "c": "En un salón, algunos alumnos no respetan los turnos para participar porque creen que su opinión vale más. Para analizarlo con objetividad, el grupo revisa la situación desde distintas miradas: la de quienes hablan, la de quienes esperan su turno y la del docente.", "q": "¿Qué estrategia están usando principalmente?", "ok": "Seis sombreros para pensar.", "no": ["Matriz de Eisenhower.", "Análisis costo-beneficio.", "Árbol de decisiones."], "e": "Analizar un problema desde varias perspectivas distintas es la idea central de los seis sombreros."}, {"t": "m3", "c": "", "q": "Una estudiante dibuja dos opciones de carrera y, desde cada una, traza sus posibles costos, oportunidades y resultados. ¿Qué estrategia usa?", "ok": "Árbol de decisiones.", "no": ["Matriz de Eisenhower.", "Seis sombreros para pensar.", "Lluvia de ideas únicamente."], "e": "Dibujar ramas desde cada opción hacia sus resultados es un árbol de decisiones."}, {"t": "m3", "c": "En el receso, unos alumnos piensan entrar a un área restringida. Antes de hacerlo comparan las ventajas (llegar más rápido) con las desventajas (una sanción, un accidente o poner en riesgo a otros).", "q": "¿Qué estrategia están aplicando?", "ok": "Análisis costo-beneficio.", "no": ["Matriz de Eisenhower.", "Seis sombreros para pensar.", "Árbol de decisiones."], "e": "Poner en la balanza ventajas (beneficios) y desventajas (costos) es un análisis costo-beneficio."}, {"t": "m3", "c": "", "q": "Un análisis costo-beneficio consiste en…", "ok": "Comparar los costos y los beneficios esperados de una alternativa.", "no": ["Elegir siempre la opción más barata.", "Analizar únicamente las pérdidas económicas.", "Decidir sin comparar opciones."], "e": "Lo barato no siempre conviene: se comparan costos y beneficios, incluidos los que no son dinero."}, {"t": "m3", "c": "", "q": "¿Cuál de estas opciones <b>NO</b> forma parte de un análisis costo-beneficio?", "ok": "Tomar decisiones sin comparar.", "no": ["Comparar los costos.", "Los beneficios esperados de una alternativa.", "El tiempo y el dinero invertidos."], "e": "La esencia del análisis es comparar; decidir sin comparar es lo contrario."}, {"t": "m3", "c": "", "q": "¿Qué criterios usa la Matriz de Eisenhower para organizar actividades?", "ok": "Urgencia e importancia.", "no": ["Creatividad y riesgo.", "Costo y beneficio.", "Emoción y razón."], "e": "Por eso también se llama matriz urgente-importante."}, {"t": "m3", "c": "", "q": "¿Qué se recomienda hacer con las actividades que <b>no son urgentes ni importantes</b>?", "ok": "Reducirlas o eliminarlas.", "no": ["Programarlas como máxima prioridad.", "Atenderlas antes que todas.", "Delegarlas obligatoriamente."], "e": "Es el cuadrante 4: consumen tiempo sin aportar a tus metas."}, {"t": "m3", "c": "<b>Caso.</b> Mariana organiza la feria cultural de su escuela. Sus pendientes de la semana:<br>A) Entregar mañana el cartel principal (vale 30 % de su calificación).<br>B) Ensayar su presentación, que será en cuatro días.<br>C) Contestar mensajes y memes de sus amigos.<br>D) Ordenar los archivos digitales de la feria para consultarlos el próximo mes.<br>E) Ayudar hoy a un amigo a decorar su puesto, aunque no es responsabilidad de Mariana.<br>F) Ver videos y publicaciones en redes sociales.<br>G) Dormir bien y preparar sus alimentos para los días de la feria.<br>H) Entregar hoy un formato de autorización que cuenta para su calificación.", "q": "¿Qué clasificación de la Matriz de Eisenhower es correcta?", "ok": "Hacer ya: A y H · Programar: B, D y G · Delegar o negociar: E · Eliminar o limitar: C y F", "no": ["Hacer ya: B y D · Programar: A y H · Delegar: C y F · Eliminar: E y G", "Hacer ya: A, B, C y E · Programar: D y F · Delegar: G · Eliminar: H", "Hacer ya: A y E · Programar: C y F · Delegar: B y H · Eliminar: D y G"], "e": "A y H vencen hoy o mañana y cuentan para la calificación. B, D y G son importantes pero con margen. E es urgente pero no es responsabilidad de Mariana. C y F no aportan a sus metas."}, {"t": "m3", "c": "<b>Caso.</b> Mariana organiza la feria cultural de su escuela. Sus pendientes de la semana:<br>A) Entregar mañana el cartel principal (vale 30 % de su calificación).<br>B) Ensayar su presentación, que será en cuatro días.<br>C) Contestar mensajes y memes de sus amigos.<br>D) Ordenar los archivos digitales de la feria para consultarlos el próximo mes.<br>E) Ayudar hoy a un amigo a decorar su puesto, aunque no es responsabilidad de Mariana.<br>F) Ver videos y publicaciones en redes sociales.<br>G) Dormir bien y preparar sus alimentos para los días de la feria.<br>H) Entregar hoy un formato de autorización que cuenta para su calificación.", "q": "Mariana aún no termina el cartel de mañana (30 %) y su amigo le pide ayuda con la decoración de su puesto, que no le corresponde. ¿Qué decisión es más adecuada?", "ok": "Priorizar el cartel y negociar la ayuda: dar una orientación breve o buscar a alguien más que colabore.", "no": ["Dejar el cartel para ayudar, porque la decoración es para hoy.", "Ayudar varias horas y hacer el cartel después, aunque se desvele.", "Olvidar las actividades de la feria y solo ayudar a su amigo."], "e": "Lo urgente para otro no siempre es importante para ti: se atiende lo propio y lo demás se negocia o se delega."}, {"t": "m3", "c": "<b>Caso.</b> Mariana organiza la feria cultural de su escuela. Sus pendientes de la semana:<br>A) Entregar mañana el cartel principal (vale 30 % de su calificación).<br>B) Ensayar su presentación, que será en cuatro días.<br>C) Contestar mensajes y memes de sus amigos.<br>D) Ordenar los archivos digitales de la feria para consultarlos el próximo mes.<br>E) Ayudar hoy a un amigo a decorar su puesto, aunque no es responsabilidad de Mariana.<br>F) Ver videos y publicaciones en redes sociales.<br>G) Dormir bien y preparar sus alimentos para los días de la feria.<br>H) Entregar hoy un formato de autorización que cuenta para su calificación.", "q": "Mariana debe ensayar su presentación (en cuatro días) y recibe mensajes y notificaciones constantemente. ¿Qué estrategia corresponde mejor a la Matriz de Eisenhower?", "ok": "Programar horarios de ensayo, darse descansos breves para responder mensajes y silenciar las notificaciones innecesarias.", "no": ["Revisar primero todos los mensajes y ensayar solo si sobra tiempo.", "Cancelar los ensayos porque todavía faltan cuatro días.", "Dedicar el mismo tiempo al ensayo, a los mensajes y a las redes sociales."], "e": "El ensayo es importante pero no urgente: se programa. Lo que distrae se limita."}, {"t": "m3", "c": "<b>Caso.</b> Mariana organiza la feria cultural de su escuela. Sus pendientes de la semana:<br>A) Entregar mañana el cartel principal (vale 30 % de su calificación).<br>B) Ensayar su presentación, que será en cuatro días.<br>C) Contestar mensajes y memes de sus amigos.<br>D) Ordenar los archivos digitales de la feria para consultarlos el próximo mes.<br>E) Ayudar hoy a un amigo a decorar su puesto, aunque no es responsabilidad de Mariana.<br>F) Ver videos y publicaciones en redes sociales.<br>G) Dormir bien y preparar sus alimentos para los días de la feria.<br>H) Entregar hoy un formato de autorización que cuenta para su calificación.", "q": "¿Por qué conviene <b>programar</b> el ensayo, la organización de los archivos y el cuidado de su alimentación, en vez de hacerlo todo de inmediato?", "ok": "Porque son importantes, pero permiten reservarles un momento específico sin descuidar lo que vence pronto.", "no": ["Porque no son importantes para la feria.", "Porque lo que no se hace hoy debe eliminarse.", "Porque otra persona puede hacerlas."], "e": "Cuadrante 2: importante, no urgente. Se agenda para que no se convierta en urgencia."}, {"t": "m3", "c": "Una escuela analiza cómo actuar ante un sismo. Estas son cuatro intervenciones:<br>1) Revisar los reportes de simulacros anteriores, las rutas de evacuación y los puntos de reunión.<br>2) Señalar los peligros de bloquear salidas, regresar por objetos personales o usar elevadores.<br>3) Reconocer las ventajas de tener brigadas, señalización clara y simulacros frecuentes.<br>4) Proponer nuevas formas de avisar las instrucciones a personas con discapacidad auditiva o visual.", "q": "¿Qué sombrero representa cada intervención?", "ok": "1 Blanco · 2 Negro · 3 Amarillo · 4 Verde", "no": ["1 Verde · 2 Amarillo · 3 Blanco · 4 Negro", "1 Negro · 2 Blanco · 3 Verde · 4 Amarillo", "1 Amarillo · 2 Verde · 3 Negro · 4 Blanco"], "e": "Datos = blanco; riesgos = negro; beneficios = amarillo; ideas nuevas = verde."}, {"t": "m3", "c": "", "q": "¿Qué sombrero mira las cosas con optimismo y esperanza, es positivo y constructivo, y hace que las cosas sucedan?", "ok": "🟡 Sombrero amarillo", "no": ["⚪ Sombrero blanco", "🔴 Sombrero rojo", "⚫ Sombrero negro"], "e": "El amarillo se enfoca en beneficios, ventajas y oportunidades."}, {"t": "m3", "c": "", "q": "¿Qué sombrero es lógico, preventivo, cauteloso y precavido; señala los riesgos y nos protege de malgastar dinero, tiempo y energía?", "ok": "⚫ Sombrero negro", "no": ["⚪ Sombrero blanco", "🔴 Sombrero rojo", "🟡 Sombrero amarillo"], "e": "El negro analiza riesgos, dificultades y aspectos críticos."}, {"t": "m3", "c": "", "q": "¿Qué sombrero expresa sentimientos, emociones e intuiciones sin necesidad de explicarlos ni justificarlos?", "ok": "🔴 Sombrero rojo", "no": ["⚪ Sombrero blanco", "⚫ Sombrero negro", "🟡 Sombrero amarillo"], "e": "El rojo da permiso de expresar lo que se siente."}, {"t": "m3", "c": "", "q": "¿Qué sombrero controla a los demás, organiza los pasos para pensar, define los propósitos y llega a conclusiones?", "ok": "🔵 Sombrero azul", "no": ["⚪ Sombrero blanco", "🔴 Sombrero rojo", "⚫ Sombrero negro"], "e": "El azul abre y cierra la sesión: organiza el proceso."}, {"t": "m3", "c": "", "q": "¿Qué sombrero es neutro y se concentra en la información disponible y en los hechos?", "ok": "⚪ Sombrero blanco", "no": ["🔴 Sombrero rojo", "⚫ Sombrero negro", "🟡 Sombrero amarillo"], "e": "El blanco trabaja con datos, hechos y cifras."}, {"t": "m3", "c": "", "q": "¿Qué sombrero plantea nuevas posibilidades y propone alternativas que nos llevan a lugares nuevos?", "ok": "🟢 Sombrero verde", "no": ["⚪ Sombrero blanco", "🔴 Sombrero rojo", "⚫ Sombrero negro"], "e": "El verde representa la creatividad y las ideas nuevas."}, {"t": "m3", "c": "", "q": "¿Qué autor propone un método sencillo pero efectivo para convertirte en mejor pensador y solucionador de problemas al tomar decisiones?", "ok": "Edward de Bono.", "no": ["Kaoru Ishikawa.", "Margarita A. de Sánchez.", "Viktor Frankl."], "e": "Edward de Bono es el creador de los seis sombreros para pensar."}, {"t": "m3", "c": "", "q": "¿Qué técnica creativa toma un principio del problema y <b>invierte</b> los elementos que operan en él?", "ok": "Método de inversión.", "no": ["Método de la huida.", "División o fraccionamiento.", "Método de escape."], "e": "Como su nombre lo indica, el método de inversión da la vuelta al principio del problema."}, {"t": "problema", "c": "", "q": "¿Cómo se llama el estado de alerta intelectual que vive un estudiante ante una situación frustrante que supera sus conocimientos o recursos actuales?", "ok": "Nudo de tensión.", "no": ["Queja superficial.", "Causa raíz.", "Viabilidad de solución."], "e": "El nudo de tensión es la señal de que hay un problema real que todavía no sabes cómo resolver."}, {"t": "problema", "c": "", "q": "En la taxonomía de Bloom, ¿qué nivel corresponde a descomponer un problema en partes para descubrir las relaciones ocultas entre síntomas y causas?", "ok": "Análisis.", "no": ["Recordar.", "Aplicación.", "Evaluación."], "e": "Analizar es descomponer en partes y encontrar sus relaciones."}, {"t": "problema", "c": "", "q": "Según la teoría de resolución de problemas, ¿qué es una <b>queja</b>?", "ok": "Una reacción emocional y superficial que se queda en el síntoma o malestar externo.", "no": ["Una representación lógica que descubre la causa estructural del problema.", "Un indicador de viabilidad que mide el realismo del entorno y el tiempo.", "Una estrategia matemática para ponderar opciones según tus valores."], "e": "La queja se detiene en el síntoma; el análisis llega a la causa raíz."}, {"t": "creativas", "c": "", "q": "¿Qué herramientas sirven para generar <b>alternativas creativas</b> de solución?", "ok": "Paisaje de aprendizaje, role playing y diagrama de Pareto.", "no": ["Seis sombreros, análisis costo-beneficio, árbol de decisiones y matriz de Eisenhower.", "Decisiones programadas y no programadas.", "Debate, sanción y eliminación de alternativas."], "e": "Las cuatro del Módulo III son estrategias para la toma de decisiones; las del tema 4.2 son alternativas creativas."}, {"t": "creativas", "c": "", "q": "¿Qué referentes pedagógicos combina el Paisaje de Aprendizaje?", "ok": "La Taxonomía de Bloom y las Inteligencias Múltiples de Gardner.", "no": ["El principio de Pareto y los pilares de la autoevaluación.", "El psicodrama y la técnica de la silla vacía.", "El modelo de regulación emocional de Gross y la teoría de Kolb."], "e": "Bloom + Inteligencias Múltiples. La silla vacía y Kolb pertenecen al role playing."}, {"t": "creativas", "c": "", "q": "¿Qué ruta del Paisaje de Aprendizaje te pide respirar, tomar distancia y calmarte antes de responder a un conflicto en redes sociales?", "ok": "Ruta emocional.", "no": ["Ruta cognitiva.", "Ruta social.", "Ruta teórica."], "e": "La ruta emocional es la contención afectiva: primeros auxilios psicológicos."}, {"t": "creativas", "c": "", "q": "¿Para qué sirve el “filtro de realidad” del Paisaje de Aprendizaje?", "ok": "Para preguntarte qué recursos y tiempo tienes y qué probabilidad de éxito existe.", "no": ["Para memorizar las definiciones del glosario.", "Para actuar en automático y liberar la presión.", "Para representar con un juego de roles el peor escenario posible."], "e": "El filtro convierte una reacción impulsiva en una elección realista."}, {"t": "creativas", "c": "", "q": "Metodología innovadora que busca que la enseñanza sea un proceso flexible, inclusivo y motivador.", "ok": "Paisaje de aprendizaje.", "no": ["Role playing.", "Diagrama de Pareto.", "Inteligencias múltiples."], "e": "El paisaje organiza el aprendizaje como un itinerario flexible."}, {"t": "creativas", "c": "", "q": "Técnica en la que se crean escenarios de la vida real para que los participantes representen distintos roles.", "ok": "Role playing.", "no": ["Diagrama de Ishikawa.", "Provocación operativa.", "Seis sombreros para pensar."], "e": "Role playing = juego de roles en escenarios simulados."}, {"t": "creativas", "c": "En un taller de mediación, los alumnos simulan una negociación entre la dirección y la sociedad de alumnos sobre el reglamento. Al final analizan las posturas, la empatía y la asertividad que mostraron.", "q": "¿Cuál es el valor principal del role playing en este caso?", "ok": "Desarrollar la empatía y comprender posturas distintas a través de la vivencia simulada.", "no": ["Priorizar datos numéricos para calcular porcentajes de desacuerdo.", "Organizar en una matriz las ventajas y desventajas de cada postura.", "Medir de forma cuantitativa el rendimiento de cada participante."], "e": "Al ponerte en el papel del otro desarrollas empatía; el análisis final (debriefing) consolida lo aprendido."}, {"t": "creativas", "c": "", "q": "¿En qué teoría se fundamenta el role playing, que dice que el aprendizaje más profundo ocurre cuando la experiencia directa se transforma en conocimiento?", "ok": "Teoría del aprendizaje experiencial de Kolb.", "no": ["Teoría de la decisión de von Neumann-Morgenstern.", "Teoría de la codificación dual de Paivio.", "Taxonomía jerárquica de Bloom."], "e": "Kolb: experiencia → reflexión → conceptualización → experimentación."}, {"t": "pareto", "c": "", "q": "¿Qué dice el principio de Pareto?", "ok": "Aproximadamente el 80 % de las consecuencias proviene del 20 % de las causas.", "no": ["El 80 % de las causas produce aproximadamente el 20 % de las consecuencias.", "Todas las causas producen la misma cantidad de consecuencias.", "Las causas más frecuentes siempre son exactamente el 80 % de los datos."], "e": "Pocas causas (≈20 %) generan la mayor parte del problema (≈80 %): los “pocos vitales”."}, {"t": "pareto", "c": "", "q": "¿De quién es el principio que establece que el 80 % de las consecuencias proviene del 20 % de las causas?", "ok": "Vilfredo Pareto.", "no": ["Platón.", "Kaoru Ishikawa.", "Aristóteles."], "e": "Por eso se llama principio y diagrama de Pareto."}, {"t": "pareto", "c": "", "q": "Herramienta de gran utilidad en la toma de decisiones y en el diseño de estrategias efectivas para cumplir objetivos.", "ok": "Diagrama de Pareto.", "no": ["Role playing.", "Paisaje de aprendizaje.", "Inteligencias múltiples."], "e": "Pareto ayuda a decidir en qué causas concentrar el esfuerzo para lograr el objetivo."}, {"t": "pareto", "c": "Estos son los pasos para elaborar un diagrama de Pareto, en desorden:<br>1) Calcular el porcentaje individual de cada causa.<br>2) Trazar la curva del porcentaje acumulado.<br>3) Recopilar todas las causas posibles del problema.<br>4) Elaborar el diagrama de barras.<br>5) Cuantificar y ordenar las causas de mayor a menor en una tabla.<br>6) Calcular el porcentaje acumulado sumando los porcentajes individuales.", "q": "¿Cuál es el orden correcto?", "ok": "3, 5, 1, 6, 4, 2", "no": ["3, 1, 5, 6, 2, 4", "5, 3, 1, 4, 6, 2", "3, 5, 6, 1, 4, 2"], "e": "Recopilar → cuantificar y ordenar → % individual → % acumulado → barras → curva acumulada."}, {"t": "pareto", "c": "", "q": "¿Cuál es el <b>primer</b> paso para construir un diagrama de Pareto?", "ok": "Recopilar todas las causas posibles del problema.", "no": ["Elaborar el diagrama de barras.", "Calcular el porcentaje acumulado.", "Trazar la curva acumulada."], "e": "Sin datos de las causas no hay nada que ordenar ni graficar."}, {"t": "pareto", "c": "", "q": "¿Cuál es el <b>último</b> paso para construir un diagrama de Pareto?", "ok": "Trazar la curva del porcentaje acumulado.", "no": ["Recopilar las causas.", "Calcular el porcentaje individual.", "Ordenar las causas de mayor a menor."], "e": "La curva acumulada se traza al final, sobre el diagrama de barras."}, {"t": "pareto", "c": "", "q": "¿Cómo se calcula el <b>porcentaje individual</b> de una causa?", "ok": "Se divide su frecuencia entre el total y se multiplica por 100.", "no": ["Se suma su frecuencia a la de la causa anterior.", "Se multiplica su frecuencia por el número de causas.", "Se resta su frecuencia al total."], "e": "Ejemplo: 36 ÷ 120 × 100 = 30 %."}, {"t": "pareto", "c": "<b>Caso.</b> Una preparatoria encuestó durante una semana a sus alumnos sobre por qué entregan tarde las tareas. Cada alumno eligió una causa:<table class=\"mini\"><tr><th>Causa</th><th>Frecuencia</th></tr><tr><td>Falta de organización</td><td>36</td></tr><tr><td>No entender las instrucciones</td><td>30</td></tr><tr><td>Problemas de conexión a internet</td><td>24</td></tr><tr><td>Falta de tiempo por trabajo o familia</td><td>18</td></tr><tr><td>Instrucciones poco claras del docente</td><td>12</td></tr><tr><td><b>Total</b></td><td><b>120</b></td></tr></table>", "q": "¿Cuáles son los <b>porcentajes individuales</b>, en el orden de la tabla?", "ok": "30 %, 25 %, 20 %, 15 %, 10 %", "no": ["36 %, 30 %, 24 %, 18 %, 12 %", "25 %, 30 %, 20 %, 10 %, 15 %", "30 %, 20 %, 25 %, 15 %, 10 %"], "e": "36÷120×100 = 30; 30÷120×100 = 25; 24 → 20; 18 → 15; 12 → 10. Ojo: la frecuencia no es el porcentaje."}, {"t": "pareto", "c": "<b>Caso.</b> Una preparatoria encuestó durante una semana a sus alumnos sobre por qué entregan tarde las tareas. Cada alumno eligió una causa:<table class=\"mini\"><tr><th>Causa</th><th>Frecuencia</th></tr><tr><td>Falta de organización</td><td>36</td></tr><tr><td>No entender las instrucciones</td><td>30</td></tr><tr><td>Problemas de conexión a internet</td><td>24</td></tr><tr><td>Falta de tiempo por trabajo o familia</td><td>18</td></tr><tr><td>Instrucciones poco claras del docente</td><td>12</td></tr><tr><td><b>Total</b></td><td><b>120</b></td></tr></table>", "q": "¿Cuáles son los <b>porcentajes acumulados</b>, en el orden de la tabla?", "ok": "30 %, 55 %, 75 %, 90 %, 100 %", "no": ["36 %, 66 %, 90 %, 108 %, 120 %", "30 %, 25 %, 20 %, 15 %, 10 %", "30 %, 50 %, 70 %, 85 %, 95 %"], "e": "Se suman progresivamente: 30; 30+25 = 55; 55+20 = 75; 75+15 = 90; 90+10 = 100. El último siempre es 100 %."}, {"t": "pareto", "c": "<b>Caso.</b> Una preparatoria encuestó durante una semana a sus alumnos sobre por qué entregan tarde las tareas. Cada alumno eligió una causa:<table class=\"mini\"><tr><th>Causa</th><th>Frecuencia</th></tr><tr><td>Falta de organización</td><td>36</td></tr><tr><td>No entender las instrucciones</td><td>30</td></tr><tr><td>Problemas de conexión a internet</td><td>24</td></tr><tr><td>Falta de tiempo por trabajo o familia</td><td>18</td></tr><tr><td>Instrucciones poco claras del docente</td><td>12</td></tr><tr><td><b>Total</b></td><td><b>120</b></td></tr></table>", "q": "Si la escuela quiere atender las causas que representan cerca del <b>75 %</b> del problema, ¿cuáles debe priorizar?", "ok": "Falta de organización, no entender las instrucciones y problemas de conexión.", "no": ["Falta de tiempo e instrucciones poco claras.", "Problemas de conexión e instrucciones poco claras.", "Falta de organización, falta de tiempo e instrucciones poco claras."], "e": "Las tres primeras acumulan 30 + 25 + 20 = 75 %."}, {"t": "pareto", "c": "", "q": "¿Para qué sirve principalmente el <b>porcentaje acumulado</b> en un diagrama de Pareto?", "ok": "Para identificar las causas que concentran la mayor parte del problema.", "no": ["Para saber qué causa apareció primero en la encuesta.", "Para ordenar las causas según su aparición.", "Para sustituir la frecuencia por un valor aproximado."], "e": "Muestra hasta dónde llegan los “pocos vitales” (cerca del 80 %)."}, {"t": "evaluacion", "c": "", "q": "¿Cuál es la finalidad principal de evaluar los resultados después de tomar una decisión?", "ok": "Determinar los logros, revisar si se alcanzó lo esperado y decidir si hace falta mejorar.", "no": ["Terminar el proceso sin analizar las consecuencias.", "Evitar que se hagan cambios a la alternativa elegida.", "Comparar solo la decisión con las opiniones de otras personas."], "e": "Evaluar sirve para aprender y ajustar, no para cerrar sin revisar."}, {"t": "evaluacion", "c": "", "q": "¿Qué recursos sirven para evaluar los resultados de una decisión?", "ok": "La matriz comparativa y el proceso de autoevaluación.", "no": ["La lluvia de ideas y el diagrama de Pareto.", "La observación informal y la opinión de una sola persona.", "El análisis de causas y la selección de alternativas."], "e": "Son las dos herramientas del tema 4.3."}, {"t": "evaluacion", "c": "Un grupo debe elegir el mejor proyecto comunitario entre tres propuestas y analiza de forma sistemática el costo, la viabilidad, el tiempo y el impacto social de cada una.", "q": "¿Qué es y qué función cumple una matriz comparativa?", "ok": "Una estructura de doble entrada que permite contrastar de forma objetiva las alternativas frente a criterios comunes.", "no": ["Un gráfico de línea para proyectar tendencias a largo plazo.", "Una técnica de representación dramática para simular conflictos.", "Una lista arbitraria en la que se elige la primera opción."], "e": "Filas y columnas: elementos contra características."}, {"t": "evaluacion", "c": "", "q": "Una matriz comparativa <b>NO</b> sirve para…", "ok": "Ampliar información.", "no": ["Organizar información.", "Facilitar la toma de decisiones.", "Favorecer el análisis crítico."], "e": "La matriz organiza y sintetiza; no amplía la información."}, {"t": "evaluacion", "c": "Estos son los pasos de la autoevaluación, en desorden:<br>1) Identificar las fortalezas.<br>2) Diseñar un plan de acción.<br>3) Determinar el propósito de la autoevaluación.<br>4) Analizar los resultados de forma honesta, reflexiva y objetiva.<br>5) Dar seguimiento al plan de acción.<br>6) Tener las evidencias de lo que se va a evaluar.<br>7) Formular áreas de oportunidad.<br>8) Tener claros los criterios o indicadores.", "q": "¿Cuál es el orden correcto?", "ok": "3, 8, 6, 4, 1, 7, 2, 5", "no": ["3, 8, 6, 1, 4, 2, 7, 5", "8, 3, 6, 1, 4, 7, 5, 2", "3, 6, 8, 4, 1, 7, 2, 5"], "e": "Propósito → criterios → evidencias → analizar → fortalezas → áreas de oportunidad → plan → seguimiento."}, {"t": "evaluacion", "c": "", "q": "¿Cuál es el <b>primer</b> paso de la autoevaluación?", "ok": "Determinar el propósito de la autoevaluación.", "no": ["Tener evidencias de lo que se evalúa.", "Identificar las fortalezas.", "Diseñar un plan de acción."], "e": "Primero se define para qué se evalúa."}, {"t": "evaluacion", "c": "", "q": "En la autoevaluación, ¿qué paso va justo <b>después de tener claros los criterios</b>?", "ok": "Tener evidencias de lo que se va a evaluar.", "no": ["Dar seguimiento al plan de acción.", "Formular áreas de oportunidad.", "Determinar el propósito."], "e": "Propósito → criterios → evidencias."}, {"t": "evaluacion", "c": "", "q": "En la autoevaluación, ¿qué pasos van <b>al final</b>?", "ok": "Diseñar un plan de acción y darle seguimiento.", "no": ["Determinar el propósito y los criterios.", "Tener evidencias y analizarlas.", "Identificar fortalezas y determinar el propósito."], "e": "Primero se analiza; al final se planea la mejora y se le da seguimiento."}, {"t": "evaluacion", "c": "Al terminar el parcial, un estudiante revisa conscientemente su propio proceso de aprendizaje: sus aciertos, sus sesgos y sus áreas de mejora.", "q": "¿Qué caracteriza a la autoevaluación?", "ok": "Una valoración reflexiva y autorregulada del propio desempeño frente a criterios previamente establecidos.", "no": ["Un juicio final emitido exclusivamente por el docente.", "El cálculo del porcentaje de errores de los compañeros.", "La representación actoral de los conflictos del equipo."], "e": "Es el propio alumno quien se evalúa, con criterios claros."}, {"t": "evaluacion", "c": "", "q": "Se pide a los alumnos acompañar su autoevaluación con evidencias y un plan de acción. ¿Cuál es el propósito formativo?", "ok": "Fomentar la autorregulación, la metacognición y el compromiso con la mejora continua.", "no": ["Que todos se asignen la calificación más alta.", "Reemplazar el análisis de problemas por reflexiones afectivas.", "Ordenar a los alumnos según el principio 80/20."], "e": "La autoevaluación busca que aprendas a mejorar por ti mismo."}, {"t": "otros", "c": "", "q": "En la clasificación de habilidades sociales de Goldstein, ¿en qué grupo se ubica la habilidad de “disculparse”?", "ok": "Habilidades sociales avanzadas.", "no": ["Habilidades alternativas a la agresión.", "Habilidades de planificación.", "Habilidades sociales básicas."], "e": "En Goldstein, el grupo de habilidades sociales avanzadas incluye pedir ayuda, participar, dar y seguir instrucciones, disculparse y convencer a los demás."}], CATS=[["proceso", "🧭 Proceso de decisión", ["proceso"]], ["m3", "🎩 Estrategias del Módulo III", ["m3"]], ["problema", "🔎 Situación problema y habilidades sociales", ["problema", "otros"]], ["creativas", "🗺️ Paisaje y Role playing", ["creativas"]], ["pareto", "📊 Diagrama de Pareto", ["pareto"]], ["evaluacion", "⚖️ Evaluación de resultados", ["evaluacion"]]];
+const META=20, VALOR=0.5, $id=x=>document.getElementById(x);
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const norm=t=>t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
+let estado={orden:[],res:{}}, clave=null, actual=null;
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function cargar(){const n=$id('al-nombre').value.trim(),g=$id('al-grupo').value.trim();if(n.split(/\s+/).length<2||!g)return;
+ const k='jep2p_'+norm(n)+'_'+norm(g); if(k===clave)return; clave=k; estado=store.get(k)||{orden:[],res:{}}; pintar(); if(estado.orden.length>=META) evidencia(false);}
+['al-nombre','al-grupo'].forEach(id=>$id(id).addEventListener('change',cargar));
+function pintar(){
+ $id('tablero').innerHTML=CATS.map(([id,tit,ts])=>{const ks=DATA.map((d,k)=>ts.includes(d.t)?k:null).filter(k=>k!==null);
+  const hechas=ks.filter(k=>k in estado.res).length;
+  return `<div class="cat"><h3>${tit}<small>${hechas}/${ks.length} contestadas</small></h3><div class="tiles">${ks.map((k,n)=>{const r=estado.res[k];
+   return `<button type="button" class="tile ${r===true?'ok':r===false?'bad':''}" data-k="${k}" aria-label="Pregunta ${n+1}">${r===true?'✓':r===false?'✗':n+1}</button>`}).join('')}</div></div>`;}).join('');
+ document.querySelectorAll('.tile').forEach(b=>b.onclick=()=>abrir(+b.dataset.k));
+ const pr=estado.orden.slice(0,META), a=pr.filter(k=>estado.res[k]).length;
+ $id('m-n').textContent=Math.min(estado.orden.length,META); $id('m-a').textContent=a; $id('m-p').textContent=Lab.r1(a*VALOR);
+ const m=$id('meta20');
+ if(estado.orden.length>=META){m.style.display='block';const extra=estado.orden.length-META,ae=estado.orden.slice(META).filter(k=>estado.res[k]).length;
+  m.innerHTML=`🏁 ¡Completaste tus 20 preguntas! Calificación: ${Lab.r1(a*VALOR)} / 10. `+(extra?`Práctica libre: ${ae} de ${extra} correctas. `:'')+`<a href="#cert" style="color:#000">Ver mi evidencia ⬇</a>`;}
+ else m.style.display='none';
+}
+function abrir(k){
+ if(k in estado.res)return;
+ if(!Lab.student())return; cargar(); if(k in estado.res)return;
+ const d=DATA[k], ops=shuffle([d.ok,...d.no]); actual={k,ops};
+ const cat=CATS.find(c=>c[2].includes(d.t))[1];
+ $id('tarjeta').innerHTML=`<span class="tag">${cat}</span>${d.c?`<div class="ctx">${d.c}</div>`:''}<div class="pq">${d.q}</div>
+  <div class="opts">${ops.map((o,j)=>`<button type="button" class="opt" data-j="${j}">${String.fromCharCode(65+j)}) ${o}</button>`).join('')}</div>
+  <div class="fb" id="fb"></div><div class="navc"><button class="btn-sec" type="button" id="cerrar">↩ Elegir otra casilla</button></div>`;
+ document.querySelectorAll('#tarjeta .opt').forEach(b=>b.onclick=()=>contestar(+b.dataset.j));
+ $id('cerrar').onclick=cerrar; $id('modal').classList.add('show'); $id('modal').scrollTop=0; document.body.style.overflow='hidden';
+}
+function contestar(j){
+ const {k,ops}=actual, d=DATA[k]; if(k in estado.res)return;
+ const ok=ops[j]===d.ok; estado.res[k]=ok; estado.orden.push(k); store.set(clave,estado);
+ $id('al-nombre').readOnly=true; $id('al-grupo').readOnly=true;
+ document.querySelectorAll('#tarjeta .opt').forEach((b,i)=>{b.style.cursor='default';if(ops[i]===d.ok)b.classList.add('ok');else if(i===j)b.classList.add('bad');});
+ const fb=$id('fb'); fb.className='fb show '+(ok?'bien':'mal');
+ fb.innerHTML=`<b class="v">${ok?'✅ ¡Correcto! +0.5':'❌ No es correcto'}</b>${ok?'':`La respuesta correcta es: <b>${d.ok}</b><br>`}💡 ${d.e}`;
+ const n=estado.orden.length;
+ if(n===META) $id('cerrar').outerHTML='<button class="btn-sec amar" type="button" id="cerrar">🏁 ¡Llegaste a 20! Ver mi evidencia</button>';
+ else if(n<META) $id('cerrar').textContent=`↩ Volver al tablero (${n}/20)`;
+ else $id('cerrar').textContent='↩ Volver al tablero';
+ $id('cerrar').onclick=()=>{cerrar(); if(n===META) evidencia(true);};
+ pintar();
+}
+function cerrar(){$id('modal').classList.remove('show');document.body.style.overflow='';}
+function evidencia(scroll){
+ const pr=estado.orden.slice(0,META), a=pr.filter(k=>estado.res[k]).length;
+ const filas=CATS.map(([id,tit,ts])=>{const ks=pr.filter(k=>ts.includes(DATA[k].t));return ks.length?[tit,ks.filter(k=>estado.res[k]).length+' de '+ks.length]:null}).filter(Boolean);
+ Lab.finish();
+ Lab.certificate({lab:'Jeopardy de repaso · Segundo parcial',modulo:'Primeras 20 preguntas contestadas · 0.5 por acierto',score:a*VALOR,max:10,
+  rows:[...filas,['<b>Aciertos</b>','<b>'+a+' de 20</b>']],
+  msg:(a>=16?'🏆 ¡Excelente repaso!':a>=12?'👍 Buen repaso.':'📚 Sigue practicando.')+' Puedes seguir jugando con las demás casillas: tu calificación ya quedó registrada con tus primeras 20 respuestas.'});
+ if(!scroll) setTimeout(()=>window.scrollTo(0,0),200);
+}
+pintar();
+</script>
+</body>
+</html>
