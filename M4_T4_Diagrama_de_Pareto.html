@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light only" />
+<title>4.2.3 Diagrama de Pareto (80/20)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+
+        /* ==================== RESET Y ESTILOS BASE ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', 'Comic Sans MS', sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+
+        /* ==================== FONDO VERDE CLARO CON PUNTOS ==================== */
+        .page-content {
+            background: repeating-conic-gradient(#b3e6b3 0% 25%, #66cc66 0% 50%) 0 0 / 40px 40px;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.25) 4px, transparent 4px),
+                linear-gradient(135deg, #b3e6b3 0%, #80d480 50%, #66cc66 100%);
+            background-blend-mode: overlay, normal, normal;
+            background-size: 60px 60px, 80px 80px, cover;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .comic-container {
+            max-width: 1200px;
+            width: 100%;
+            background: #fff;
+            border: 6px solid #000;
+            border-radius: 30px 30px 20px 20px;
+            box-shadow: 12px 12px 0 #000;
+            padding: 2rem 2.5rem 2rem 2.5rem;
+            position: relative;
+            transition: all 0.1s ease;
+            margin-top: 1rem;
+        }
+
+        /* ===== TÍTULO ===== */
+        .titulo-seccion {
+            font-family: 'Bangers', cursive;
+            font-size: 3rem;
+            letter-spacing: 2px;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.8rem;
+            border-radius: 60px;
+            border: 5px solid #000;
+            box-shadow: 6px 6px 0 #000;
+            transform: rotate(-1deg);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            line-height: 1.2;
+        }
+
+        .subtitulo {
+            font-family: 'Bangers', cursive;
+            font-size: 1.6rem;
+            color: #fff;
+            background: #4CAF50;
+            display: inline-block;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 2rem;
+            transform: rotate(0.5deg);
+        }
+
+        /* ===== HEADER (bocadillo) ===== */
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            gap: 1rem;
+        }
+
+        .header-left {
+            flex: 1 1 60%;
+        }
+
+        .speech-bubble-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .speech-bubble {
+            background: #ffdd57;
+            border: 5px solid #000;
+            border-radius: 60px 60px 60px 10px;
+            padding: 0.8rem 2rem 0.8rem 2rem;
+            display: inline-block;
+            transform: rotate(-3deg);
+            box-shadow: 6px 6px 0 #000;
+            font-family: 'Bangers', cursive;
+            font-size: 2.8rem;
+            letter-spacing: 2px;
+            color: #000;
+            text-shadow: 2px 2px 0 rgba(255, 0, 0, 0.3);
+            line-height: 1.2;
+            margin-bottom: 0.3rem;
+        }
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 30px;
+            width: 0;
+            height: 0;
+            border: 12px solid transparent;
+            border-top-color: #ffdd57;
+            border-bottom: 0;
+            border-left: 0;
+            filter: drop-shadow(4px 4px 0 #000);
+        }
+
+        .header-right {
+            flex: 0 1 auto;
+            background: #000;
+            color: #fff;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 5px 5px 0 #66cc66;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: right;
+            line-height: 1.4;
+        }
+        .header-right span {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.6rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* ===== BIENVENIDA ===== */
+        .welcome {
+            background: #4CAF50;
+            border: 5px solid #000;
+            border-radius: 30px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2.2rem;
+            box-shadow: 7px 7px 0 #000;
+            color: #fff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+        .welcome strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0 0.5rem;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* ===== GRID PRINCIPAL ===== */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .col-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        .col-left .block,
+        .col-right .block {
+            background: #fff;
+            border: 5px solid #000;
+            border-radius: 25px;
+            padding: 1.5rem 1.8rem;
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        .block-image {
+            padding: 0.8rem !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fafafa;
+        }
+
+        .block-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            border: 3px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            display: block;
+        }
+
+        .block-title {
+            font-family: 'Bangers', cursive;
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #000;
+            background: #ffe600;
+            display: inline-block;
+            padding: 0.2rem 1.2rem;
+            border-radius: 40px;
+            border: 4px solid #000;
+            box-shadow: 4px 4px 0 #000;
+            margin-bottom: 1rem;
+            transform: rotate(-1deg);
+        }
+
+        .block-text {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1a1a1a;
+            margin-bottom: 0.8rem;
+        }
+
+        /* Estilo para listas con viñetas de cómic */
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 0.5rem;
+        }
+        .bullet-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
+            font-size: 1rem;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+        .bullet-list li::before {
+            content: "💥";
+            font-size: 1.8rem;
+            flex-shrink: 0;
+            display: inline-block;
+            background: #ffdd57;
+            border: 3px solid #000;
+            border-radius: 50%;
+            width: 2.2rem;
+            height: 2.2rem;
+            text-align: center;
+            line-height: 2rem;
+            box-shadow: 3px 3px 0 #000;
+        }
+
+        .col-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer-pregunta {
+            background: #000;
+            border: 6px solid #000;
+            border-radius: 40px;
+            padding: 1.8rem 2rem;
+            box-shadow: 8px 8px 0 #66cc66;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .footer-pregunta p {
+            color: #fff;
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.5;
+            margin: 0;
+        }
+        .footer-pregunta p strong {
+            background: #ffe600;
+            color: #000;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            font-weight: 700;
+        }
+
+        /* ==================== BOTONES FLOTANTES ==================== */
+        .botones-flotantes {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            z-index: 999;
+        }
+
+        .btn-flotante {
+            background: #ffe600;
+            border: 4px solid #000;
+            border-radius: 60px;
+            padding: 0.6rem 1.5rem;
+            font-family: 'Bangers', cursive;
+            font-size: 1.2rem;
+            letter-spacing: 1.5px;
+            color: #000;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 #000;
+            cursor: pointer;
+            transition: all 0.05s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            min-width: 140px;
+        }
+
+        .btn-flotante:active {
+            transform: translate(4px, 4px);
+            box-shadow: 1px 1px 0 #000;
+        }
+
+        .btn-flotante.continuar {
+            background: #66cc66;
+            color: #fff;
+        }
+
+        .btn-flotante.regresar {
+            background: #ffa94d;
+            color: #000;
+        }
+
+        .btn-flotante.casa {
+            background: #4dabf7;
+            color: #fff;
+        }
+
+        .btn-flotante:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 7px 7px 0 #000;
+        }
+
+        @media (max-width: 600px) {
+            .botones-flotantes {
+                bottom: 1rem;
+                right: 1rem;
+                gap: 0.5rem;
+            }
+            .btn-flotante {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 900px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .col-right {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.8rem;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .comic-container {
+                padding: 1.2rem 1rem;
+            }
+            .titulo-seccion {
+                font-size: 2.2rem;
+                padding: 0.2rem 1.2rem;
+            }
+            .subtitulo {
+                font-size: 1.2rem;
+                padding: 0.2rem 1rem;
+            }
+            .header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .header-right {
+                text-align: center;
+                font-size: 0.8rem;
+            }
+            .speech-bubble {
+                font-size: 2.2rem;
+                padding: 0.6rem 1.2rem;
+                border-radius: 40px 40px 40px 10px;
+            }
+            .col-right {
+                grid-template-columns: 1fr;
+            }
+            .welcome {
+                font-size: 1rem;
+                padding: 1rem 1.2rem;
+            }
+            .block-title {
+                font-size: 1.4rem;
+            }
+            .footer-pregunta p {
+                font-size: 1.1rem;
+            }
+        }
+    
+/* ==================== EXTENSIÓN MÓDULOS III y IV ==================== */
+:root{--bg1:#cfe8ff;--bg2:#74c0fc;--accent:#1c7ed6;--accent-soft:#d0ebff;--ink:#000;}
+.page-content{
+  background:
+    radial-gradient(circle,rgba(255,255,255,.35) 3px,transparent 3.5px) 0 0/34px 34px,
+    linear-gradient(135deg,var(--bg1) 0%,var(--bg2) 100%) !important;
+  background-blend-mode:normal !important;
+  padding-bottom:7rem;
+}
+.subtitulo,.welcome{background:var(--accent);}
+.header-right{box-shadow:5px 5px 0 var(--accent);}
+.header-right strong{color:var(--accent-soft)!important;}
+.footer-pregunta{box-shadow:8px 8px 0 var(--accent);}
+img{max-width:100%;}
+.comic-container{overflow-wrap:anywhere;}
+.block{background:#fff;border:5px solid #000;border-radius:25px;padding:1.5rem 1.8rem;box-shadow:7px 7px 0 #000;margin-bottom:1.8rem;}
+.block.soft{background:var(--accent-soft);}
+.block.yellow{background:#fff7c2;}
+.block-title.alt{background:var(--accent);color:#fff;}
+.block-text strong{background:#ffe600;padding:0 .3rem;border-radius:6px;}
+.mini-title{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;margin:.8rem 0 .4rem;color:#000;}
+.cita{font-size:.82rem;color:#555;font-style:italic;}
+.grid-2c{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+.grid-3c{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.card-c{border:4px solid #000;border-radius:20px;padding:1rem 1.1rem;box-shadow:5px 5px 0 #000;background:#fff;}
+.card-c h4{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;margin-bottom:.35rem;}
+.card-c p{font-size:.93rem;line-height:1.5;}
+.card-c .emoji{font-size:2rem;line-height:1;display:block;margin-bottom:.3rem;}
+/* pasos numerados */
+.steps{list-style:none;counter-reset:st;padding:0;margin:.5rem 0;}
+.steps li{counter-increment:st;display:flex;gap:.8rem;align-items:flex-start;margin-bottom:.75rem;font-size:.98rem;line-height:1.5;}
+.steps li::before{content:counter(st);flex-shrink:0;width:2.1rem;height:2.1rem;border:3px solid #000;border-radius:50%;background:#ffe600;font-family:'Bangers',cursive;font-size:1.25rem;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;}
+/* caso práctico */
+.caso{background:#fffbe6;border:4px dashed #000;border-radius:22px;padding:1.2rem 1.4rem;margin:1rem 0;}
+.caso .etq{display:inline-block;font-family:'Bangers',cursive;letter-spacing:1px;background:#000;color:#ffe600;padding:.1rem .9rem;border-radius:20px;margin-bottom:.5rem;font-size:1.1rem;}
+.caso p,.caso li{font-size:.97rem;line-height:1.6;}
+.caso ul{padding-left:1.2rem;}
+/* para tener presente */
+.glosa{list-style:none;padding:0;}
+.glosa li{border-left:6px solid var(--accent);background:#f8f9fa;padding:.55rem .8rem;margin-bottom:.55rem;border-radius:0 12px 12px 0;font-size:.93rem;line-height:1.5;}
+.glosa li b{display:block;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;font-weight:400;}
+/* preguntas de reflexión */
+.reflex{list-style:none;padding:0;}
+.reflex li{display:flex;gap:.7rem;margin-bottom:.7rem;font-size:.97rem;line-height:1.5;}
+.reflex li::before{content:"🤔";font-size:1.3rem;flex-shrink:0;}
+/* tabla cómic */
+.tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border:4px solid #000;border-radius:16px;box-shadow:5px 5px 0 #000;margin:1rem 0;}
+.tabla-c{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;min-width:520px;}
+.tabla-c th{background:#000;color:#ffe600;font-family:'Bangers',cursive;letter-spacing:1px;font-weight:400;font-size:1.05rem;padding:.55rem .6rem;text-align:left;}
+.tabla-c td{border-top:2px solid #000;padding:.5rem .6rem;vertical-align:top;}
+.tabla-c tr:nth-child(even) td{background:#f6f6f6;}
+.tabla-c td.num,.tabla-c th.num{text-align:right;font-variant-numeric:tabular-nums;}
+/* sombreros */
+.hats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.hat{border:4px solid #000;border-radius:20px;padding:.9rem;box-shadow:5px 5px 0 #000;}
+.hat h4{font-family:'Bangers',cursive;font-size:1.3rem;letter-spacing:1px;}
+.hat p{font-size:.88rem;line-height:1.45;}
+.hat .q{display:block;margin-top:.4rem;font-weight:700;font-size:.85rem;}
+.h-blanco{background:#fff}.h-rojo{background:#ff8787}.h-negro{background:#343a40;color:#fff}.h-amarillo{background:#ffe066}.h-verde{background:#8ce99a}.h-azul{background:#74c0fc}
+/* cuadrantes */
+.quad{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;}
+.quad>div{border:4px solid #000;border-radius:18px;padding:.9rem;box-shadow:4px 4px 0 #000;}
+.quad h4{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;}
+.quad p{font-size:.88rem;line-height:1.45;}
+.q1{background:#ff8787}.q2{background:#8ce99a}.q3{background:#ffe066}.q4{background:#dee2e6}
+/* diagrama de flujo de etapas */
+.flow{display:flex;gap:.6rem;flex-wrap:wrap;align-items:stretch;}
+.flow .st{flex:1 1 150px;border:4px solid #000;border-radius:18px;padding:.8rem;background:#fff;box-shadow:4px 4px 0 #000;position:relative;}
+.flow .st b{font-family:'Bangers',cursive;font-size:1.2rem;letter-spacing:1px;display:block;}
+.flow .st span{font-size:.85rem;line-height:1.4;display:block;}
+.flow .st .n{position:absolute;top:-14px;left:-10px;background:#ffe600;border:3px solid #000;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;}
+.svg-box{background:#fff;border:4px solid #000;border-radius:18px;box-shadow:5px 5px 0 #000;padding:.6rem;margin:1rem 0;overflow-x:auto;}
+.svg-box svg{display:block;width:100%;height:auto;min-width:480px;}
+.pagina{display:inline-block;margin-top:1.6rem;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.1rem;background:#ffe600;border:4px solid #000;border-radius:30px;padding:.2rem 1rem;box-shadow:4px 4px 0 #000;}
+/* botones de navegación: fila inferior */
+.botones-flotantes{flex-direction:row;flex-wrap:wrap;justify-content:flex-end;bottom:1.2rem;right:1.2rem;left:auto;}
+.btn-flotante{min-width:0;font-size:1.05rem;padding:.5rem 1.1rem;}
+@media (max-width:900px){.grid-3c,.hats{grid-template-columns:1fr 1fr;}}
+@media (max-width:700px){
+  .grid-2c,.grid-3c,.hats,.quad{grid-template-columns:1fr;}
+  .block{padding:1.1rem 1rem;}
+  .botones-flotantes{left:.6rem;right:.6rem;bottom:.6rem;justify-content:center;gap:.4rem;}
+  .btn-flotante{font-size:.85rem;padding:.4rem .7rem;min-width:0;}
+  .comic-container{box-shadow:6px 6px 0 #000;border-width:4px;}
+}
+
+/* ==================== LABORATORIOS ==================== */
+.datos-bar{background:#000;border-radius:24px;padding:1rem 1.3rem;display:flex;flex-wrap:wrap;gap:.8rem 1.4rem;align-items:center;margin-bottom:1.6rem;box-shadow:6px 6px 0 var(--accent);}
+.datos-bar label{color:#ffe600;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.15rem;display:flex;align-items:center;gap:.6rem;flex:1 1 260px;}
+.datos-bar label.g{flex:0 1 200px;}
+.datos-bar input{flex:1;min-width:0;border:none;border-radius:14px;padding:.55rem .8rem;font-family:'Poppins',sans-serif;font-size:.95rem;}
+.instr{background:#ffe600;border:5px solid #000;border-radius:22px;padding:1rem 1.3rem;box-shadow:6px 6px 0 #000;margin-bottom:1.8rem;font-size:.95rem;line-height:1.55;}
+.instr b.t{font-family:'Bangers',cursive;font-size:1.35rem;letter-spacing:1px;display:block;font-weight:400;}
+.instr ul{padding-left:1.2rem;margin-top:.3rem;}
+.paso{background:#fff;border:5px solid #000;border-radius:25px;padding:1.3rem 1.5rem;box-shadow:7px 7px 0 #000;margin-bottom:1.8rem;}
+.paso>h2{font-family:'Bangers',cursive;font-weight:400;font-size:1.7rem;letter-spacing:1px;display:flex;align-items:center;gap:.7rem;margin-bottom:.7rem;line-height:1.15;}
+.paso>h2 .num{background:var(--accent);color:#fff;border:3px solid #000;border-radius:50%;min-width:2.4rem;height:2.4rem;display:inline-flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 #000;}
+.paso>p.ayuda{font-size:.92rem;color:#333;margin-bottom:.8rem;line-height:1.55;}
+.pts{display:inline-block;background:#000;color:#ffe600;border-radius:14px;font-size:.75rem;font-family:'Poppins',sans-serif;padding:.1rem .6rem;margin-left:auto;letter-spacing:0;}
+/* clasificador */
+.pool{display:flex;flex-wrap:wrap;gap:.6rem;padding:1rem;border:4px dashed #000;border-radius:18px;background:#f8f9fa;min-height:70px;margin-bottom:1rem;}
+.pool:empty::after{content:"✔ Todas las tarjetas fueron colocadas";color:#555;font-size:.85rem;}
+.chip{background:#fff;border:3px solid #000;border-radius:14px;padding:.5rem .75rem;font-size:.88rem;font-weight:600;line-height:1.35;box-shadow:3px 3px 0 #000;cursor:pointer;user-select:none;transition:transform .08s;max-width:100%;}
+.chip:hover{transform:translate(-1px,-1px);}
+.chip.sel{background:#ffe600;outline:3px solid var(--accent);transform:scale(1.03);}
+.chip.ok{background:#b2f2bb;}
+.chip.bad{background:#ffc9c9;}
+.chip .fix{display:block;font-size:.75rem;font-weight:700;color:#c92a2a;margin-top:.2rem;}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;}
+.bucket{border:4px solid #000;border-radius:18px;box-shadow:5px 5px 0 #000;padding:.7rem;min-height:140px;display:flex;flex-direction:column;gap:.5rem;cursor:pointer;transition:outline .1s;}
+.bucket.ready{outline:4px dashed var(--accent);outline-offset:3px;}
+.bucket.over{outline:4px solid var(--accent);}
+.bucket>.bh{font-family:'Bangers',cursive;font-size:1.25rem;letter-spacing:1px;line-height:1.1;}
+.bucket>.bd{font-size:.78rem;line-height:1.3;margin-top:-.3rem;opacity:.85;}
+.bucket .chip{font-size:.82rem;}
+.tip-tap{font-size:.82rem;background:var(--accent-soft);border:2px solid #000;border-radius:12px;padding:.4rem .7rem;margin-bottom:.8rem;}
+/* quiz */
+.qz{border:3px solid #000;border-radius:18px;padding:.9rem 1rem;margin-bottom:1rem;background:#fff;}
+.qz .qt{font-weight:700;font-size:.97rem;margin-bottom:.6rem;line-height:1.45;}
+.qz .qt .qn{display:inline-block;background:#000;color:#ffe600;border-radius:10px;padding:0 .5rem;margin-right:.4rem;font-family:'Bangers',cursive;letter-spacing:1px;}
+.opts{display:grid;gap:.45rem;}
+.opt{border:3px solid #000;border-radius:12px;padding:.5rem .75rem;cursor:pointer;font-size:.92rem;background:#fff;text-align:left;font-family:'Poppins',sans-serif;line-height:1.4;}
+.opt:hover{background:#fff9db;}
+.opt.sel{background:#ffe600;}
+.opt.ok{background:#b2f2bb;}
+.opt.bad{background:#ffc9c9;}
+.qz .exp{display:none;margin-top:.55rem;font-size:.86rem;background:#f1f3f5;border-radius:10px;padding:.5rem .7rem;line-height:1.45;}
+.qz.done .exp{display:block;}
+/* campos */
+.campo{margin-bottom:1rem;}
+.campo label{display:block;font-weight:700;font-size:.93rem;margin-bottom:.35rem;line-height:1.4;}
+.campo textarea,.campo input[type=text],.campo select,input.inp,select.inp{width:100%;border:3px solid #000;border-radius:14px;padding:.6rem .8rem;font-family:'Poppins',sans-serif;font-size:.93rem;background:#fff;}
+.campo textarea{min-height:110px;resize:vertical;line-height:1.5;}
+.contador{font-size:.75rem;color:#666;text-align:right;margin-top:.2rem;}
+.contador.ok{color:#2b8a3e;font-weight:700;}
+input.num{width:5.5rem;border:3px solid #000;border-radius:10px;padding:.35rem .4rem;font-family:'Poppins',sans-serif;font-size:.92rem;text-align:right;}
+input.num.ok{background:#b2f2bb;} input.num.bad{background:#ffc9c9;}
+/* lista ordenable */
+.orden{list-style:none;padding:0;display:grid;gap:.5rem;}
+.orden li{display:flex;align-items:center;gap:.6rem;border:3px solid #000;border-radius:14px;padding:.5rem .6rem;background:#fff;box-shadow:3px 3px 0 #000;font-size:.92rem;font-weight:600;line-height:1.35;}
+.orden li .pos{background:#000;color:#ffe600;border-radius:50%;min-width:1.8rem;height:1.8rem;display:flex;align-items:center;justify-content:center;font-family:'Bangers',cursive;}
+.orden li .tx{flex:1;}
+.orden li button{border:3px solid #000;background:#ffe600;border-radius:10px;width:2.3rem;height:2.1rem;font-size:1rem;cursor:pointer;font-weight:700;}
+.orden li button:disabled{opacity:.35;cursor:default;}
+.orden li.ok{background:#b2f2bb;} .orden li.bad{background:#ffc9c9;}
+/* botón evaluar */
+.btn-eval{display:block;margin:1.5rem auto 0;background:#00c853;color:#fff;border:5px solid #000;border-radius:60px;padding:.75rem 2.4rem;font-family:'Bangers',cursive;font-size:1.7rem;letter-spacing:2px;box-shadow:6px 6px 0 #000;cursor:pointer;}
+.btn-eval:hover{transform:translate(-2px,-2px);box-shadow:8px 8px 0 #000;}
+.btn-eval:disabled{background:#adb5bd;cursor:not-allowed;transform:none;}
+.btn-sec{display:inline-block;background:#fff;border:3px solid #000;border-radius:30px;padding:.45rem 1.1rem;font-family:'Bangers',cursive;letter-spacing:1px;font-size:1.05rem;box-shadow:4px 4px 0 #000;cursor:pointer;margin:.3rem .3rem 0 0;color:#000;text-decoration:none;}
+.btn-sec.amar{background:#ffe600;}
+/* certificado */
+.cert{display:none;margin-top:2rem;background:#fff;border:6px solid #000;border-radius:28px;box-shadow:10px 10px 0 var(--accent);padding:1.6rem 1.8rem;}
+.cert.show{display:block;}
+.cert .ch{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem;align-items:center;border-bottom:4px solid #000;padding-bottom:.9rem;margin-bottom:1rem;}
+.cert .ch h2{font-family:'Bangers',cursive;font-weight:400;font-size:2rem;letter-spacing:2px;line-height:1.1;}
+.cert .nota{font-family:'Bangers',cursive;font-size:3rem;background:#ffe600;border:5px solid #000;border-radius:24px;padding:.1rem 1.2rem;box-shadow:5px 5px 0 #000;line-height:1.1;}
+.cert .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.4rem 1rem;font-size:.92rem;margin-bottom:1rem;}
+.cert .meta b{font-weight:700;}
+.cert table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1rem;}
+.cert td{border-bottom:2px solid #e9ecef;padding:.4rem .3rem;vertical-align:top;}
+.cert td:last-child{text-align:right;font-weight:700;white-space:nowrap;}
+.cert .msg{background:var(--accent-soft);border:3px solid #000;border-radius:16px;padding:.7rem .9rem;font-size:.92rem;line-height:1.5;}
+.cert .resp{margin-top:1rem;font-size:.86rem;line-height:1.5;}
+.cert .resp h4{font-family:'Bangers',cursive;font-weight:400;letter-spacing:1px;font-size:1.15rem;margin:.6rem 0 .2rem;}
+.cert .resp p{white-space:pre-wrap;background:#f8f9fa;border-radius:10px;padding:.5rem .7rem;}
+.cert-acc{margin-top:1rem;display:flex;flex-wrap:wrap;gap:.4rem;}
+.toast{position:fixed;left:50%;top:1.2rem;transform:translateX(-50%) translateY(-150%);background:#000;color:#fff;border:3px solid #ffe600;border-radius:18px;padding:.7rem 1.2rem;font-size:.92rem;z-index:2000;transition:transform .25s;max-width:92vw;text-align:center;box-shadow:5px 5px 0 #ffe600;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.toast.bad{border-color:#ff6b6b;box-shadow:5px 5px 0 #ff6b6b;}
+.bloqueado .chip,.bloqueado .bucket,.bloqueado .opt{cursor:default;}
+@media (max-width:700px){
+  .paso{padding:1rem .9rem;}
+  .paso>h2{font-size:1.35rem;}
+  .cert{padding:1.1rem 1rem;}
+  .cert .nota{font-size:2.3rem;}
+  .btn-eval{font-size:1.35rem;padding:.6rem 1.6rem;}
+}
+@media print{.botones-flotantes,.btn-eval,.cert-acc,.datos-bar input{display:none!important}}
+@media (max-width:700px){
+  .datos-bar label{flex:1 1 100%;flex-wrap:wrap;gap:.3rem;}
+  .datos-bar input{flex:1 1 100%;width:100%;}
+}
+.roles{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.8rem;}
+.rol{border:4px solid #000;border-radius:18px;padding:.8rem;background:#fff;box-shadow:4px 4px 0 #000;cursor:pointer;text-align:left;font-family:'Poppins',sans-serif;font-size:.88rem;line-height:1.4;}
+.rol b{display:block;font-family:'Bangers',cursive;font-weight:400;font-size:1.2rem;letter-spacing:1px;}
+.rol.sel{background:#ffe600;outline:3px solid var(--accent);}
+.kolb{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;counter-reset:k;}
+.kolb div{border:4px solid #000;border-radius:18px;padding:.8rem;box-shadow:4px 4px 0 #000;font-size:.88rem;line-height:1.4;}
+.kolb b{font-family:'Bangers',cursive;font-weight:400;font-size:1.2rem;letter-spacing:1px;display:block;}
+.chk{display:flex;gap:.6rem;align-items:flex-start;font-size:.92rem;margin-bottom:.45rem;line-height:1.4;}
+.chk input{width:1.2rem;height:1.2rem;margin-top:.15rem;flex-shrink:0;}
+/* ===== Forzar modo claro: evita texto blanco sobre blanco en celulares/apps con modo oscuro ===== */
+:root{color-scheme:light only;}
+html,body{color:#000;background-color:#fff;}
+button,input,select,textarea,option,.opt,.rol,.chip,.orden li,.bucket,.qz,.campo label,.paso,.block,.caso,.card-c,.cert{color:#000;}
+input,select,textarea{background-color:#fff;-webkit-text-fill-color:#000;}
+input::placeholder,textarea::placeholder{color:#777;-webkit-text-fill-color:#777;}
+.h-negro,.h-negro *{color:#fff;}
+.btn-eval{color:#fff;}
+.btn-flotante.casa,.btn-flotante.continuar{color:#fff;}
+
+:root{--bg1:#e5dbff;--bg2:#9775fa;--accent:#7048e8;--accent-soft:#e5dbff;}
+</style>
+</head>
+<body>
+<div class="page-content"><div class="comic-container">
+<h1 class="titulo-seccion">4.2.3 Diagrama de Pareto (80/20)</h1>
+<div class="subtitulo">📊 Pocos vitales vs. muchos triviales</div>
+<header class="header">
+  <div class="header-left"><div class="speech-bubble-wrapper"><div class="speech-bubble">¡Ataca lo que importa!</div></div></div>
+  <div class="header-right"><span>Principio 80/20</span><br /><strong>Frecuencia · % acumulado</strong></div>
+</header>
+<section class="welcome"><p><strong>Domingo en la noche:</strong> examen el lunes, tres trabajos acumulados y tu equipo del proyecto comunitario no responde. Tu cerebro, para protegerse, prefiere ordenar el escritorio o hacer scroll infinito. El problema es que tratas <b>todas las tareas con la misma urgencia</b>. ¿Y si pudieras identificar, con precisión matemática, el 20 % de causas que genera el 80 % de tus problemas?</p></section>
+<div class="grid-2c"><section class="block "><h2 class="block-title ">¿Qué es?</h2><p class="block-text">Es una herramienta que <strong>clasifica gráficamente la información por orden de importancia</strong>, separando los problemas más relevantes de los menos trascendentes. Se basa en el <strong>principio de Pareto</strong>: el 80 % de las consecuencias proviene del 20 % de las causas. Es un gráfico de barras sencillo, ordenado de mayor a menor, cuyo objetivo es identificar las causas principales de un problema.</p><p class="cita">(Guzmán, 2015; Secretaría de Salud de Veracruz, 2023; Soler et al., 2020)</p></section><section class="block "><h2 class="block-title ">La anatomía del caos</h2><p class="block-text">Tus recursos (tiempo, energía, atención) son limitados. Pareto te enseña a separar los <strong>pocos vitales</strong> (factores críticos de alto impacto) de los <strong>muchos triviales</strong> (detalles que hacen ruido pero no determinan el resultado). Si tu equipo no avanza, quizá el 80 % del atraso se deba solo a la falta de comunicación sobre fechas y a reuniones sin acuerdos: atacar el internet o quejarte de la carga no resolverá nada; rediseñar la comunicación sí.</p></section></div><section class="block "><h2 class="block-title ">¿Cómo se construye?</h2><ol class="steps"><li><span>Recopila todas las causas posibles del problema (sé específico).</span></li><li><span>Cuantifica y ordena las causas de mayor a menor en una tabla. Agrupa las menos relevantes en “Otros”, al final.</span></li><li><span><b>Porcentaje individual</b> = frecuencia de la causa ÷ total × 100.</span></li><li><span><b>Porcentaje acumulado</b>: suma progresiva de los porcentajes individuales; la última fila llega a 100 %.</span></li><li><span>Dibuja las barras: eje Y izquierdo = frecuencia; eje X = causas de mayor a menor; eje Y derecho = porcentaje acumulado.</span></li><li><span>Traza la curva acumulada y ubica dónde se alcanza ~80 %: las causas a la izquierda son tus pocos vitales.</span></li><li><span>Prioriza: concentra tu plan de acción en esas causas.</span></li></ol><p class="cita">(Enciclopedia Significados, 2023; guion instruccional del Módulo IV)</p></section><section class="block "><h2 class="block-title ">Ejemplo: bajo rendimiento en Matemáticas, Física y Química</h2><p class="block-text">Una escuela recolectó datos durante 5 días en grupos elegidos al azar para verificar las causas del bajo rendimiento:</p><div class="tabla-wrap"><table class="tabla-c"><thead><tr><th class="">Causa</th><th class="num">Frecuencia</th><th class="num">% individual</th><th class="num">% acumulado</th></tr></thead><tbody><tr><td class="">Métodos de enseñanza inapropiados</td><td class="num">32</td><td class="num">29.91</td><td class="num">29.91</td></tr><tr><td class="">Falta de motivación de los alumnos</td><td class="num">28</td><td class="num">26.17</td><td class="num">56.07</td></tr><tr><td class="">Falta de interés en las materias</td><td class="num">24</td><td class="num">22.43</td><td class="num">78.50</td></tr><tr><td class="">Falta de apoyo o recursos</td><td class="num">16</td><td class="num">14.95</td><td class="num">93.46</td></tr><tr><td class="">Otros</td><td class="num">7</td><td class="num">6.54</td><td class="num">100.00</td></tr><tr><td class=""><b>Total</b></td><td class="num"><b>107</b></td><td class="num">100</td><td class="num"></td></tr></tbody></table></div><div class="svg-box"><svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" font-family="Poppins, sans-serif" role="img" aria-label="Diagrama de Pareto rendimiento"><line x1="60" y1="30" x2="60" y2="270" stroke="#000" stroke-width="2"/><line x1="60" y1="270" x2="700" y2="270" stroke="#000" stroke-width="2"/><line x1="700" y1="30" x2="700" y2="270" stroke="#000" stroke-width="2"/><text x="52" y="274.0" text-anchor="end" font-size="11">0</text><text x="708" y="274.0" font-size="11">0%</text><line x1="60" y1="270.0" x2="700" y2="270.0" stroke="#dee2e6"/><text x="52" y="214.0" text-anchor="end" font-size="11">27</text><text x="708" y="214.0" font-size="11">25%</text><line x1="60" y1="210.0" x2="700" y2="210.0" stroke="#dee2e6"/><text x="52" y="154.0" text-anchor="end" font-size="11">54</text><text x="708" y="154.0" font-size="11">50%</text><line x1="60" y1="150.0" x2="700" y2="150.0" stroke="#dee2e6"/><text x="52" y="94.0" text-anchor="end" font-size="11">80</text><text x="708" y="94.0" font-size="11">75%</text><line x1="60" y1="90.0" x2="700" y2="90.0" stroke="#dee2e6"/><text x="52" y="34.0" text-anchor="end" font-size="11">107</text><text x="708" y="34.0" font-size="11">100%</text><line x1="60" y1="30.0" x2="700" y2="30.0" stroke="#dee2e6"/><line x1="60" y1="78.0" x2="700" y2="78.0" stroke="#e03131" stroke-width="2" stroke-dasharray="6 4"/><text x="696" y="72.0" text-anchor="end" font-size="11" fill="#e03131" font-weight="700">80 %</text><rect x="79.2" y="198.2" width="89.6" height="71.8" fill="#74c0fc" stroke="#000" stroke-width="2"/><text x="124.0" y="214.2" text-anchor="middle" font-size="11" font-weight="700">32</text><text x="124.0" y="286" text-anchor="middle" font-size="10.5">Métodos de</text><text x="124.0" y="299" text-anchor="middle" font-size="10.5">enseñanza</text><text x="124.0" y="312" text-anchor="middle" font-size="10.5">inapropiados</text><rect x="207.2" y="207.2" width="89.6" height="62.8" fill="#74c0fc" stroke="#000" stroke-width="2"/><text x="252.0" y="223.2" text-anchor="middle" font-size="11" font-weight="700">28</text><text x="252.0" y="286" text-anchor="middle" font-size="10.5">Falta de</text><text x="252.0" y="299" text-anchor="middle" font-size="10.5">motivación de</text><text x="252.0" y="312" text-anchor="middle" font-size="10.5">los alumnos</text><rect x="335.2" y="216.2" width="89.6" height="53.8" fill="#74c0fc" stroke="#000" stroke-width="2"/><text x="380.0" y="232.2" text-anchor="middle" font-size="11" font-weight="700">24</text><text x="380.0" y="286" text-anchor="middle" font-size="10.5">Falta de</text><text x="380.0" y="299" text-anchor="middle" font-size="10.5">interés en las</text><text x="380.0" y="312" text-anchor="middle" font-size="10.5">materias</text><rect x="463.2" y="234.1" width="89.6" height="35.9" fill="#74c0fc" stroke="#000" stroke-width="2"/><text x="508.0" y="250.1" text-anchor="middle" font-size="11" font-weight="700">16</text><text x="508.0" y="286" text-anchor="middle" font-size="10.5">Falta de apoyo</text><text x="508.0" y="299" text-anchor="middle" font-size="10.5">o recursos</text><rect x="591.2" y="254.3" width="89.6" height="15.7" fill="#74c0fc" stroke="#000" stroke-width="2"/><text x="636.0" y="249.3" text-anchor="middle" font-size="11" font-weight="700">7</text><text x="636.0" y="286" text-anchor="middle" font-size="10.5">Otros</text><polyline points="124.0,198.2 252.0,135.4 380.0,81.6 508.0,45.7 636.0,30.0" fill="none" stroke="#e8590c" stroke-width="3"/><circle cx="124.0" cy="198.2" r="5" fill="#e8590c" stroke="#000" stroke-width="1.5"/><text x="124.0" y="189.2" text-anchor="middle" font-size="10.5" font-weight="700" fill="#c2410c">29.9%</text><circle cx="252.0" cy="135.4" r="5" fill="#e8590c" stroke="#000" stroke-width="1.5"/><text x="252.0" y="126.4" text-anchor="middle" font-size="10.5" font-weight="700" fill="#c2410c">56.1%</text><circle cx="380.0" cy="81.6" r="5" fill="#e8590c" stroke="#000" stroke-width="1.5"/><text x="380.0" y="72.6" text-anchor="middle" font-size="10.5" font-weight="700" fill="#c2410c">78.5%</text><circle cx="508.0" cy="45.7" r="5" fill="#e8590c" stroke="#000" stroke-width="1.5"/><text x="508.0" y="36.7" text-anchor="middle" font-size="10.5" font-weight="700" fill="#c2410c">93.5%</text><circle cx="636.0" cy="30.0" r="5" fill="#e8590c" stroke="#000" stroke-width="1.5"/><text x="636.0" y="21.0" text-anchor="middle" font-size="10.5" font-weight="700" fill="#c2410c">100.0%</text></svg></div><p class="block-text">Las tres causas principales suman el <strong>78.5 %</strong>: enfocarse en ellas permitirá mejorar el desempeño académico.</p></section><section class="block "><h2 class="block-title ">Caso práctico: Diego, líder del proyecto comunitario</h2><div class="caso"><span class="etq">Pocos vitales detectados</span><p>Faltan pocos días para la entrega y Diego tiene 10 pendientes urgentes. En lugar de convocar una junta caótica de dos horas para regañar a todos, enlista, categoriza y cuantifica los retrasos. Descubre que el 80 % de los cuellos de botella ocurre porque <b>solo dos de diez integrantes</b> no entregan sus reportes a tiempo. Se reúne en privado con ellos y negocia un plan de mejora. El flujo de trabajo se reactiva y la tensión desaparece.</p></div></section><div class="grid-2c"><section class="block yellow"><h2 class="block-title ">Autoevaluación</h2><ul class="reflex"><li><span>¿Por qué organizar datos en un Pareto es un nivel de análisis superior a enlistar quejas al azar?</span></li><li><span>Elige un conflicto actual (bajo promedio, estrés, falta de tiempo). Enlista y agrupa sus causas: ¿cuáles crees que son tus pocos vitales?</span></li><li><span>¿Cómo combinarías Pareto con la empatía del role playing ante un problema de exclusión en tu salón?</span></li></ul></section><section class="block "><h2 class="block-title ">Para practicar · A6 (fase 2)</h2><ol class="steps"><li><span>Elijan la situación problema de su equipo.</span></li><li><span>Listen las causas y agrupen al menos 5 principales.</span></li><li><span>Elaboren el gráfico de Pareto (usen la herramienta del laboratorio, Excel/Sheets o a mano).</span></li><li><span>Justifiquen cómo resolver las causas vitales mejorará el desenlace del caso.</span></li></ol></section></div><section class="block soft"><h2 class="block-title ">Para tener presente</h2><ul class="glosa"><li><b>Ley 80/20</b>Un pequeño porcentaje de causas (≈20 %) produce la mayoría de los efectos (≈80 %).</li><li><b>Pocos vitales</b>Factores críticos de alto impacto: tu prioridad absoluta.</li><li><b>Muchos triviales</b>Factores de bajo impacto que hacen ruido pero no resuelven la raíz.</li><li><b>Porcentaje acumulado</b>Suma progresiva de los porcentajes de una serie de datos.</li></ul></section>
+<div class="footer-pregunta"><p>Deja de “hacer por hacer”: <strong>¿cuál es tu 20 % que hoy merece toda tu energía?</strong></p></div>
+<div class="pagina">📖 Tema 4.2.3 · Diagrama de Pareto</div>
+</div></div>
+<nav class="botones-flotantes"><a class="btn-flotante regresar" href="M4_T3_Role_playing.html">⬅ Regresar</a><a class="btn-flotante continuar" href="M4_T5_Evaluacion_y_matriz.html">Continuar ➡</a><a class="btn-flotante casa" href="Modulo_4_Aplicando_Estrategias.html">🏠 Módulo</a></nav>
+</body>
+</html>

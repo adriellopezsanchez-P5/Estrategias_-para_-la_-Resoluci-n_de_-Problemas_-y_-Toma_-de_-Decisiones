@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light only">
+<title>Módulo 3 - Estrategias fundamentales para la toma de decisiones | UAEMéx</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+
+        :root {
+            --uaemex-green: #004b23;
+            --uaemex-green-light: #007236;
+            --uaemex-green-subtle: #e8f5e9;
+            --uaemex-gold: #c69214;
+            --uaemex-gold-light: #e5b338;
+            --uaemex-gold-subtle: #fef9e7;
+            
+            --bg-body: #f4f6f8;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.04);
+            --shadow-md: 0 6px 16px rgba(0,0,0,0.08);
+            --shadow-lg: 0 12px 32px rgba(0,0,0,0.12);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* TopBar Institucional */
+        .topbar {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 8px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            border-bottom: 3px solid var(--uaemex-gold);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .topbar-badge {
+            background-color: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 700;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--uaemex-gold-light);
+            font-weight: 500;
+        }
+
+        /* Header */
+        header {
+            background: var(--surface);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .brand-icon {
+            background: linear-gradient(135deg, var(--uaemex-green), var(--uaemex-green-light));
+            color: var(--uaemex-gold);
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-md);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 10px rgba(0,75,35,0.2);
+            margin-bottom: 0.5rem;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--uaemex-green);
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .main-title span {
+            color: var(--uaemex-gold);
+        }
+
+        .subtitle-academic {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        /* Main */
+        main {
+            max-width: 1240px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+            flex: 1;
+            width: 100%;
+        }
+
+        /* Hero Banner */
+        .hero-card {
+            background: linear-gradient(135deg, var(--uaemex-green) 0%, #002b14 100%);
+            border-radius: var(--radius-lg);
+            color: #ffffff;
+            padding: 2.5rem 2.5rem;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 2.5rem;
+            align-items: center;
+            box-shadow: var(--shadow-lg);
+            border-bottom: 5px solid var(--uaemex-gold);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(198, 146, 20, 0.2);
+            border: 1px solid var(--uaemex-gold);
+            color: var(--uaemex-gold-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .hero-title span {
+            color: var(--uaemex-gold-light);
+        }
+
+        .hero-desc {
+            font-size: 1rem;
+            color: #e2e8f0;
+            margin-bottom: 1.8rem;
+            max-width: 620px;
+        }
+
+        .hero-illustration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nodes-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            color: var(--text-primary);
+            width: 100%;
+            max-width: 340px;
+            border: 2px solid var(--uaemex-gold);
+            transform: rotate(-1deg);
+            transition: var(--transition);
+        }
+
+        .nodes-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .node-network {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            position: relative;
+        }
+
+        .node-network::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--uaemex-green), var(--uaemex-gold));
+            z-index: 1;
+        }
+
+        .node-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--uaemex-green);
+            color: var(--uaemex-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            border: 2px solid #ffffff;
+        }
+
+        /* Section Headers */
+        .section-header {
+            margin: 2.5rem 0 1.25rem 0;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+        }
+
+        .section-title i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Grids */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0, 75, 35, 0.25);
+        }
+
+        .card-top-bar {
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--uaemex-green), var(--uaemex-gold));
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
+            background: var(--uaemex-green-subtle);
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .card-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--uaemex-gold);
+            letter-spacing: 0.6px;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .card-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--uaemex-green-light);
+            box-shadow: 0 4px 12px rgba(0,75,35,0.25);
+        }
+
+        .btn-gold {
+            background-color: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 700;
+        }
+
+        .btn-gold:hover {
+            background-color: var(--uaemex-gold-light);
+            box-shadow: 0 4px 12px rgba(198,146,20,0.25);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: var(--uaemex-green);
+            border: 1px solid var(--uaemex-green);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.85rem;
+            font-size: 0.82rem;
+        }
+
+        /* Sección 1: Módulo Header - MODIFICADO: sin título ni subtemas */
+        .module-header-card {
+            background: linear-gradient(135deg, var(--uaemex-green) 0%, #002b14 100%);
+            border-radius: var(--radius-lg);
+            padding: 2rem 2.5rem;
+            color: #ffffff;
+            border-bottom: 5px solid var(--uaemex-gold);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .module-header-card .module-tag {
+            display: inline-block;
+            background: var(--uaemex-gold);
+            color: var(--uaemex-green);
+            font-weight: 800;
+            font-size: 0.8rem;
+            padding: 4px 16px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-header-card .module-purpose {
+            font-size: 1.1rem;
+            color: #e2e8f0;
+            max-width: 850px;
+            line-height: 1.6;
+        }
+
+        .module-header-card .module-purpose strong {
+            color: var(--uaemex-gold-light);
+        }
+
+        /* Sección 2: Presentación */
+        .presentacion-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .presentacion-text strong {
+            color: var(--uaemex-green);
+        }
+
+        /* Sección 3: Laboratorios */
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .lab-card {
+            background: var(--surface);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(0, 75, 35, 0.25);
+        }
+
+        .lab-card .lab-image {
+            width: 100%;
+            height: 120px;
+            background: var(--uaemex-green-subtle);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--uaemex-green);
+            margin-bottom: 0.75rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .lab-card .lab-image .fa-solid {
+            font-size: 3.5rem;
+            opacity: 0.6;
+        }
+
+        .lab-card h4 {
+            color: var(--uaemex-green);
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .lab-card .lab-module {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            margin-bottom: 0.3rem;
+        }
+
+        .lab-card .lab-module .badge-modalidad {
+            display: inline-block;
+            background: var(--uaemex-green-subtle);
+            color: var(--uaemex-green);
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 1px 10px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+
+        .lab-card .lab-module .badge-ponderacion {
+            display: inline-block;
+            background: var(--uaemex-gold-subtle);
+            color: var(--uaemex-gold);
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 1px 10px;
+            border-radius: 10px;
+            margin-left: 4px;
+        }
+
+        .lab-card .lab-desc {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        .lab-card .btn-lab {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 0.5rem 1.2rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .lab-card .btn-lab:hover {
+            background-color: var(--uaemex-green-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,75,35,0.25);
+        }
+
+        .lab-card .btn-lab i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Instrucciones laboratorios - MODIFICADO: alineación izquierda */
+        .instrucciones-box {
+            background: var(--uaemex-gold-subtle);
+            border: 2px solid var(--uaemex-gold);
+            border-radius: var(--radius-md);
+            padding: 1.5rem 2rem;
+            margin: 1.5rem 0;
+        }
+
+        .instrucciones-box h4 {
+            color: var(--uaemex-green);
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instrucciones-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            align-items: flex-start;
+        }
+
+        .instrucciones-box ul li {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            padding: 0.2rem 0;
+            text-align: left;
+            width: 100%;
+        }
+
+        .instrucciones-box ul li i {
+            color: var(--uaemex-gold);
+            font-size: 0.7rem;
+            width: 18px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        /* Sección 4: Temario / Subtemas */
+        .tema-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .tema-item:hover {
+            border-color: var(--uaemex-green);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .tema-item .tema-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .tema-item .tema-semana {
+            background: var(--uaemex-green-subtle);
+            color: var(--uaemex-green);
+            font-weight: 700;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .tema-item .tema-nombre {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .tema-item .btn-explorar-tema {
+            background: transparent;
+            border: 1px solid var(--uaemex-green);
+            color: var(--uaemex-green);
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tema-item .btn-explorar-tema:hover {
+            background: var(--uaemex-green);
+            color: #ffffff;
+        }
+
+        .tema-item .btn-explorar-tema i {
+            color: var(--uaemex-gold);
+        }
+
+        .tema-item .btn-explorar-tema:hover i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Sección 5: Repaso Rápido */
+        .repaso-card {
+            background: linear-gradient(135deg, var(--uaemex-green-subtle) 0%, var(--uaemex-gold-subtle) 100%);
+            border: 2px solid var(--uaemex-green);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .repaso-card h3 {
+            color: var(--uaemex-green);
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .repaso-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            max-width: 600px;
+        }
+
+        .repaso-card .btn-repaso {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 0.8rem 2.5rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .repaso-card .btn-repaso:hover {
+            background-color: var(--uaemex-green-light);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0,75,35,0.3);
+        }
+
+        .repaso-card .btn-repaso i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Sección 6: Biblioteca Académica */
+        .recurso-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.6rem;
+            transition: var(--transition);
+        }
+
+        .recurso-item:hover {
+            border-color: var(--uaemex-gold);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .recurso-item .recurso-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .recurso-item .recurso-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: var(--uaemex-green-subtle);
+            color: var(--uaemex-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .recurso-item .recurso-nombre {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .recurso-item .recurso-tipo {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            background: var(--bg-body);
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        .recurso-item .btn-recurso {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.3rem 1rem;
+            border-radius: var(--radius-sm);
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .recurso-item .btn-recurso:hover {
+            background: var(--uaemex-green);
+            color: #ffffff;
+            border-color: var(--uaemex-green);
+        }
+
+        .recurso-item .btn-recurso i {
+            color: var(--uaemex-gold);
+        }
+
+        .recurso-item .btn-recurso:hover i {
+            color: var(--uaemex-gold);
+        }
+
+        /* Footer - MODIFICADO: eliminada columna de contacto */
+        footer {
+            background-color: var(--uaemex-green);
+            color: #ffffff;
+            padding: 3rem 5% 1.5rem 5%;
+            margin-top: 4rem;
+        }
+
+        .footer-grid {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-col h4 {
+            color: var(--uaemex-gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-col p, .footer-col li {
+            font-size: 0.88rem;
+            color: #e2e8f0;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col a {
+            color: #e2e8f0;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-col a:hover {
+            color: var(--uaemex-gold-light);
+        }
+
+        .footer-bottom {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.15);
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .lab-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2rem;
+            }
+
+            .module-header-card h2 {
+                font-size: 2rem;
+            }
+
+            .hero-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 2rem 1.5rem;
+            }
+
+            .hero-desc {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .lab-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .grid-4 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .tema-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .tema-item .tema-info {
+                flex-wrap: wrap;
+            }
+
+            .recurso-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .module-header-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .topbar-left {
+                justify-content: center;
+            }
+
+            .main-title {
+                font-size: 1.6rem;
+            }
+
+            .module-header-card h2 {
+                font-size: 1.6rem;
+            }
+
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-title {
+                font-size: 1.5rem;
+            }
+
+            .instrucciones-box ul li {
+                font-size: 0.85rem;
+            }
+        }
+    
+:root{color-scheme:light only} body{background-color:#f4f6f8}
+.recurso-item .btn-recurso{text-decoration:none}
+.recurso-nombre{line-height:1.45}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-left"><span class="topbar-badge">UAEMéx</span><span>Escuela Preparatoria &bull; Curriculum Bachillerato Universitario (CBU)</span></div>
+  <div class="topbar-right"><i class="fa-solid fa-graduation-cap"></i><span>Etapa Propedéutica</span></div>
+</div>
+<header>
+  <div class="header-container">
+    <div class="brand-icon"><i class="fa-solid fa-chess-knight"></i></div>
+    <h1 class="main-title">Módulo 3: <span>Estrategias fundamentales</span> para la toma de decisiones</h1>
+    <p class="subtitle-academic">Estrategias para la Resolución de Problemas y Toma de Decisiones &bull; Semestre Quinto</p>
+  </div>
+</header>
+<main>
+  <div class="module-header-card">
+    <div class="module-tag"><i class="fa-solid fa-bookmark"></i> Módulo III</div>
+    <div class="module-purpose"><strong>Propósito:</strong> Aplicar estrategias y herramientas para la toma de decisiones en situaciones de su entorno personal, académico y social.</div>
+  </div>
+
+  <div class="section-header"><h3 class="section-title"><i class="fa-solid fa-chalkboard-user"></i> Presentación del Módulo</h3></div>
+  <div class="card" style="border-left: 5px solid var(--uaemex-gold);"><p class="presentacion-text" style="margin-top:0rem">Te encuentras en un punto importante para desarrollar habilidades que te ayuden a solucionar problemas y elegir correctamente. En este módulo descubrirás que <strong>decidir no es cuestión de suerte</strong>, sino un proceso que necesita concentración, evaluación y métodos específicos para examinar alternativas y anticipar consecuencias. Explorarás las <strong>fases del proceso decisorio</strong>, desde identificar el problema hasta seleccionar la opción más conveniente.</p><p class="presentacion-text" style="margin-top:0.75rem">Además, dominarás instrumentos útiles como los <strong>Seis sombreros para pensar</strong>, el <strong>análisis costo-beneficio</strong>, el <strong>árbol de decisiones</strong> y la <strong>Matriz de Eisenhower</strong>. Tomar decisiones va más allá de elegir entre opciones: implica crear rutas fundamentadas en el razonamiento y los valores, combinando el pensamiento racional con las emociones y el compromiso social. Cada elección que hagas será una posibilidad de aprendizaje y desarrollo personal.</p><p class="presentacion-text" style="margin-top:0.75rem"><strong>Antes de empezar:</strong> realiza la <strong>MIII Evaluación Diagnóstica</strong> en SEDUCA (Actividades del estudiante).</p></div>
+
+  <div class="section-header"><h3 class="section-title"><i class="fa-solid fa-book-open"></i> Temario del Módulo 3</h3></div>
+  <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="color: var(--uaemex-gold);"></i> Revisa cada tema antes de resolver su laboratorio. Haz clic en "Explorar" para acceder al contenido.</div>
+  
+        <div class="tema-item">
+          <div class="tema-info"><span class="tema-semana">Semana 1</span><span class="tema-nombre">3.1 Etapas del proceso de toma de decisiones (3.1.1 Identificación del problema · 3.1.2 Alternativas · 3.1.3 Evaluación de consecuencias · 3.1.4 Elección)</span></div>
+          <a href="M3_T1_Etapas_del_proceso.html" class="btn-explorar-tema">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tema-item">
+          <div class="tema-info"><span class="tema-semana">Semana 2</span><span class="tema-nombre">3.2 Estrategias para la toma de decisiones · 3.2.1 Seis sombreros para pensar</span></div>
+          <a href="M3_T2_Seis_sombreros.html" class="btn-explorar-tema">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tema-item">
+          <div class="tema-info"><span class="tema-semana">Semana 2</span><span class="tema-nombre">3.2.2 Análisis de costo-beneficio</span></div>
+          <a href="M3_T3_Costo_beneficio.html" class="btn-explorar-tema">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tema-item">
+          <div class="tema-info"><span class="tema-semana">Semana 3</span><span class="tema-nombre">3.2.3 Árbol de decisiones</span></div>
+          <a href="M3_T4_Arbol_de_decisiones.html" class="btn-explorar-tema">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+        <div class="tema-item">
+          <div class="tema-info"><span class="tema-semana">Semana 3</span><span class="tema-nombre">3.2.4 Matriz de Eisenhower</span></div>
+          <a href="M3_T5_Matriz_de_Eisenhower.html" class="btn-explorar-tema">Explorar <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+  <div class="section-header"><h3 class="section-title"><i class="fa-solid fa-flask"></i> Laboratorios Interactivos</h3></div>
+  <div class="instrucciones-box">
+    <h4><i class="fa-solid fa-circle-info" style="color: var(--uaemex-gold);"></i> Instrucciones para los alumnos</h4>
+    <ul>
+      <li><i class="fa-solid fa-circle-check"></i> <span><strong>Un solo intento:</strong> Cada laboratorio se evalúa una sola vez. La calificación obtenida será definitiva.</span></li>
+      <li><i class="fa-solid fa-circle-check"></i> <span><strong>Evidencia:</strong> Al terminar, descarga la imagen de tu evidencia (o toma una captura de pantalla del resultado final).</span></li>
+      <li><i class="fa-solid fa-circle-check"></i> <span><strong>Entrega en Teams:</strong> Sube tu evidencia en la tarea correspondiente de Microsoft Teams.</span></li>
+      <li><i class="fa-solid fa-circle-check"></i> <span><strong>Dispositivo:</strong> Funciona en computadora y en celular (toca la tarjeta y luego la caja donde va).</span></li>
+      <li><i class="fa-solid fa-circle-check"></i> <span><strong>Seriedad:</strong> Las respuestas deben ser auténticas y con un lenguaje apropiado para un ejercicio académico.</span></li>
+    </ul>
+  </div>
+  <div class="lab-grid">
+      <div class="lab-card">
+        <div class="lab-image"><i class="fa-solid fa-route"></i></div>
+        <div class="lab-module">Tema 3.1<span class="badge-modalidad"><i class="fa-solid fa-user"></i> Individual</span></div>
+        <h4>Actividad 2. Evaluar alternativas</h4>
+        <p class="lab-desc">Analiza el caso de Mateo: ordena las etapas del proceso, evalúa las alternativas y argumenta tu elección.</p>
+        <a href="M3_Lab_Evaluar_alternativas.html" class="btn-lab"><i class="fa-solid fa-arrow-right"></i> Iniciar Laboratorio</a>
+      </div>
+      <div class="lab-card">
+        <div class="lab-image"><i class="fa-solid fa-hat-cowboy"></i></div>
+        <div class="lab-module">Tema 3.2.1<span class="badge-modalidad"><i class="fa-solid fa-user"></i> Individual</span></div>
+        <h4>Actividad 3. Un problema, seis miradas</h4>
+        <p class="lab-desc">Clasifica las ideas del consejo estudiantil según el sombrero que las produjo y aplica dos sombreros a un problema propio.</p>
+        <a href="M3_Lab_Seis_miradas.html" class="btn-lab"><i class="fa-solid fa-arrow-right"></i> Iniciar Laboratorio</a>
+      </div>
+      <div class="lab-card">
+        <div class="lab-image"><i class="fa-solid fa-scale-balanced"></i></div>
+        <div class="lab-module">Tema 3.2.2<span class="badge-modalidad"><i class="fa-solid fa-user"></i> Individual</span></div>
+        <h4>Actividad 4. ¿Qué opción conviene más?</h4>
+        <p class="lab-desc">Forma parte del comité de la biblioteca: clasifica costos, calcula beneficio neto y razón B/C y descarga tu tabla para Excel.</p>
+        <a href="M3_Lab_Costo_beneficio.html" class="btn-lab"><i class="fa-solid fa-arrow-right"></i> Iniciar Laboratorio</a>
+      </div>
+      <div class="lab-card">
+        <div class="lab-image"><i class="fa-solid fa-diagram-project"></i></div>
+        <div class="lab-module">Tema 3.2.3<span class="badge-modalidad"><i class="fa-solid fa-user"></i> Individual</span></div>
+        <h4>Actividad 5. Elegir medio de transporte</h4>
+        <p class="lab-desc">Calcula el valor esperado de cada rama del árbol y decide cómo llegará Valeria a su examen de admisión.</p>
+        <a href="M3_Lab_Arbol_transporte.html" class="btn-lab"><i class="fa-solid fa-arrow-right"></i> Iniciar Laboratorio</a>
+      </div>
+      <div class="lab-card">
+        <div class="lab-image"><i class="fa-solid fa-table-cells-large"></i></div>
+        <div class="lab-module">Tema 3.2.4<span class="badge-modalidad"><i class="fa-solid fa-user"></i> Individual</span></div>
+        <h4>Actividad 6. Organización de un estudiante universitario</h4>
+        <p class="lab-desc">Acomoda los 12 pendientes de Luis en la Matriz de Eisenhower y diseña su plan de acción.</p>
+        <a href="M3_Lab_Eisenhower.html" class="btn-lab"><i class="fa-solid fa-arrow-right"></i> Iniciar Laboratorio</a>
+      </div>
+  </div>
+  
+        <div class="section-header"><h3 class="section-title"><i class="fa-solid fa-file-circle-check"></i> Productos de evaluación del Módulo 3</h3></div>
+        <div class="grid-2">
+        <div class="card" style="border-left:5px solid var(--uaemex-gold);">
+          <div class="card-top-bar"></div>
+          <div class="card-badge">SEDUCA · Diagnóstica</div>
+          <div class="card-title">Actividad 1. Evaluación Diagnóstica</div>
+          <div class="card-desc">Antes de iniciar el módulo, ingresa a SEDUCA › Actividades (Estudiante) y responde “MIII Evaluación Diagnóstica”. Permite a tu profesor reconocer tus fortalezas y áreas de oportunidad.</div>
+          
+        </div>
+        <div class="card" style="border-left:5px solid var(--uaemex-gold);">
+          <div class="card-top-bar"></div>
+          <div class="card-badge">SEDUCA · Autoevaluable</div>
+          <div class="card-title">Actividad 7. Ejercicio Autoevaluable</div>
+          <div class="card-desc">Al terminar los temas, resuelve en SEDUCA el cuestionario de 25 reactivos del Módulo III. Usa el Repaso Interactivo para prepararte.</div>
+          <a href="M3_Repaso.html" class="btn btn-outline btn-sm" style="margin-top:.8rem;margin-right:.4rem"><i class="fa-solid fa-screwdriver-wrench"></i> Ir al repaso</a>
+        </div></div>
+
+  <div class="section-header"><h3 class="section-title"><i class="fa-solid fa-circle-question"></i> Repaso Rápido Módulo 3</h3></div>
+  <div class="repaso-card">
+    <h3><i class="fa-solid fa-pen-to-square" style="color: var(--uaemex-gold);"></i> ¿Listo para poner a prueba tus conocimientos?</h3>
+    <p>Responde el repaso del Módulo 3. Te ayudará a consolidar lo aprendido y a prepararte para el Ejercicio Autoevaluable de SEDUCA y el examen parcial.</p>
+    <a href="M3_Repaso.html" class="btn-repaso"><i class="fa-solid fa-arrow-right-to-bracket"></i> Iniciar Repaso</a>
+  </div>
+
+  <div class="section-header"><h3 class="section-title"><i class="fa-solid fa-book"></i> Biblioteca Académica</h3></div>
+  <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--text-muted);"><i class="fa-solid fa-circle-info" style="color: var(--uaemex-gold);"></i> Referencias que sustentan los contenidos del Módulo 3.</div>
+  
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">De Bono, E. (2017). <i>Six thinking hats</i>. Penguin Books.</span><span class="recurso-tipo">Libro</span></div>
+          
+        </div>
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">Gujarati, D. N., y Porter, D. C. (2010). <i>Econometría</i>. McGraw-Hill.</span><span class="recurso-tipo">Libro</span></div>
+          
+        </div>
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">Kahneman, D. (2011). <i>Thinking, fast and slow</i>. Farrar, Straus and Giroux.</span><span class="recurso-tipo">Libro</span></div>
+          
+        </div>
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">Lewicki, R. J., Saunders, D., y Barry, B. (2016). <i>Fundamentos de negociación</i>. McGraw-Hill.</span><span class="recurso-tipo">Libro</span></div>
+          
+        </div>
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">Project Management Institute. (2025). <i>Guía de los fundamentos para la dirección de proyectos (PMBOK® Guide, 8.ª ed.)</i>. PMI.</span><span class="recurso-tipo">Guía</span></div>
+          
+        </div>
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">Robbins, S. P., y Coulter, M. (2018). <i>Administración</i>. Pearson.</span><span class="recurso-tipo">Libro</span></div>
+          
+        </div>
+        <div class="recurso-item">
+          <div class="recurso-info"><div class="recurso-icon"><i class="fa-solid fa-book"></i></div><span class="recurso-nombre">Rodríguez Guevara, D. E., y González Uribe, G. J. (2019). <i>Principios de econometría</i>. Fondo Editorial ITM.</span><span class="recurso-tipo">Libro</span></div>
+          
+        </div>
+</main>
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><h4>UAEMéx - Escuela Preparatoria</h4><p>Asignatura: Estrategias para la Resolución de Problemas y Toma de Decisiones.</p><p>Módulo 3: Estrategias fundamentales para la toma de decisiones</p></div>
+    <div class="footer-col"><h4>Navegación</h4><ul>
+      <li><a href="index.html"><i class="fa-solid fa-arrow-left"></i> Volver al Inicio</a></li>
+      <li><a href="index.html"><i class="fa-solid fa-book-open"></i> Ver todos los Módulos</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>&copy; 2026 Universidad Autónoma del Estado de México (UAEMéx). Portal Académico para Nivel Medio Superior.</p></div>
+</footer>
+<a href="index.html" title="Volver a la Página Principal" style="position: fixed; right: 15px; top: 50%; transform: translateY(-50%); z-index: 9999; width: 60px; height: 60px; background: linear-gradient(135deg, #004b23, #007236); color: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; box-shadow: 0 8px 24px rgba(0,75,35,0.3); text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); border: 2px solid #ffffff;"><i class="fa-solid fa-house"></i></a>
+<style>
+    a[title="Volver a la Página Principal"]:hover {
+        transform: translateY(-50%) scale(1.05);
+        background: linear-gradient(135deg, #007236, #004b23);
+        box-shadow: 0 12px 32px rgba(0,75,35,0.4);
+    }
+    @media (max-width: 768px) {
+        a[title="Volver a la Página Principal"] {
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            right: 10px;
+        }
+    }
+</style>
+</body>
+</html>
